@@ -1,126 +1,160 @@
 <div align="center">
 <h1>库名</h1>
 </div>
-
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.30.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.50.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-50%25-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
 
+
 ## 介绍
 
-介绍库或者框架符合的标准，应用领域，解决什么问题。有哪些主要的特点，与同类库相比有哪些优点。
+formula 主要目的是显示用 LaTeX 编写的数学公式。
 
 ### 特性
 
 - 🚀 特性1
 
+  提供生成解析数学公式接口
+
 - 🚀 特性2
+
+  提供生成bitmap接口
 
 - 💪 特性3
 
-- 🛠️ 特性4
-
-- 🌍 特性5
-
-- 💡  特性6
-
-### 路线
-
-<p align="center">
-<img src="./doc/assets/milestone.png" width="100%" >
-</p>
-路线图roadmap在 doc/framework-roadmap-logo.pptx 中有源文件。
+  提供生成图片资源接口
 
 
 ## 软件架构
 
-### 架构图
-
-<p align="center">
-<img src="./doc/assets/framework.png" width="60%" >
-</p>
-
-架构图文字说明，包括模块说明、架构层次等详细说明。
-
 ### 源码目录
 
 ```shell
-├── README.md              #整体介绍
-├── doc                    #文档目录，包括设计文档，API接口文档等
-│   ├── cjcov              #覆盖率信息
-│   ├── design.md          #整体设计文档
-│   └── feature_api.md     #API接口文档
-├── src                    #源码目录
-│   └── Template.cj        #描述关键代码文件的功能
-└── test                   #测试代码目录
-    ├── HLT
-    └── LLT
+formula
+├─ doc
+│  ├─ assets
+│  ├─ design.md
+│  └─ feature_api.md
+├─ ffi
+│  ├─ CMakeLists.txt
+│  ├─ ffi
+│  │  ├─ graphic_ohos.cpp
+│  │  ├─ graphic_ohos.h
+│  │  ├─ graphic_ohos_ffi.cpp
+│  │  ├─ latex_ffi.cpp
+│  │  └─ render_ffi.cpp
+│  └─ latex
+├─ README.md
+├─ src
+│  ├─ ffi.cj
+│  ├─ graphic2D.cj
+│  ├─ LaTex.cj
+│  └─ render.cj
+└─ test
+   ├─ HLT
+   └─ LLT
+
 ```
+
+- `doc`  文档目录，用于存放设计、API接口等文档
+- `ffi` `ffi`接口
+- `src`  源码目录
+- `test` 测试目录
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](./doc/api.md)
+主要类和函数接口说明详见 [API](./doc/feature_api.md)
 
 
 ## 使用说明
 
 ### 编译构建
 
-描述具体的编译过程：
+1. 代码下载：
 
-```shell
-cpm update
-cpm build
-```
+   ```shell
+   git clone --recursive https://gitee.com/HW-PLLab/formula.git
+   cd ffi/latex
+   git checkout v0.0.1
+   ```
+
+2. 编译
+
+   下载安装msys2和mingw64
+
+   msys2：https://github.com/msys2/msys2-installer/releases/download/2023-03-18/msys2-x86_64-20230318.exe
+
+   mingw64：https://github.com/niXman/mingw-builds-binaries/releases/download/8.5.0-rt_v10-rev0/x86_64-8.5.0-release-posix-seh-rt_v10-rev0.7z
+
+   将`x86_64-8.5.0-release-posix-seh-rt_v10-rev0.7z`解压到msys2的根目录
+
+   下载cmake：https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-windows-x86_64.zip
+
+   将`cmake-3.26.3-windows-x86_64.zip`解压到msys2的根目录
+
+   用mingw64进入项目根目录，执行`build-ohos.sh`
+
+   ```shell
+   ./build-ohos.sh
+   ```
 
 ### 功能示例
-#### xxx 功能示例
+#### 生成bitmap功能示例
 
 功能示例描述:
 
 示例代码如下：
 
 ```cangjie
-import xxx.*
-main() {
- xxxx
+from formula import formula.*
+from std import fs.*
+
+main(): Int64 {
+
+    var latex = LaTeX("res")
+    var str = ###"
+\sideset{^\backprime}{'}\sum_{x=1}^{\infty} x\sideset{a_1^2}{}\sum_{x=1}^\infty x_0
+\\
+\sideset{_\text{left bottom}'''}{_{\text{right bottom}}'''}\sum_{\text{quite long text}}^\infty x
+\\
+\sideset{}{'}
+\sum_{n<k,\;\text{$n$ odd}} nE_n
+\\
+\sideset{}{'}
+\sum^{n<k,\;\text{$n$ odd}} nE_n
+\\
+M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
+"###
+    var r = latex.parse(str, 2000, 40.0, 10.0, 0)
+    var w = r.getWidth()
+    var h = r.getHeight()
+    var g2 = Graphic2D(w, h)
+    r.draw(g2, 0, 0)
+
+    var arr = r.toBitmap(g2)
+
+    var file: File = File("test.bmp", OpenOption.CreateOrTruncate(false))
+    file.write(arr)
+    file.close()
+
+    return 0
 }
 ```
 
 执行结果如下：
 
-```shell
-xxx
-```
-
-#### xxx 功能示例
-
-功能示例描述:
-
-示例代码如下：
-
-```cangjie
-import xxx.*
-main() {
- xxxx
-}
-```
-
-执行结果如下：
-
-```shell
-xxx
-```
+![test](./doc/assets/test.bmp)
 
 ## 约束与限制
+
 描述环境限制，版本限制，依赖版本等
 
 ## 开源协议
-xxx License
+MIT License
 
 ## 参与贡献
 

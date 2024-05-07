@@ -1,0 +1,21 @@
+[dependencies]
+
+[ffi]
+  [ffi.c]
+    [ffi.c.latex]
+      path = "./lib/"
+
+[package]
+  cjc-version = "0.50.3"
+  compile-option = "-g"
+  description = "nothing here"
+  link-option = "-lnative_drawing"
+  name = "formula"
+  output-type = "dynamic"
+  src-dir = "src"
+  target-dir = ""
+  version = "0.0.1"
+  package-configuration = {}
+
+[target]
+  aarch64-linux-ohos = {compile-option = "-BD:/ohos/4.1/ohos-sdk/windows/native/sysroot/usr/lib/aarch64-linux-ohos -BD:/ohos/4.1/ohos-sdk/windows/native/llvm/bin -LD:/ohos/4.1/ohos-sdk/windows/native/llvm/lib/clang/15.0.4/lib/aarch64-linux-ohos -LD:/ohos/4.1/ohos-sdk/windows/native/llvm/lib/aarch64-linux-ohos -LD:/ohos/4.1/ohos-sdk/windows/native/sysroot/usr/lib/aarch64-linux-ohos --sysroot D:/ohos/4.1/ohos-sdk/windows/native/sysroot"}

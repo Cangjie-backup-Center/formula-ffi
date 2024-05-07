@@ -1,11 +1,11 @@
 [
     {
-        "Name": " xxx",
-        "License": " Apache License ",
-        "License File": " LICENSE ",
-        "Version Number": " v2.0 ",
-        "Owner": "xxx"
-        "Upstream URL": "https://github.com/xxx",
-        "Description": " xxx."
+        "Name": "MicroTeX",
+        "License": "MIT License",
+        "License File": "LICENSE",
+        "Version Number": "N/A",
+        "Owner": "NanoMichael"
+        "Upstream URL": "https://github.com/NanoMichael/MicroTeX",
+        "Description": " A dynamic, cross-platform, and embeddable LaTeX rendering library."
     }
 ]

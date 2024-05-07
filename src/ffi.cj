@@ -1,0 +1,31 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2023-2023. All rights reserved.
+ */
+
+package formula
+
+foreign {
+    /* LaTeX */
+    func LaTeX_init(rootDir: CString): Unit
+    func LaTeX_release(): Unit
+    func LaTeX_parse(ltx: CString, width: Int32, textSize: Float32, lineSpace: Float32, foreground: Int32): CPointer<UInt8>
+    func LaTeX_setDebug(debug: Bool): Unit
+
+    /* TeXRender */
+    func TeXRender_draw(r: CPointer<UInt8>, bitmap: CPointer<UInt8>, x: Int32, y: Int32): Unit
+    func TeXRender_getTextSize(r: CPointer<UInt8>): Float32
+    func TeXRender_getHeight(r: CPointer<UInt8>): Int32
+    func TeXRender_getDepth(r: CPointer<UInt8>): Int32
+    func TeXRender_getWidth(r: CPointer<UInt8>): Int32
+    func TeXRender_getBaseline(r: CPointer<UInt8>): Float32
+    func TeXRender_setTextSize(r: CPointer<UInt8>, size: Float32): Unit
+    func TeXRender_setForeground(r: CPointer<UInt8>, c: Int32): Unit
+    func TeXRender_setWidth(r: CPointer<UInt8>, width: Int32, align: Int32): Unit
+    func TeXRender_setHeight(r: CPointer<UInt8>, height: Int32, align: Int32): Unit
+    func TeXRender_finalize(r: CPointer<UInt8>): Unit
+    func TeXRender_toBitmap(r: CPointer<UInt8>, bitmap: CPointer<UInt8>): UInt8Data
+    func TeXRender_getMapData(r: CPointer<UInt8>, bitmap: CPointer<UInt8>): UInt8Data
+
+    /* */
+    func initGraphics2D_ffi(x: UInt32, y: UInt32): CPointer<UInt8>
+}
