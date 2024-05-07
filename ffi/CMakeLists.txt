@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.5)
+project(LaTeX)
+
+
+# check if compiler has c++11 support
+
+include(CheckCXXCompilerFlag)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -w")
+
+
+# copy res dir
+
+file(COPY latex/res DESTINATION .)
+
+file(WRITE "latex/src/config.h" "#ifndef CONFIG_H_INCLUDED\n#define CONFIG_H_INCLUDED\n\n// Flag for debug\n#if defined(_DEBUG) || defined(DEBUG) || defined(__DEBUG__) || !defined(NDEBUG)\n#   ifndef __DEBUG\n#       define __DEBUG\n#   endif\n#endif\n\n// Check platforms\n#if defined(__linux__)\n#   ifdef __ANDROID__\n#       define __OS_Android__\n#   elif defined __OHOS__\n#       define __OS_ohos__\n#   else\n#       define __OS_Linux__\n#   endif\n#elif defined(_WIN32)\n#   ifdef __OHOS__\n#       define __OS_ohos__\n#   else\n#       define __OS_Windows__\n#   endif\n#endif\n// Other platforms...\n\n// Flag for if compile samples\n#if defined(__OS_Linux__) || defined(__OS_Windows__) || defined(MEM_CHECK)\n#   define __USE_SAMPLES\n#endif\n\n// Disable log if not in debug mode\n#ifndef __DEBUG\n#   undef HAVE_LOG\n#endif\n\n#endif  // CONFIG_H_INCLUDED\n")
+
+# source files
+
+file(GLOB_RECURSE SRC "latex/src/*.cpp" "ffi/*.cpp")
+
+
+# check operating system
+
+message(STATUS "We are working on ohos")
+include_directories("latex/src" "latex" "latex/src/xml")
+
+
+# compile options
+
+add_compile_definitions(__OHOS__)
+
+add_library(latex SHARED ${SRC})

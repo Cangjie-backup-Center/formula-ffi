@@ -1,0 +1,3 @@
+[submodule "ffi/latex"]
+	path = ffi/latex
+	url = https://github.com/NanoMichael/MicroTeX.git
