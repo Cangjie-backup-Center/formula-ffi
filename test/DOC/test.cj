@@ -23,7 +23,7 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
     var r = latex.parse(str, 2000, 40.0, 10.0, 0)
     var w = r.getWidth()
     var h = r.getHeight()
-    var g2 = Graphic2D(w, h)
+    var g2 = Graphic2D(r)
     r.draw(g2, 0, 0)
 
     var arr = r.toBitmap(g2)

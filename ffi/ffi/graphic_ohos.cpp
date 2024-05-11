@@ -73,18 +73,46 @@ sptr<Font> Font::_create(const string& name, int style, float size) {
 
 /******************************************* Text layout ******************************************/
 
-TextLayout_ohos::TextLayout_ohos(const wstring& src, const sptr<Font_ohos>& font): _txt(src), _font(font) {
-    // OH_Drawing_Range* OH_Drawing_TypographyGetWordBoundary (OH_Drawing_Typography * , size_t  )
-}
+TextLayout_ohos::TextLayout_ohos(const wstring& src, const sptr<Font_ohos>& font): _txt(src), _font(font) {}
 
 void TextLayout_ohos::getBounds(_out_ Rect& r) {
+    OH_Drawing_TypographyStyle* typoStyle = OH_Drawing_CreateTypographyStyle();
+    OH_Drawing_TextStyle* txtStyle = OH_Drawing_CreateTextStyle();
+    OH_Drawing_TypographyCreate* handler = OH_Drawing_CreateTypographyHandler(typoStyle, OH_Drawing_CreateFontCollection());
+    double fontSize = _font->getSize();
+    OH_Drawing_SetTextStyleFontSize(txtStyle, fontSize);
+    OH_Drawing_SetTextStyleFontWeight(txtStyle, FONT_WEIGHT_400);
+    bool halfLeading = true;
+    OH_Drawing_SetTextStyleHalfLeading(txtStyle, halfLeading);
+    const char *fontFamilies[] = {_font->getFamily().c_str()};
+    OH_Drawing_SetTextStyleFontFamilies(txtStyle, 1, fontFamilies);
+    OH_Drawing_TypographyHandlerPushTextStyle(handler, txtStyle);
+    OH_Drawing_TypographyHandlerAddText(handler, wide2utf8(_txt.c_str()).c_str());
+    OH_Drawing_PlaceholderSpan placeholderSpan = {(double)1000, (double)1000, ALIGNMENT_OFFSET_AT_BASELINE, TEXT_BASELINE_ALPHABETIC, 10};
+    OH_Drawing_TypographyHandlerAddPlaceholder(handler, &placeholderSpan);
+    OH_Drawing_TypographyHandlerPopTextStyle(handler);
+    OH_Drawing_Typography* typography = OH_Drawing_CreateTypography(handler);
+    OH_Drawing_TypographyLayout(typography, 1000);
+    OH_Drawing_RectHeightStyle heightStyle = RECT_HEIGHT_STYLE_TIGHT;
+    OH_Drawing_RectWidthStyle widthStyle = RECT_WIDTH_STYLE_TIGHT;
+    OH_Drawing_TextBox *textbox = OH_Drawing_TypographyGetRectsForRange(typography, 0, _txt.length(), heightStyle, widthStyle);
+    float right =  OH_Drawing_GetRightFromTextBox (textbox, 0);
+    float bottom = OH_Drawing_GetBottomFromTextBox(textbox, 0);
+
+    r.x = 0;
+    r.y = -9;
+    r.w = right;
+    r.h = bottom;
+
+    OH_Drawing_DestroyTypography(typography);
+    OH_Drawing_DestroyTypographyHandler(handler);
+    OH_Drawing_DestroyTextStyle(txtStyle);
+    OH_Drawing_DestroyTypographyStyle(typoStyle);
 }
 
 void TextLayout_ohos::draw(Graphics2D& g2, float x, float y) {
     const Font* oldFont = g2.getFont();
     g2.setFont(_font.get());
-    // string str = wide2utf8(_txt.c_str());
-    // LOGI("TextLayout::draw, text: %s", str.c_str());
     g2.drawText(_txt, x, y);
     g2.setFont(oldFont);
 }

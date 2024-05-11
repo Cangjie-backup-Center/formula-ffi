@@ -21,12 +21,11 @@ public class Graphic2D {
     /*
     * 初始化画布
     *
-    * 参数 - w 画布宽度
-    * 参数 - h 画布高度
+    * 参数 - render Render
     *
     * 返回值 - Unit
     */
-    public init(w: UInt32, h: UInt32)
+    public init(render: Render)
 
     /*
     * 获取画布ffi指针
@@ -66,11 +65,11 @@ public class LaTeX {
     * 参数 - width 画布宽度
     * 参数 - textSize 字体大小
     * 参数 - lineSpace 行距
-    * 参数 - foreground 前景颜色
+    * 参数 - foreground 前景颜色，ARGB格式
     *
     * 返回值 - Render
     */
-    public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: Int32): Render
+    public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: UInt32): Render
 }
 ```
 
@@ -99,6 +98,13 @@ public class Render {
     * 返回值 - Unit
     */
     public func draw(g2: Graphic2D, x: Int32, y: Int32): Unit
+
+    /*
+    * 获取字体大小
+    *
+    * 返回值 - Int32
+    */
+    public func getTextSize(): Float32
     
     /*
     * 获取绘制图片高度

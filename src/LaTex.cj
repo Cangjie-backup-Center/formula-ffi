@@ -16,7 +16,7 @@ public class LaTeX {
         unsafe { LaTeX_release() }
     }
 
-    public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: Int32): Render {
+    public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: UInt32): Render {
         unsafe {
             var cstr =  LibC.mallocCString(ltx)
             var ptr = LaTeX_parse(cstr, width, textSize, lineSpace, foreground)

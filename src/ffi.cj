@@ -8,7 +8,7 @@ foreign {
     /* LaTeX */
     func LaTeX_init(rootDir: CString): Unit
     func LaTeX_release(): Unit
-    func LaTeX_parse(ltx: CString, width: Int32, textSize: Float32, lineSpace: Float32, foreground: Int32): CPointer<UInt8>
+    func LaTeX_parse(ltx: CString, width: Int32, textSize: Float32, lineSpace: Float32, foreground: UInt32): CPointer<UInt8>
     func LaTeX_setDebug(debug: Bool): Unit
 
     /* TeXRender */

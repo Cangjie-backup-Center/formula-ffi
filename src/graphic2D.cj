@@ -7,8 +7,11 @@ package formula
 public class Graphic2D {
     var g2: CPointer<UInt8>
 
-    public init(w: UInt32, h: UInt32) {
-        g2 = unsafe { initGraphics2D_ffi(w, h) }
+    public init(render: Render) {
+        var w = render.getWidth()
+        var h = render.getHeight()
+        var textSize = render.getTextSize()
+        g2 = unsafe { initGraphics2D_ffi(w, h + UInt32(textSize / 9.0) + 1) }
     }
 
     public func getG2(): CPointer<UInt8> {
