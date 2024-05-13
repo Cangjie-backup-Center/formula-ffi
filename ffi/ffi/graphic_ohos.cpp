@@ -361,9 +361,6 @@ void Graphics2D_ohos::drawLine(float x1, float y1, float x2, float y2) {
 }
 
 void Graphics2D_ohos::renderRect(float x, float y, float w, float h) {
-    float th = _stroke.lineWidth;
-    float tth = geth(th);
-    setStrokeWidth(geth(th));
     float xx = getx(x);
     float yy = gety(y);
     float ww = getw(w);
@@ -371,19 +368,25 @@ void Graphics2D_ohos::renderRect(float x, float y, float w, float h) {
     OH_Drawing_CanvasAttachPen(_canvas, _pen);
     OH_Drawing_Rect *rect = OH_Drawing_RectCreate(xx, yy, xx + ww, yy + hh);
     OH_Drawing_CanvasDrawRect(_canvas, rect);
-    setStrokeWidth(th);
     OH_Drawing_RectDestroy(rect);
     OH_Drawing_CanvasDetachPen(_canvas);
 }
 
 void Graphics2D_ohos::drawRect(float x, float y, float w, float h) {
+    float th = _stroke.lineWidth;
+    float sw = geth(th);
+    setStrokeWidth(sw);
     renderRect(x, y, w, h);
+    setStrokeWidth(th);
 }
 
 void Graphics2D_ohos::fillRect(float x, float y, float w, float h) {
+    float th = _stroke.lineWidth;
+    setStrokeWidth(0.f);
     OH_Drawing_CanvasAttachBrush(_canvas, _brush);
     renderRect(x, y, w, h);
     OH_Drawing_CanvasDetachBrush(_canvas);
+    setStrokeWidth(th);
 }
 
 void Graphics2D_ohos::renderRoundRect(float x, float y, float w, float h, float rx, float ry) {
