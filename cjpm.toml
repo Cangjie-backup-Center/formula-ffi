@@ -7,9 +7,9 @@
 
 [package]
   cjc-version = "0.50.3"
-  compile-option = "-g"
+  compile-option = "-O2"
   description = "nothing here"
-  link-option = "-lnative_drawing"
+  link-option = ""
   name = "formula"
   output-type = "dynamic"
   src-dir = "src"

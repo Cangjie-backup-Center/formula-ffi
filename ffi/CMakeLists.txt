@@ -28,5 +28,8 @@ include_directories("latex/src" "latex" "latex/src/xml")
 # compile options
 
 add_compile_definitions(__OHOS__)
+add_link_options(-static-libstdc++)
 
 add_library(latex SHARED ${SRC})
+
+target_link_libraries(latex native_drawing)

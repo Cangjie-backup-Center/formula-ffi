@@ -14,7 +14,7 @@
     },
     "output_type": "dynamic",
     "command_option": "-O2",
-    "link-option": "-lnative_drawing",
+    "link-option": "",
     "cross_compile_configuration": {
         "aarch64-linux-ohos":"-BD:/ohos/4.1/ohos-sdk/windows/native/sysroot/usr/lib/aarch64-linux-ohos -BD:/ohos/4.1/ohos-sdk/windows/native/llvm/bin -LD:/ohos/4.1/ohos-sdk/windows/native/llvm/lib/clang/15.0.4/lib/aarch64-linux-ohos -LD:/ohos/4.1/ohos-sdk/windows/native/llvm/lib/aarch64-linux-ohos -LD:/ohos/4.1/ohos-sdk/windows/native/sysroot/usr/lib/aarch64-linux-ohos --sysroot D:/ohos/4.1/ohos-sdk/windows/native/sysroot"
     }

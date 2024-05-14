@@ -94,21 +94,10 @@ UInt8Data TeXRender_toBitmap(TeXRender *r, OH_Drawing_Bitmap *bitmap) {
 UInt8Data TeXRender_getMapData(TeXRender *r, OH_Drawing_Bitmap *bitmap) {
     uint32_t w = OH_Drawing_BitmapGetWidth(bitmap);
     uint32_t h = OH_Drawing_BitmapGetHeight(bitmap);
-    int32_t *bitmapAddr = (int32_t *)OH_Drawing_BitmapGetPixels(bitmap);
     int size = h * w * 4;
-    uint8_t *data = (uint8_t *)malloc(size);
-    int32_t *start = (int32_t *)data;
-    int c = 0;
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++) {
-            *start = *(bitmapAddr+i*w+j);
-            c++;
-            start++;
-        }
-    }
-
+    uint8_t *bitmapAddr = (uint8_t *)OH_Drawing_BitmapGetPixels(bitmap);
     UInt8Data u8data;
-    u8data.data = data;
+    u8data.data = bitmapAddr;
     u8data.len = size;
     return u8data;
 }

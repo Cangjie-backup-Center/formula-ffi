@@ -33,6 +33,16 @@ public class Graphic2D {
     * 返回值 - CPointer<UInt8>
     */
     public func getG2(): CPointer<UInt8>
+    
+    /*
+    * 画布宽度
+    */
+    public prop width: UInt32
+    
+    /*
+    * 画布高度
+    */
+    public prop height: UInt32
 }
 ```
 

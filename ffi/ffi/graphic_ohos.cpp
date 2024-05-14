@@ -134,6 +134,7 @@ Graphics2D_ohos::Graphics2D_ohos(OH_Drawing_Bitmap *bitmap): _stroke() {
     OH_Drawing_CanvasClear(_canvas, OH_Drawing_ColorSetArgb(0xFF, 0xFF, 0xFF, 0xFF));
 
     _pen = OH_Drawing_PenCreate();
+    OH_Drawing_PenSetAntiAlias(_pen, true);
 
     _brush = OH_Drawing_BrushCreate();
 
