@@ -72,10 +72,10 @@ public class LaTeX {
     * 解析数学公式
     *
     * 参数 - ltx 数学公式字符串
-    * 参数 - width 画布宽度
+    * 参数 - width 画布宽度（预设宽度）
     * 参数 - textSize 字体大小
     * 参数 - lineSpace 行距
-    * 参数 - foreground 前景颜色，ARGB格式
+    * 参数 - foreground 前景颜色，ARGB格式，透明度A不能设置为0，不然颜色可能是随机的
     *
     * 返回值 - Render
     */
@@ -117,14 +117,14 @@ public class Render {
     public func getTextSize(): Float32
     
     /*
-    * 获取绘制图片高度
+    * 获取绘制的实际高度（非画布高度）
     *
     * 返回值 - Int32
     */
     public func getHeight(): UInt32
     
     /*
-    * 获取绘制图片宽度
+    * 获取绘制的实际宽度（非画布宽度）
     *
     * 返回值 - Int32
     */
@@ -182,9 +182,7 @@ main(): Int64 {
 M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 "###
     var r = latex.parse(str, 2000, 40.0, 10.0, 0)
-    var w = r.getWidth()
-    var h = r.getHeight()
-    var g2 = Graphic2D(w, h)
+    var g2 = Graphic2D(r)
     r.draw(g2, 0, 0)
 
     var arr = r.toBitmap(g2)

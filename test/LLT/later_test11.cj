@@ -26,7 +26,7 @@ public class c_test_test {
   a \perp m,a \perp n
 \end{matrix}\right\}\Rightarrow a \perp \alpha
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

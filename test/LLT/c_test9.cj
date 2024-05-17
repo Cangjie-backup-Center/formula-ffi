@@ -72,7 +72,7 @@ A_2&=\phi(\lambda;\Omega’)-\phi(\lambda;\Omega),\\
 A_3&=\mathcal{N}(\lambda;\omega).
 \end{align}
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

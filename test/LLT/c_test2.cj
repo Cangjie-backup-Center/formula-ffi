@@ -49,7 +49,7 @@ public class c_test_test {
   \end{array}\\
 \end{array}
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

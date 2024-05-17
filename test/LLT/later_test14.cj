@@ -23,7 +23,7 @@ public class c_test_test {
         var str = ###"
 \frac{\sin A}{a}=\frac{\sin B}{b}=\frac{\sin C}{c}=\frac{1}{2R}
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

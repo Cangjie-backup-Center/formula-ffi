@@ -30,7 +30,7 @@ public class c_test_test {
 \frac{{\displaystyle\sum\nolimits_{n> 0} z^n}}
 {{\displaystyle\prod\nolimits_{1\leq k\leq n} (1-q^k)}}
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

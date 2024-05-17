@@ -27,7 +27,7 @@ public class Graphic2D {
         var textSize = render.getTextSize()
         this.w = w
         this.h = h + UInt32(textSize / 9.0) + 1
-        g2 = unsafe { initGraphics2D_ffi(w, h + UInt32(textSize / 9.0) + 1) }
+        g2 = unsafe { initGraphics2D_ffi(w, this.h) }
     }
 
     public func getG2(): CPointer<UInt8> {

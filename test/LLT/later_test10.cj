@@ -28,7 +28,7 @@ public class c_test_test {
   \left( \text{当且仅当}a=b\text{时取“}=\text{”号}\right)
 \end{array}
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

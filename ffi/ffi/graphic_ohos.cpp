@@ -246,7 +246,7 @@ void Graphics2D_ohos::rotate(float angle, float px, float py) {
 }
 
 void Graphics2D_ohos::reset() {
-    memset(T, 0, sizeof(float) * 9);
+    memset(T, 0, sizeof(T));
     T[SX] = T[SY] = 1;
     OH_Drawing_CanvasRotate(_canvas, -getr(), getpx(), getpy());
 }
@@ -314,17 +314,30 @@ void Graphics2D_ohos::setTextStyle(int style) {
 }
 
 void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
-    const char *str = wide2utf8(t.c_str()).c_str();
+    string tmp = wide2utf8(t.c_str());
+    int len = tmp.length();
+    char *str = (char *)malloc(len + 1);
+    tmp.copy(str, len, 0);
+    str[len] = '\0';
+    tmp = _font->getFile();
+    len = tmp.length();
+    char *file = (char *)malloc(len + 1);
+    tmp.copy(file, len, 0);
+    file[len] = '\0';
+    tmp = _font->getFamily();
+    len = tmp.length();
+    char *family = (char *)malloc(len + 1);
+    tmp.copy(family, len, 0);
+    family[len] = '\0';
+    const char *fontFamilies[] = {family};
     float s = _font->getSize();
     OH_Drawing_SetTextStyleFontSize(_txtStyle, s * sy());
     OH_Drawing_SetTextStyleBaseLine(_txtStyle, TEXT_BASELINE_ALPHABETIC);
     OH_Drawing_SetTextStyleFontHeight(_txtStyle, 0.1);
     setTextStyle(_font->getStyle());
     OH_Drawing_FontCollection *fontCollection = OH_Drawing_CreateFontCollection();
-    const char *fontFamilies[] = {_font->getFamily().c_str()};
-    string file = _font->getFile();
-    if (!file.empty()) {
-        OH_Drawing_RegisterFont(fontCollection, _font->getFamily().c_str(), file.c_str());
+    if (file[0] != '\0') {
+        OH_Drawing_RegisterFont(fontCollection, fontFamilies[0], file);
     }
     OH_Drawing_SetTextStyleFontFamilies(_txtStyle, 1, fontFamilies);
     OH_Drawing_SetTextStyleLocale(_txtStyle, "en");
@@ -342,6 +355,10 @@ void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
     OH_Drawing_DestroyTypography(typography);
     OH_Drawing_DestroyTypographyHandler(handler);
     OH_Drawing_DestroyFontCollection(fontCollection);
+
+    free(str);
+    free(file);
+    free(family);
 }
 
 void Graphics2D_ohos::drawLine(float x1, float y1, float x2, float y2) {

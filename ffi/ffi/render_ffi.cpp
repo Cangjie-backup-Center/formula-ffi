@@ -67,6 +67,7 @@ UInt8Data TeXRender_toBitmap(TeXRender *r, OH_Drawing_Bitmap *bitmap) {
     int32_t *bitmapAddr = (int32_t *)OH_Drawing_BitmapGetPixels(bitmap);
     int size = 54 + h * w * 4;
     uint8_t *data = (uint8_t *)malloc(size);
+    memset(data, 0, 54);
     *(int16_t *)data = 0x4d42;
     *(int32_t *)(data+2) = size;
     *(data+0xa) = 0x36;

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(LaTeX)
+project(latex)
 
 
 # check if compiler has c++11 support
@@ -28,8 +28,18 @@ include_directories("latex/src" "latex" "latex/src/xml")
 # compile options
 
 add_compile_definitions(__OHOS__)
-add_link_options(-static-libstdc++)
+add_link_options(-static-libstdc++ -Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/export.map)
 
 add_library(latex SHARED ${SRC})
 
 target_link_libraries(latex native_drawing)
+
+#only in Release type use strip
+if(CMAKE_BUILD_TYPE)
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+        add_custom_command(TARGET ${PROJECT_NAME}
+                    POST_BUILD
+                    COMMAND ${CMAKE_STRIP} -s "$<TARGET_FILE:${PROJECT_NAME}>"
+                  )
+    endif()
+endif()

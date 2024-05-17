@@ -23,7 +23,7 @@ public class test {
         var str = ###"
 "###
         var color1: UInt32 = 0xffff0000
-        var r = latex.parse(str, 10, 40.0, 10.0, color1) //宽度问题，宽度设置无效果
+        var r = latex.parse(str, 10, 40.0, 10.0, color1)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

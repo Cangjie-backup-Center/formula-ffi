@@ -37,7 +37,7 @@ public class test {
 M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 "###
         var color1: UInt32 = 0xffff0000
-        var r = latex.parse(str, 1000000000, 40.0, 10.0, color1) //宽度问题，宽度设置无效果
+        var r = latex.parse(str, 1000000000, 40.0, 10.0, color1)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)

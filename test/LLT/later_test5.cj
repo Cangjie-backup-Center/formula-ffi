@@ -23,7 +23,7 @@ public class c_test_test {
         var str = ###"
 \begin{array}{|c|l|||r|c|}\hline\text{Matrix}&\multicolumn{2}{|c|}{\text{Multicolumns}}&\text{Font sizes commands}\cr\hline\begin{pmatrix}\alpha_{11}&\cdots&\alpha_{1n}\cr\hdotsfor{3}\cr\alpha_{n1}&\cdots&\alpha_{nn}\end{pmatrix}&\Large \text{Large Right}&\small \text{small Left}&\tiny \text{tiny Tiny}\cr\hline\multicolumn{4}{|c|}{\Huge \text{Huge Multicolumns}}\cr\hline\end{array}
 "###
-        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0)
+        var r = latex.parse(str, 2000000000, 40.0, 10.0, 0xFF000000)
         var w = r.getWidth()
         var h = r.getHeight()
         println(w)
