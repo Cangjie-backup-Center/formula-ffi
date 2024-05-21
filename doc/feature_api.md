@@ -21,12 +21,11 @@ public class Graphic2D {
     /*
     * 初始化画布
     *
-    * 参数 - w 画布宽度
-    * 参数 - h 画布高度
+    * 参数 - render Render
     *
     * 返回值 - Unit
     */
-    public init(w: UInt32, h: UInt32)
+    public init(render: Render)
 
     /*
     * 获取画布ffi指针
@@ -34,6 +33,16 @@ public class Graphic2D {
     * 返回值 - CPointer<UInt8>
     */
     public func getG2(): CPointer<UInt8>
+    
+    /*
+    * 画布宽度
+    */
+    public prop width: UInt32
+    
+    /*
+    * 画布高度
+    */
+    public prop height: UInt32
 }
 ```
 
@@ -63,14 +72,14 @@ public class LaTeX {
     * 解析数学公式
     *
     * 参数 - ltx 数学公式字符串
-    * 参数 - width 画布宽度
+    * 参数 - width 画布宽度（预设宽度）
     * 参数 - textSize 字体大小
     * 参数 - lineSpace 行距
-    * 参数 - foreground 前景颜色
+    * 参数 - foreground 前景颜色，ARGB格式，透明度A不能设置为0，不然颜色可能是随机的
     *
     * 返回值 - Render
     */
-    public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: Int32): Render
+    public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: UInt32): Render
 }
 ```
 
@@ -99,16 +108,23 @@ public class Render {
     * 返回值 - Unit
     */
     public func draw(g2: Graphic2D, x: Int32, y: Int32): Unit
+
+    /*
+    * 获取字体大小
+    *
+    * 返回值 - Int32
+    */
+    public func getTextSize(): Float32
     
     /*
-    * 获取绘制图片高度
+    * 获取绘制的实际高度（非画布高度）
     *
     * 返回值 - Int32
     */
     public func getHeight(): UInt32
     
     /*
-    * 获取绘制图片宽度
+    * 获取绘制的实际宽度（非画布宽度）
     *
     * 返回值 - Int32
     */
@@ -166,9 +182,7 @@ main(): Int64 {
 M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 "###
     var r = latex.parse(str, 2000, 40.0, 10.0, 0)
-    var w = r.getWidth()
-    var h = r.getHeight()
-    var g2 = Graphic2D(w, h)
+    var g2 = Graphic2D(r)
     r.draw(g2, 0, 0)
 
     var arr = r.toBitmap(g2)

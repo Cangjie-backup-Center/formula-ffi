@@ -8,7 +8,7 @@ foreign {
     /* LaTeX */
     func LaTeX_init(rootDir: CString): Unit
     func LaTeX_release(): Unit
-    func LaTeX_parse(ltx: CString, width: Int32, textSize: Float32, lineSpace: Float32, foreground: Int32): CPointer<UInt8>
+    func LaTeX_parse(ltx: CString, width: Int32, textSize: Float32, lineSpace: Float32, foreground: UInt32): CPointer<UInt8>
     func LaTeX_setDebug(debug: Bool): Unit
 
     /* TeXRender */
@@ -20,12 +20,12 @@ foreign {
     func TeXRender_getBaseline(r: CPointer<UInt8>): Float32
     func TeXRender_setTextSize(r: CPointer<UInt8>, size: Float32): Unit
     func TeXRender_setForeground(r: CPointer<UInt8>, c: Int32): Unit
-    func TeXRender_setWidth(r: CPointer<UInt8>, width: Int32, align: Int32): Unit
-    func TeXRender_setHeight(r: CPointer<UInt8>, height: Int32, align: Int32): Unit
+    func TeXRender_setWidth(r: CPointer<UInt8>, width: UInt32, align: UInt32): Unit
+    func TeXRender_setHeight(r: CPointer<UInt8>, height: UInt32, align: UInt32): Unit
     func TeXRender_finalize(r: CPointer<UInt8>): Unit
     func TeXRender_toBitmap(r: CPointer<UInt8>, bitmap: CPointer<UInt8>): UInt8Data
     func TeXRender_getMapData(r: CPointer<UInt8>, bitmap: CPointer<UInt8>): UInt8Data
 
-    /* */
+    /* Graphics2D */
     func initGraphics2D_ffi(x: UInt32, y: UInt32): CPointer<UInt8>
 }

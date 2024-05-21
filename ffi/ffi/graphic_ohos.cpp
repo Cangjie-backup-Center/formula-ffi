@@ -73,18 +73,46 @@ sptr<Font> Font::_create(const string& name, int style, float size) {
 
 /******************************************* Text layout ******************************************/
 
-TextLayout_ohos::TextLayout_ohos(const wstring& src, const sptr<Font_ohos>& font): _txt(src), _font(font) {
-    // OH_Drawing_Range* OH_Drawing_TypographyGetWordBoundary (OH_Drawing_Typography * , size_t  )
-}
+TextLayout_ohos::TextLayout_ohos(const wstring& src, const sptr<Font_ohos>& font): _txt(src), _font(font) {}
 
 void TextLayout_ohos::getBounds(_out_ Rect& r) {
+    OH_Drawing_TypographyStyle* typoStyle = OH_Drawing_CreateTypographyStyle();
+    OH_Drawing_TextStyle* txtStyle = OH_Drawing_CreateTextStyle();
+    OH_Drawing_TypographyCreate* handler = OH_Drawing_CreateTypographyHandler(typoStyle, OH_Drawing_CreateFontCollection());
+    double fontSize = _font->getSize();
+    OH_Drawing_SetTextStyleFontSize(txtStyle, fontSize);
+    OH_Drawing_SetTextStyleFontWeight(txtStyle, FONT_WEIGHT_400);
+    bool halfLeading = true;
+    OH_Drawing_SetTextStyleHalfLeading(txtStyle, halfLeading);
+    const char *fontFamilies[] = {_font->getFamily().c_str()};
+    OH_Drawing_SetTextStyleFontFamilies(txtStyle, 1, fontFamilies);
+    OH_Drawing_TypographyHandlerPushTextStyle(handler, txtStyle);
+    OH_Drawing_TypographyHandlerAddText(handler, wide2utf8(_txt.c_str()).c_str());
+    OH_Drawing_PlaceholderSpan placeholderSpan = {(double)1000, (double)1000, ALIGNMENT_OFFSET_AT_BASELINE, TEXT_BASELINE_ALPHABETIC, 10};
+    OH_Drawing_TypographyHandlerAddPlaceholder(handler, &placeholderSpan);
+    OH_Drawing_TypographyHandlerPopTextStyle(handler);
+    OH_Drawing_Typography* typography = OH_Drawing_CreateTypography(handler);
+    OH_Drawing_TypographyLayout(typography, 1000);
+    OH_Drawing_RectHeightStyle heightStyle = RECT_HEIGHT_STYLE_TIGHT;
+    OH_Drawing_RectWidthStyle widthStyle = RECT_WIDTH_STYLE_TIGHT;
+    OH_Drawing_TextBox *textbox = OH_Drawing_TypographyGetRectsForRange(typography, 0, _txt.length(), heightStyle, widthStyle);
+    float right =  OH_Drawing_GetRightFromTextBox (textbox, 0);
+    float bottom = OH_Drawing_GetBottomFromTextBox(textbox, 0);
+
+    r.x = 0;
+    r.y = -9;
+    r.w = right;
+    r.h = bottom;
+
+    OH_Drawing_DestroyTypography(typography);
+    OH_Drawing_DestroyTypographyHandler(handler);
+    OH_Drawing_DestroyTextStyle(txtStyle);
+    OH_Drawing_DestroyTypographyStyle(typoStyle);
 }
 
 void TextLayout_ohos::draw(Graphics2D& g2, float x, float y) {
     const Font* oldFont = g2.getFont();
     g2.setFont(_font.get());
-    // string str = wide2utf8(_txt.c_str());
-    // LOGI("TextLayout::draw, text: %s", str.c_str());
     g2.drawText(_txt, x, y);
     g2.setFont(oldFont);
 }
@@ -106,6 +134,7 @@ Graphics2D_ohos::Graphics2D_ohos(OH_Drawing_Bitmap *bitmap): _stroke() {
     OH_Drawing_CanvasClear(_canvas, OH_Drawing_ColorSetArgb(0xFF, 0xFF, 0xFF, 0xFF));
 
     _pen = OH_Drawing_PenCreate();
+    OH_Drawing_PenSetAntiAlias(_pen, true);
 
     _brush = OH_Drawing_BrushCreate();
 
@@ -217,7 +246,7 @@ void Graphics2D_ohos::rotate(float angle, float px, float py) {
 }
 
 void Graphics2D_ohos::reset() {
-    memset(T, 0, sizeof(float) * 9);
+    memset(T, 0, sizeof(T));
     T[SX] = T[SY] = 1;
     OH_Drawing_CanvasRotate(_canvas, -getr(), getpx(), getpy());
 }
@@ -285,17 +314,30 @@ void Graphics2D_ohos::setTextStyle(int style) {
 }
 
 void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
-    const char *str = wide2utf8(t.c_str()).c_str();
+    string tmp = wide2utf8(t.c_str());
+    int len = tmp.length();
+    char *str = (char *)malloc(len + 1);
+    tmp.copy(str, len, 0);
+    str[len] = '\0';
+    tmp = _font->getFile();
+    len = tmp.length();
+    char *file = (char *)malloc(len + 1);
+    tmp.copy(file, len, 0);
+    file[len] = '\0';
+    tmp = _font->getFamily();
+    len = tmp.length();
+    char *family = (char *)malloc(len + 1);
+    tmp.copy(family, len, 0);
+    family[len] = '\0';
+    const char *fontFamilies[] = {family};
     float s = _font->getSize();
     OH_Drawing_SetTextStyleFontSize(_txtStyle, s * sy());
     OH_Drawing_SetTextStyleBaseLine(_txtStyle, TEXT_BASELINE_ALPHABETIC);
     OH_Drawing_SetTextStyleFontHeight(_txtStyle, 0.1);
     setTextStyle(_font->getStyle());
     OH_Drawing_FontCollection *fontCollection = OH_Drawing_CreateFontCollection();
-    const char *fontFamilies[] = {_font->getFamily().c_str()};
-    string file = _font->getFile();
-    if (!file.empty()) {
-        OH_Drawing_RegisterFont(fontCollection, _font->getFamily().c_str(), file.c_str());
+    if (file[0] != '\0') {
+        OH_Drawing_RegisterFont(fontCollection, fontFamilies[0], file);
     }
     OH_Drawing_SetTextStyleFontFamilies(_txtStyle, 1, fontFamilies);
     OH_Drawing_SetTextStyleLocale(_txtStyle, "en");
@@ -313,6 +355,10 @@ void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
     OH_Drawing_DestroyTypography(typography);
     OH_Drawing_DestroyTypographyHandler(handler);
     OH_Drawing_DestroyFontCollection(fontCollection);
+
+    free(str);
+    free(file);
+    free(family);
 }
 
 void Graphics2D_ohos::drawLine(float x1, float y1, float x2, float y2) {
@@ -333,9 +379,6 @@ void Graphics2D_ohos::drawLine(float x1, float y1, float x2, float y2) {
 }
 
 void Graphics2D_ohos::renderRect(float x, float y, float w, float h) {
-    float th = _stroke.lineWidth;
-    float tth = geth(th);
-    setStrokeWidth(geth(th));
     float xx = getx(x);
     float yy = gety(y);
     float ww = getw(w);
@@ -343,19 +386,25 @@ void Graphics2D_ohos::renderRect(float x, float y, float w, float h) {
     OH_Drawing_CanvasAttachPen(_canvas, _pen);
     OH_Drawing_Rect *rect = OH_Drawing_RectCreate(xx, yy, xx + ww, yy + hh);
     OH_Drawing_CanvasDrawRect(_canvas, rect);
-    setStrokeWidth(th);
     OH_Drawing_RectDestroy(rect);
     OH_Drawing_CanvasDetachPen(_canvas);
 }
 
 void Graphics2D_ohos::drawRect(float x, float y, float w, float h) {
+    float th = _stroke.lineWidth;
+    float sw = geth(th);
+    setStrokeWidth(sw);
     renderRect(x, y, w, h);
+    setStrokeWidth(th);
 }
 
 void Graphics2D_ohos::fillRect(float x, float y, float w, float h) {
+    float th = _stroke.lineWidth;
+    setStrokeWidth(0.f);
     OH_Drawing_CanvasAttachBrush(_canvas, _brush);
     renderRect(x, y, w, h);
     OH_Drawing_CanvasDetachBrush(_canvas);
+    setStrokeWidth(th);
 }
 
 void Graphics2D_ohos::renderRoundRect(float x, float y, float w, float h, float rx, float ry) {

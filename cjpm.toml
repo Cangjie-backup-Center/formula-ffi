@@ -7,9 +7,9 @@
 
 [package]
   cjc-version = "0.50.3"
-  compile-option = "-g"
+  compile-option = "-O2"
   description = "nothing here"
-  link-option = "-lnative_drawing"
+  link-option = ""
   name = "formula"
   output-type = "dynamic"
   src-dir = "src"
@@ -18,4 +18,4 @@
   package-configuration = {}
 
 [target]
-  aarch64-linux-ohos = {compile-option = "-BD:/ohos/4.1/ohos-sdk/windows/native/sysroot/usr/lib/aarch64-linux-ohos -BD:/ohos/4.1/ohos-sdk/windows/native/llvm/bin -LD:/ohos/4.1/ohos-sdk/windows/native/llvm/lib/clang/15.0.4/lib/aarch64-linux-ohos -LD:/ohos/4.1/ohos-sdk/windows/native/llvm/lib/aarch64-linux-ohos -LD:/ohos/4.1/ohos-sdk/windows/native/sysroot/usr/lib/aarch64-linux-ohos --sysroot D:/ohos/4.1/ohos-sdk/windows/native/sysroot"}
+  aarch64-linux-ohos = {compile-option = "-BD:/ohos/OHCangjie0.4.5-OH5.0.0.22/native/sysroot/usr/lib/aarch64-linux-ohos -BD:/ohos/OHCangjie0.4.5-OH5.0.0.22/native/llvm/bin -LD:/ohos/OHCangjie0.4.5-OH5.0.0.22/native/llvm/lib/clang/15.0.4/lib/aarch64-linux-ohos -LD:/ohos/OHCangjie0.4.5-OH5.0.0.22/native/llvm/lib/aarch64-linux-ohos -LD:/ohos/OHCangjie0.4.5-OH5.0.0.22/native/sysroot/usr/lib/aarch64-linux-ohos --sysroot D:/ohos/OHCangjie0.4.5-OH5.0.0.22/native/sysroot"}

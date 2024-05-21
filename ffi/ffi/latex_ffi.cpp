@@ -25,7 +25,7 @@ void LaTeX_release() {
     LaTeX::release();
 }
 
-TeXRender *LaTeX_parse(char *ltx, int width, float textSize, float lineSpace, int foreground) {
+TeXRender *LaTeX_parse(char *ltx, int width, float textSize, float lineSpace, uint32_t foreground) {
     wstring value;
     value = utf82wide(ltx);
     const wchar_t *wstr = value.c_str();

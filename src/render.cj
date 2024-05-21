@@ -21,6 +21,10 @@ public class Render {
         unsafe { TeXRender_draw(nativePtr, g2.getG2(), x, y) }
     }
 
+    public func getTextSize(): Float32 {
+        return unsafe { TeXRender_getTextSize(nativePtr) }
+    }
+
     public func getHeight(): UInt32 {
         return unsafe { UInt32(TeXRender_getHeight(nativePtr)) }
     }
