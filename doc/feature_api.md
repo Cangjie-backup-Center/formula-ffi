@@ -22,10 +22,11 @@ public class Graphic2D {
     * 初始化画布
     *
     * 参数 - render Render
+    * 参数 - colorFormat 位图像素存储格式
     *
     * 返回值 - Unit
     */
-    public init(render: Render)
+    public init(render: Render, colorFormat: ColorFormat)
 
     /*
     * 获取画布ffi指针
@@ -33,12 +34,19 @@ public class Graphic2D {
     * 返回值 - CPointer<UInt8>
     */
     public func getG2(): CPointer<UInt8>
-    
+
+    /*
+    * 获取位图像素存储格式(Int32格式)
+    *
+    * 返回值 - CPointer<UInt8>
+    */
+    public func getColorFormat(): Int32
+
     /*
     * 画布宽度
     */
     public prop width: UInt32
-    
+
     /*
     * 画布高度
     */
@@ -75,7 +83,7 @@ public class LaTeX {
     * 参数 - width 画布宽度（预设宽度）
     * 参数 - textSize 字体大小
     * 参数 - lineSpace 行距
-    * 参数 - foreground 前景颜色，ARGB格式，透明度A不能设置为0，不然颜色可能是随机的
+    * 参数 - foreground 前景色（画笔颜色），ARGB格式，透明度A不能设置为0，不然颜色可能是随机的
     *
     * 返回值 - Render
     */
@@ -104,10 +112,11 @@ public class Render {
     * 参数 - g2 Graphic2D
     * 参数 - x 绘制起始x轴
     * 参数 - y 绘制起始y轴
+    * 参数 - background 背景色，ARGB格式
     *
     * 返回值 - Unit
     */
-    public func draw(g2: Graphic2D, x: Int32, y: Int32): Unit
+    public func draw(g2: Graphic2D, x: Int32, y: Int32, background: UInt32): Unit
 
     /*
     * 获取字体大小
@@ -181,9 +190,11 @@ main(): Int64 {
 \\
 M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 "###
-    var r = latex.parse(str, 2000, 40.0, 10.0, 0)
-    var g2 = Graphic2D(r)
-    r.draw(g2, 0, 0)
+    var r = latex.parse(str, 2000, 40.0, 10.0, 0xFF000000)
+    var w = r.getWidth()
+    var h = r.getHeight()
+    var g2 = Graphic2D(r, COLOR_FORMAT_RGB_565)
+    r.draw(g2, 0, 0, 0xFFFFFFFF)
 
     var arr = r.toBitmap(g2)
 

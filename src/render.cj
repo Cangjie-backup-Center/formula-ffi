@@ -17,8 +17,8 @@ public class Render {
         nativePtr = ptr
     }
 
-    public func draw(g2: Graphic2D, x: Int32, y: Int32): Unit {
-        unsafe { TeXRender_draw(nativePtr, g2.getG2(), x, y) }
+    public func draw(g2: Graphic2D, x: Int32, y: Int32, background: UInt32): Unit {
+        unsafe { TeXRender_draw(nativePtr, g2.getG2(), x, y, background) }
     }
 
     public func getTextSize(): Float32 {
@@ -38,22 +38,26 @@ public class Render {
     }
 
     public func toBitmap(g2: Graphic2D): Array<UInt8> {
-        var bitmapData = unsafe { TeXRender_toBitmap(nativePtr, g2.getG2()) }
-        var array = Array<UInt8>(bitmapData.len, item: 0)
-        for (i in 0..bitmapData.len) {
-            array[i] = unsafe { bitmapData.data.read(i) }
+        unsafe {
+            var bitmapData =  TeXRender_toBitmap(nativePtr, g2.getG2(), g2.getColorFormat())
+            var array = Array<UInt8>(bitmapData.len, item: 0)
+            var cph = acquireArrayRawData(array)
+            memcpy_s(cph.pointer, bitmapData.len, bitmapData.data, bitmapData.len)
+            releaseArrayRawData(cph)
+            LibC.free(bitmapData.data)
+            return array
         }
-        unsafe { LibC.free(bitmapData.data) }
-        return array
     }
 
     public func getMapData(g2: Graphic2D): Array<UInt8> {
-        var bitmapData = unsafe { TeXRender_getMapData(nativePtr, g2.getG2()) }
-        var array = Array<UInt8>(bitmapData.len, item: 0)
-        for (i in 0..bitmapData.len) {
-            array[i] = unsafe { bitmapData.data.read(i) }
+        unsafe {
+            var bitmapData =  TeXRender_getMapData(nativePtr, g2.getG2(), g2.getColorFormat())
+            var array = Array<UInt8>(bitmapData.len, item: 0)
+            var cph = acquireArrayRawData(array)
+            memcpy_s(cph.pointer, bitmapData.len, bitmapData.data, bitmapData.len)
+            releaseArrayRawData(cph)
+            LibC.free(bitmapData.data)
+            return array
         }
-        unsafe { LibC.free(bitmapData.data) }
-        return array
     }
 }

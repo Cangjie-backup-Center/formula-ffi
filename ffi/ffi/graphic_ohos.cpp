@@ -3,6 +3,7 @@
 #if defined(__OS_ohos__) && !defined(MEM_CHECK)
 
 #include "graphic_ohos.h"
+#include "utils.h"
 
 using namespace tex;
 using namespace std;
@@ -124,14 +125,14 @@ sptr<TextLayout> TextLayout::create(const wstring& txt, const sptr<Font>& font) 
 
 /******************************************* Graphics 2D ******************************************/
 
-Graphics2D_ohos::Graphics2D_ohos(OH_Drawing_Bitmap *bitmap): _stroke() {
+Graphics2D_ohos::Graphics2D_ohos(OH_Drawing_Bitmap *bitmap, uint32_t foreground): _stroke() {
     _color = black;
     _bitmap = bitmap;
     _font = new Font_ohos("sans-serif", PLAIN, 14.f);
 
     _canvas = OH_Drawing_CanvasCreate();
     OH_Drawing_CanvasBind(_canvas, _bitmap);
-    OH_Drawing_CanvasClear(_canvas, OH_Drawing_ColorSetArgb(0xFF, 0xFF, 0xFF, 0xFF));
+    OH_Drawing_CanvasClear(_canvas, foreground);
 
     _pen = OH_Drawing_PenCreate();
     OH_Drawing_PenSetAntiAlias(_pen, true);
@@ -158,11 +159,7 @@ void Graphics2D_ohos::setColor(color c) {
     _color = c;
     OH_Drawing_PenSetColor(_pen, _color);
     OH_Drawing_BrushSetColor(_brush, _color);
-    const uint32_t a = color_a(c);
-    const uint32_t r = color_r(c);
-    const uint32_t g = color_g(c);
-    const uint32_t b = color_b(c);
-    OH_Drawing_SetTextStyleColor(_txtStyle, OH_Drawing_ColorSetArgb(a, r, g, b));
+    OH_Drawing_SetTextStyleColor(_txtStyle, c);
 }
 
 color Graphics2D_ohos::getColor() const {
@@ -246,7 +243,7 @@ void Graphics2D_ohos::rotate(float angle, float px, float py) {
 }
 
 void Graphics2D_ohos::reset() {
-    memset(T, 0, sizeof(T));
+    memset_s(T, sizeof(T), 0, sizeof(T));
     T[SX] = T[SY] = 1;
     OH_Drawing_CanvasRotate(_canvas, -getr(), getpx(), getpy());
 }

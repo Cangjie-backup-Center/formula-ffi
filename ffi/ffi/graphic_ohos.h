@@ -103,7 +103,7 @@ private:
     void setTextStyle(int style);
 
 public:
-    Graphics2D_ohos(OH_Drawing_Bitmap *bitmap);
+    Graphics2D_ohos(OH_Drawing_Bitmap *bitmap, uint32_t foreground);
 
     ~Graphics2D_ohos();
 
