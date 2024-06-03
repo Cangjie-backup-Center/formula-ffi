@@ -7,6 +7,8 @@ package formula
 public enum ColorFormat {
     | COLOR_FORMAT_RGB_565 | COLOR_FORMAT_BGRA_8888
 }
+let RGB_565: Int32 = 2
+let BGRA_8888: Int32 = 5
 
 public class Graphic2D {
     var g2: CPointer<UInt8>
@@ -33,8 +35,8 @@ public class Graphic2D {
         this.w = w
         this.h = h + UInt32(textSize / 9.0) + 1
         this.cf = match (colorFormat) {
-            case COLOR_FORMAT_RGB_565 => 2
-            case COLOR_FORMAT_BGRA_8888 => 5
+            case COLOR_FORMAT_RGB_565 => RGB_565
+            case COLOR_FORMAT_BGRA_8888 => BGRA_8888
         }
         g2 = unsafe { initGraphics2D_ffi(this.w, this.h, this.cf) }
     }

@@ -50,6 +50,9 @@ public class Render {
     }
 
     public func getMapData(g2: Graphic2D): Array<UInt8> {
+        if (g2.getColorFormat() == RGB_565) {
+            throw Exception("COLOR_FORMAT_RGB_565 format not supported!")
+        }
         unsafe {
             var bitmapData =  TeXRender_getMapData(nativePtr, g2.getG2(), g2.getColorFormat())
             var array = Array<UInt8>(bitmapData.len, item: 0)
