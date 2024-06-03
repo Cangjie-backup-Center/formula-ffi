@@ -41,7 +41,7 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
         var h = r.getHeight()
         println(w)
         println(h)
-        var g2 = Graphic2D(r)
+        var g2 = Graphic2D(r, COLOR_FORMAT_BGRA_8888)
         r.draw(g2, 2000, 2000)
 
         var arr = r.toBitmap(g2)

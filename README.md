@@ -46,7 +46,8 @@ formula
 │  │  ├─ graphic_ohos.h
 │  │  ├─ graphic_ohos_ffi.cpp
 │  │  ├─ latex_ffi.cpp
-│  │  └─ render_ffi.cpp
+│  │  ├─ render_ffi.cpp
+│  │  └─ utils.h
 │  └─ latex
 ├─ README.md
 ├─ src
@@ -94,7 +95,7 @@ formula
 
    下载cmake：https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-windows-x86_64.zip
 
-   将`cmake-3.26.3-windows-x86_64.zip`解压到msys2的根目录
+   将`cmake-3.26.3-windows-x86_64.zip`解压，将`cmake-3.26.3-windows-x86_64`目录下的所有文件夹拷贝到`msys2/usr/`目录
 
    用mingw64进入项目根目录，执行`build-ohos.sh`
 
@@ -129,9 +130,11 @@ main(): Int64 {
 \\
 M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 "###
-    var r = latex.parse(str, 2000, 40.0, 10.0, 0)
-    var g2 = Graphic2D(r)
-    r.draw(g2, 0, 0)
+    var r = latex.parse(str, 2000, 40.0, 10.0, 0xFF000000)
+    var w = r.getWidth()
+    var h = r.getHeight()
+    var g2 = Graphic2D(r, COLOR_FORMAT_RGB_565)
+    r.draw(g2, 0, 0, 0xFFFFFFFF)
 
     var arr = r.toBitmap(g2)
 

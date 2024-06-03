@@ -77,8 +77,8 @@ A_3&=\mathcal{N}(\lambda;\omega).
         var h = r.getHeight()
         println(w)
         println(h)
-        var g2 = Graphic2D(r)
-        r.draw(g2, 0, 0)
+        var g2 = Graphic2D(r, COLOR_FORMAT_BGRA_8888)
+        r.draw(g2, 0, 0, 0xFFFFFFFF)
 
         var arr = r.toBitmap(g2)
 

@@ -5,6 +5,8 @@
 package formula
 
 foreign {
+    func memcpy_s(dest: CPointer<UInt8>, destsz: Int64, src: CPointer<UInt8>, count: Int64): CPointer<UInt8>
+
     /* LaTeX */
     func LaTeX_init(rootDir: CString): Unit
     func LaTeX_release(): Unit
@@ -12,7 +14,7 @@ foreign {
     func LaTeX_setDebug(debug: Bool): Unit
 
     /* TeXRender */
-    func TeXRender_draw(r: CPointer<UInt8>, bitmap: CPointer<UInt8>, x: Int32, y: Int32): Unit
+    func TeXRender_draw(r: CPointer<UInt8>, bitmap: CPointer<UInt8>, x: Int32, y: Int32, background: UInt32): Unit
     func TeXRender_getTextSize(r: CPointer<UInt8>): Float32
     func TeXRender_getHeight(r: CPointer<UInt8>): Int32
     func TeXRender_getDepth(r: CPointer<UInt8>): Int32
@@ -23,9 +25,9 @@ foreign {
     func TeXRender_setWidth(r: CPointer<UInt8>, width: UInt32, align: UInt32): Unit
     func TeXRender_setHeight(r: CPointer<UInt8>, height: UInt32, align: UInt32): Unit
     func TeXRender_finalize(r: CPointer<UInt8>): Unit
-    func TeXRender_toBitmap(r: CPointer<UInt8>, bitmap: CPointer<UInt8>): UInt8Data
-    func TeXRender_getMapData(r: CPointer<UInt8>, bitmap: CPointer<UInt8>): UInt8Data
+    func TeXRender_toBitmap(r: CPointer<UInt8>, bitmap: CPointer<UInt8>, colorFormat: Int32): UInt8Data
+    func TeXRender_getMapData(r: CPointer<UInt8>, bitmap: CPointer<UInt8>, colorFormat: Int32): UInt8Data
 
     /* Graphics2D */
-    func initGraphics2D_ffi(x: UInt32, y: UInt32): CPointer<UInt8>
+    func initGraphics2D_ffi(x: UInt32, y: UInt32, colorFormat: Int32): CPointer<UInt8>
 }

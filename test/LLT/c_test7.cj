@@ -45,8 +45,8 @@ public class c_test_test { //图片显示错误
         var h = r.getHeight()
         println(w)
         println(h)
-        var g2 = Graphic2D(r)
-        r.draw(g2, 0, 0)
+        var g2 = Graphic2D(r, COLOR_FORMAT_BGRA_8888)
+        r.draw(g2, 0, 0, 0xFFFFFFFF)
 
         var arr = r.toBitmap(g2)
 
