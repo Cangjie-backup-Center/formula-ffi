@@ -78,7 +78,7 @@ A_3&=\mathcal{N}(\lambda;\omega).
         println(w)
         println(h)
         var g2 = Graphic2D(r, COLOR_FORMAT_BGRA_8888)
-        r.draw(g2, 0, 0, 0xFFFFFFFF)
+        r.draw(g2, 0xFFFFFFFF)
 
         var arr = r.toBitmap(g2)
 

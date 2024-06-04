@@ -110,13 +110,11 @@ public class Render {
     * 绘制图片
     *
     * 参数 - g2 Graphic2D
-    * 参数 - x 绘制起始x轴
-    * 参数 - y 绘制起始y轴
     * 参数 - background 背景色，ARGB格式
     *
     * 返回值 - Unit
     */
-    public func draw(g2: Graphic2D, x: Int32, y: Int32, background: UInt32): Unit
+    public func draw(g2: Graphic2D, background: UInt32): Unit
 
     /*
     * 获取字体大小
@@ -194,7 +192,7 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
     var w = r.getWidth()
     var h = r.getHeight()
     var g2 = Graphic2D(r, COLOR_FORMAT_RGB_565)
-    r.draw(g2, 0, 0, 0xFFFFFFFF)
+    r.draw(g2, 0xFFFFFFFF)
 
     var arr = r.toBitmap(g2)
 
