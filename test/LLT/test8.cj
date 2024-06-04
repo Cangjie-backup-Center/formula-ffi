@@ -43,7 +43,7 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
         println(w)
         println(h)
         var g2 = Graphic2D(r, COLOR_FORMAT_BGRA_8888)
-        r.draw(g2, 0, 0, 0xFFFFFFFF)
+        r.draw(g2, 0xFFFFFFFF)
         var arr = r.toBitmap(g2)
         var file: File = File("test.bmp", OpenOption.CreateOrTruncate(false))
         file.write(arr)

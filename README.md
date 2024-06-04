@@ -134,7 +134,7 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
     var w = r.getWidth()
     var h = r.getHeight()
     var g2 = Graphic2D(r, COLOR_FORMAT_RGB_565)
-    r.draw(g2, 0, 0, 0xFFFFFFFF)
+    r.draw(g2, 0xFFFFFFFF)
 
     var arr = r.toBitmap(g2)
 

@@ -17,8 +17,8 @@ public class Render {
         nativePtr = ptr
     }
 
-    public func draw(g2: Graphic2D, x: Int32, y: Int32, background: UInt32): Unit {
-        unsafe { TeXRender_draw(nativePtr, g2.getG2(), x, y, background) }
+    public func draw(g2: Graphic2D, background: UInt32): Unit {
+        unsafe { TeXRender_draw(nativePtr, g2.getG2(), 0, 0, background) }
     }
 
     public func getTextSize(): Float32 {
