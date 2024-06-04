@@ -40,6 +40,6 @@ if(CMAKE_BUILD_TYPE)
         add_custom_command(TARGET ${PROJECT_NAME}
                     POST_BUILD
                     COMMAND ${CMAKE_STRIP} -s "$<TARGET_FILE:${PROJECT_NAME}>"
-                  )
+                )
     endif()
 endif()
