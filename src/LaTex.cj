@@ -20,6 +20,9 @@ public class LaTeX {
         unsafe {
             var cstr =  LibC.mallocCString(ltx)
             var ptr = LaTeX_parse(cstr, width, textSize, lineSpace, foreground)
+            if (ptr.isNull()) {
+                throw Exception("parse failed, CPointer is null!")
+            }
             LibC.free(cstr)
             Render(ptr)
         }

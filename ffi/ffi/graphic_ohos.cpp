@@ -125,14 +125,14 @@ sptr<TextLayout> TextLayout::create(const wstring& txt, const sptr<Font>& font) 
 
 /******************************************* Graphics 2D ******************************************/
 
-Graphics2D_ohos::Graphics2D_ohos(OH_Drawing_Bitmap *bitmap, uint32_t foreground): _stroke() {
+Graphics2D_ohos::Graphics2D_ohos(OH_Drawing_Bitmap *bitmap, uint32_t background): _stroke() {
     _color = black;
     _bitmap = bitmap;
     _font = new Font_ohos("sans-serif", PLAIN, 14.f);
 
     _canvas = OH_Drawing_CanvasCreate();
     OH_Drawing_CanvasBind(_canvas, _bitmap);
-    OH_Drawing_CanvasClear(_canvas, foreground);
+    OH_Drawing_CanvasClear(_canvas, background);
 
     _pen = OH_Drawing_PenCreate();
     OH_Drawing_PenSetAntiAlias(_pen, true);
