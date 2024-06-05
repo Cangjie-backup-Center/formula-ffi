@@ -7,7 +7,7 @@
 
 [package]
   cjc-version = "0.50.3"
-  compile-option = "-O2"
+  compile-option = ""
   description = "nothing here"
   link-option = ""
   name = "formula"
