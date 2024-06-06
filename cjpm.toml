@@ -1,9 +1,7 @@
 [dependencies]
 
-[ffi]
-  [ffi.c]
-    [ffi.c.latex]
-      path = "./lib/"
+[ffi.c]
+  latex = {path = "./lib/"}
 
 [package]
   cjc-version = "0.50.3"
