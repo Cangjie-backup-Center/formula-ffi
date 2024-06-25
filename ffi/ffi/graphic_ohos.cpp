@@ -213,20 +213,17 @@ const Font* Graphics2D_ohos::getFont() const {
 
 // 修改
 void Graphics2D_ohos::setFont(const Font* font) {
-    if (font == nullptr) {
-
-    }
     _font = static_cast<const Font_ohos*>(font);
 }
 
 void Graphics2D_ohos::translate(float dx, float dy) {
-    T[TX] += T[SX] * dx;
-    T[TY] += T[SY] * dy;
+    OH_Drawing_CanvasTranslate(_canvas, dx, dy);
 }
 
 void Graphics2D_ohos::scale(float sx, float sy) {
     T[SX] *= sx;
     T[SY] *= sy;
+    OH_Drawing_CanvasScale(_canvas, sx, sy);
 }
 
 void Graphics2D_ohos::rotate(float angle) {
@@ -234,18 +231,17 @@ void Graphics2D_ohos::rotate(float angle) {
 }
 
 void Graphics2D_ohos::rotate(float angle, float px, float py) {
-    float r = (float) (angle / PI * 180);
+    float r = angle / PI * 180;
     T[R] += r;
-    T[PX] = getx(px);
-    T[PY] = gety(py);
-
-    OH_Drawing_CanvasRotate(_canvas, r, getpx(), getpy());
+    T[PX] = px;
+    T[PY] = py;
+    OH_Drawing_CanvasRotate(_canvas, r, px, py);
 }
 
 void Graphics2D_ohos::reset() {
+    OH_Drawing_CanvasRotate(_canvas, -T[R], T[PX], T[PY]);
     memset_s(T, sizeof(T), 0, sizeof(T));
-    T[SX] = T[SY] = 1;
-    OH_Drawing_CanvasRotate(_canvas, -getr(), getpx(), getpy());
+    T[SX] = T[SY] = 1.f;
 }
 
 float Graphics2D_ohos::sx() const {
@@ -254,34 +250,6 @@ float Graphics2D_ohos::sx() const {
 
 float Graphics2D_ohos::sy() const {
     return T[SY];
-}
-
-float Graphics2D_ohos::getpx() {
-    return T[PX];
-}
-
-float Graphics2D_ohos::getpy() {
-    return T[PY];
-}
-
-float Graphics2D_ohos::getr() {
-    return T[R];
-}
-
-float Graphics2D_ohos::getx(float x) {
-    return x * T[SX] + T[TX];
-}
-
-float Graphics2D_ohos::gety(float y) {
-    return y * T[SY] + T[TY];
-}
-
-float Graphics2D_ohos::getw(float w) {
-    return T[SX] * w;
-}
-
-float Graphics2D_ohos::geth(float h) {
-    return T[SY] * h;
 }
 
 void Graphics2D_ohos::drawChar(wchar_t c, float x, float y) {
@@ -328,7 +296,7 @@ void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
     family[len] = '\0';
     const char *fontFamilies[] = {family};
     float s = _font->getSize();
-    OH_Drawing_SetTextStyleFontSize(_txtStyle, s * sy());
+    OH_Drawing_SetTextStyleFontSize(_txtStyle, s);
     OH_Drawing_SetTextStyleBaseLine(_txtStyle, TEXT_BASELINE_ALPHABETIC);
     OH_Drawing_SetTextStyleFontHeight(_txtStyle, 0.1);
     setTextStyle(_font->getStyle());
@@ -347,7 +315,7 @@ void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
     double maxWidth = (double)OH_Drawing_BitmapGetWidth(_bitmap);
     OH_Drawing_TypographyLayout(typography, maxWidth);
 
-    OH_Drawing_TypographyPaint(typography, _canvas, (double)getx(x), (double)gety(y));
+    OH_Drawing_TypographyPaint(typography, _canvas, (double)x, (double)y);
 
     OH_Drawing_DestroyTypography(typography);
     OH_Drawing_DestroyTypographyHandler(handler);
@@ -359,40 +327,21 @@ void Graphics2D_ohos::drawText(const wstring& t, float x, float y) {
 }
 
 void Graphics2D_ohos::drawLine(float x1, float y1, float x2, float y2) {
-    float th = _stroke.lineWidth;
-    float sw = geth(th);
-    if (sw < 1.f) {
-        sw = 1.f;
-    }
-    setStrokeWidth(sw);
-    float xx1 = getx(x1);
-    float yy1 = gety(y1);
-    float xx2 = getx(x2);
-    float yy2 = gety(y2);
     OH_Drawing_CanvasAttachPen(_canvas, _pen);
-    OH_Drawing_CanvasDrawLine(_canvas, xx1, yy1, xx2, yy2);
+    OH_Drawing_CanvasDrawLine(_canvas, x1, y1, x2, y2);
     OH_Drawing_CanvasDetachPen(_canvas);
-    setStrokeWidth(th);
 }
 
 void Graphics2D_ohos::renderRect(float x, float y, float w, float h) {
-    float xx = getx(x);
-    float yy = gety(y);
-    float ww = getw(w);
-    float hh = geth(h);
     OH_Drawing_CanvasAttachPen(_canvas, _pen);
-    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(xx, yy, xx + ww, yy + hh);
+    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(x, y, x + w, y + h);
     OH_Drawing_CanvasDrawRect(_canvas, rect);
     OH_Drawing_RectDestroy(rect);
     OH_Drawing_CanvasDetachPen(_canvas);
 }
 
 void Graphics2D_ohos::drawRect(float x, float y, float w, float h) {
-    float th = _stroke.lineWidth;
-    float sw = geth(th);
-    setStrokeWidth(sw);
     renderRect(x, y, w, h);
-    setStrokeWidth(th);
 }
 
 void Graphics2D_ohos::fillRect(float x, float y, float w, float h) {
@@ -405,18 +354,9 @@ void Graphics2D_ohos::fillRect(float x, float y, float w, float h) {
 }
 
 void Graphics2D_ohos::renderRoundRect(float x, float y, float w, float h, float rx, float ry) {
-    float th = _stroke.lineWidth;
-    setStrokeWidth(geth(th));
-    float xx = getx(x);
-    float yy = gety(y);
-    float ww = getw(w);
-    float hh = geth(h);
-    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(xx, yy, xx + ww, yy + hh);
-    float rxx = getw(rx);
-    float ryy = geth(ry);
-    OH_Drawing_RoundRect *roundRect = OH_Drawing_RoundRectCreate(rect, rxx, ryy);
+    OH_Drawing_Rect *rect = OH_Drawing_RectCreate(x, y, x + w, y + h);
+    OH_Drawing_RoundRect *roundRect = OH_Drawing_RoundRectCreate(rect, rx, ry);
     OH_Drawing_CanvasDrawRoundRect(_canvas, roundRect);
-    setStrokeWidth(th);
     OH_Drawing_RoundRectDestroy(roundRect);
     OH_Drawing_RectDestroy(rect);
 }
@@ -426,9 +366,12 @@ void Graphics2D_ohos::drawRoundRect(float x, float y, float w, float h, float rx
 }
 
 void Graphics2D_ohos::fillRoundRect(float x, float y, float w, float h, float rx, float ry) {
+    float th = _stroke.lineWidth;
+    setStrokeWidth(0.f);
     OH_Drawing_CanvasAttachBrush(_canvas, _brush);
     renderRoundRect(x, y, w, h, rx, ry);
     OH_Drawing_CanvasDetachBrush(_canvas);
+    setStrokeWidth(th);
 }
 
 #endif  // __OS_OHOS__

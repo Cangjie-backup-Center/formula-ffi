@@ -90,14 +90,6 @@ private:
     OH_Drawing_TextStyle *_txtStyle;
     OH_Drawing_TypographyStyle *_typoStyle;
 
-    float getpx();
-    float getpy();
-    float getr();
-    float getx(float x);
-    float gety(float y);
-    float getw(float w);
-    float geth(float h);
-
     void renderRect(float x, float y, float w, float h);
     void renderRoundRect(float x, float y, float w, float h, float rx, float ry);
     void setTextStyle(int style);
