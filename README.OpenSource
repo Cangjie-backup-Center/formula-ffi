@@ -3,7 +3,7 @@
         "Name": "MicroTeX",
         "License": "MIT License",
         "License File": "LICENSE",
-        "Version Number": "N/A",
+        "Version Number": "v0.0.1",
         "Owner": "NanoMichael"
         "Upstream URL": "https://github.com/NanoMichael/MicroTeX",
         "Description": " A dynamic, cross-platform, and embeddable LaTeX rendering library."
