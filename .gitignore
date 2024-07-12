@@ -1,3 +1,14 @@
 .git/
 .gitee/
 .vscode/
+*.macrocall
+*.cj.macrocall
+.cache
+lib
+target
+cjpm.lock
+ci_test
+test_temp
+test/log
+test/tmp
+test/report
