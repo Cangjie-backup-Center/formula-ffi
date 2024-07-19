@@ -169,8 +169,8 @@ public class Render {
 test.cj
 
 ```
-from formula import formula.*
-from std import fs.*
+import formula.*
+import std.fs.*
 
 main(): Int64 {
 

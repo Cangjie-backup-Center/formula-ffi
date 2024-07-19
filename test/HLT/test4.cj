@@ -1,9 +1,9 @@
 // 3rd_party_lib:formula/target/release/formula
 //3rd_party_lib_ohos:formula\target\aarch64-linux-ohos\release\formula
-from formula import formula.*
-from std import unittest.*
-from std import collection.*
-from std import fs.*
+import formula.*
+import std.unittest.*
+import std.collection.*
+import std.fs.*
 
 @Test
 public class test {                //r.draw(g2, 0, 0, 0xFF0000FF) 异常
