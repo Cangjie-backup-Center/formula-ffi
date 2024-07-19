@@ -155,7 +155,8 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 描述环境限制，版本限制，依赖版本等
 
 ## 开源协议
-MIT License
+
+本项目基于 [MIT License](./LICENSE)，请自由的享受和参与开源。
 
 ## 参与贡献
 
