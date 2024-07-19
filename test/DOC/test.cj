@@ -1,8 +1,8 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from formula import formula.*
-from std import fs.*
+import formula.*
+import std.fs.*
 
 main(): Int64 {
     var latex = LaTeX("res")

@@ -5,10 +5,9 @@
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.50.3-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjcov-50%25-red" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
-
 
 ## 介绍
 
@@ -27,7 +26,6 @@ formula 主要目的是显示用 LaTeX 编写的数学公式。
 - 💪 特性3
 
   提供生成图片资源接口
-
 
 ## 软件架构
 
@@ -70,7 +68,6 @@ formula
 
 主要类和函数接口说明详见 [API](./doc/feature_api.md)
 
-
 ## 使用说明
 
 ### 编译构建
@@ -78,7 +75,7 @@ formula
 1. 代码下载：
 
    ```shell
-   git clone --recursive https://gitee.com/HW-PLLab/formula.git
+   git clone https://gitcode.com/Cangjie-TPC/formula-ffi.git
    cd ffi/latex
    git checkout v0.0.1
    ```
@@ -111,8 +108,8 @@ formula
 示例代码如下：
 
 ```cangjie
-from formula import formula.*
-from std import fs.*
+import formula.*
+import std.fs.*
 
 main(): Int64 {
 
@@ -152,7 +149,7 @@ M_x''' M'''_x M^{'''}_x M_x{'''} M^{\prime\backprime}
 
 ## 约束与限制
 
-描述环境限制，版本限制，依赖版本等
+只适用ohos环境
 
 ## 开源协议
 

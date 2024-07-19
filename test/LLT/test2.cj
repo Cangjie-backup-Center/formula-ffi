@@ -1,12 +1,12 @@
 // EXEC: cjc %import-path %L %l %f
 // EXEC: ./main
 
-from formula import formula.*
-from std import unittest.*
-from std import collection.*
-from std import fs.*
-from std import unittest.*
-from std import unittest.testmacro.*
+import formula.*
+import std.unittest.*
+import std.collection.*
+import std.fs.*
+import std.unittest.*
+import std.unittest.testmacro.*
 
 main(): Int64 {
     var ret = 0
