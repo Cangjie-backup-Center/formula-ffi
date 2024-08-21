@@ -1,6 +1,7 @@
 <div align="center">
 <h1>库名</h1>
 </div>
+
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
@@ -82,25 +83,36 @@ formula
 
 2. 编译
 
-   下载安装msys2和mingw64
+   1. 下载安装msys2和mingw64
 
-   msys2：https://github.com/msys2/msys2-installer/releases/download/2023-03-18/msys2-x86_64-20230318.exe
+      msys2：https://github.com/msys2/msys2-installer/releases/download/2023-03-18/msys2-x86_64-20230318.exe
 
-   mingw64：https://github.com/niXman/mingw-builds-binaries/releases/download/8.5.0-rt_v10-rev0/x86_64-8.5.0-release-posix-seh-rt_v10-rev0.7z
+      mingw64：https://github.com/niXman/mingw-builds-binaries/releases/download/8.5.0-rt_v10-rev0/x86_64-8.5.0-release-posix-seh-rt_v10-rev0.7z
 
-   将`x86_64-8.5.0-release-posix-seh-rt_v10-rev0.7z`解压到msys2的根目录
+      将`x86_64-8.5.0-release-posix-seh-rt_v10-rev0.7z`解压到msys2的根目录
 
-   下载cmake：https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-windows-x86_64.zip
+   2. 下载cmake：https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-windows-x86_64.zip
 
-   将`cmake-3.26.3-windows-x86_64.zip`解压，将`cmake-3.26.3-windows-x86_64`目录下的所有文件夹拷贝到`msys2/usr/`目录
+      将`cmake-3.26.3-windows-x86_64.zip`解压，将`cmake-3.26.3-windows-x86_64`目录下的所有文件夹拷贝到`msys2/usr/`目录
 
-   用mingw64进入项目根目录，执行`build-ohos.sh`
+   3. 下载安装DevecoStuido
 
-   ```shell
-   ./build-ohos.sh
-   ```
+      DevecoStuido：https://developer.huawei.com/consumer/cn/download/
+
+      修改build-ohos.sh中的路径。ohos环境在DevEco Studio安装目录下sdk -> HarmonyOS-NEXT-DB3（有可能是DB2其他内容） -> openharmony下面
+
+   4. 仓颉交叉编译环境
+
+      修改cjpm.toml中${DEVECO_CANGJIE_HOME}变量。一般DevecoStuido安装仓颉插件之后仓颉SDK在C盘用户目录.cangjie-sdk下面。
+
+   5. 用mingw64进入项目根目录，执行`build-ohos.sh`
+
+      ```shell
+      ./build-ohos.sh
+      ```
 
 ### 功能示例
+
 #### 生成bitmap功能示例
 
 功能示例描述:
