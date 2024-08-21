@@ -12,3 +12,4 @@ test_temp
 test/log
 test/tmp
 test/report
+ffi/build
