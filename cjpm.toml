@@ -10,7 +10,7 @@
   latex = {path = "./libs/arm64-v8a/"}
 
 [package]
-  cjc-version = "0.53.4"
+  cjc-version = "0.54.3"
   compile-option = ""
   description = "nothing here"
   link-option = ""
