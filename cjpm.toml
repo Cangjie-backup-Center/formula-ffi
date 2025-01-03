@@ -21,3 +21,8 @@
   target-dir = ""
   version = "0.0.1"
   package-configuration = {}
+
+[profile]
+  [profile.customized-option]
+    debug = "-g -Woff all"
+    release = "--fast-math -O2 -Woff all"
