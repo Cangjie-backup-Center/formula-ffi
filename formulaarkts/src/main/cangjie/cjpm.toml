@@ -21,7 +21,7 @@
       path-option = [ "${X86_64_DARWIN_TPC_MACRO_LIBS}" ]
 
 [dependencies]
-  [dependencies.cj_res_library]
+  [dependencies.cj_res_formulaarkts]
     path = "./cj_res"
     version = "1.0.0"
 
@@ -35,7 +35,7 @@
   compile-option = ""
   description = "CangjieUI Application"
   link-option = ""
-  name = "ohos_app_cangjie_library"
+  name = "formula"
   output-type = "dynamic"
   src-dir = "."
   target-dir = ""

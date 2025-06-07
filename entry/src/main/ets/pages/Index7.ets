@@ -1,5 +1,5 @@
 import { ArrayList, util } from '@kit.ArkTS';
-import { LatexMathColorFormat } from 'library';
+import { LatexMathColorFormat } from 'formulaarkts';
 import { common } from '@kit.AbilityKit';
 import { resourceManager } from '@kit.LocalizationKit';
 import { ImageComponent } from './image_component';

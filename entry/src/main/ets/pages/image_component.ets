@@ -1,4 +1,4 @@
-import { LatexMathColorFormat, latexStringToImage } from 'library'
+import { LatexMathColorFormat, latexStringToImage } from 'formulaarkts'
 import { image } from '@kit.ImageKit'
 
 @Component

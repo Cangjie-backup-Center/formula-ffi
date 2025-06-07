@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
 import { requireCJLib } from "libark_interop_loader.so";
 
 export declare interface CustomLib {
@@ -19,7 +22,7 @@ export declare interface CustomLib {
 export function latexStringToImage(latexMathTextString: string, latexMathTextSize: number,
   latexMathTextLineSpacing: number, latexMathTextColor: number, latexMathBackGroupColor: number,
   latexMathColorFormat: LatexMathColorFormat): Promise<ArrayBuffer> {
-  let lib = requireCJLib("libohos_app_cangjie_library.so") as CustomLib
+  let lib = requireCJLib("libformula.so") as CustomLib
   let colorFormat = 5
   if (latexMathColorFormat == LatexMathColorFormat.COLOR_FORMAT_RGB_565) {
     colorFormat = 2

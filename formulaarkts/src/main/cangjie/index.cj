@@ -1,4 +1,7 @@
-package ohos_app_cangjie_library
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
+package formula
 
 import ohos.ark_interop.*
 import ohos.ark_interop_macro.*

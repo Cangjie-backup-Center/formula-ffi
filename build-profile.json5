@@ -39,8 +39,8 @@
       ]
     },
     {
-      "name": "library",
-      "srcPath": "./library",
+      "name": "formulaarkts",
+      "srcPath": "./formulaarkts"
     }
   ]
 }

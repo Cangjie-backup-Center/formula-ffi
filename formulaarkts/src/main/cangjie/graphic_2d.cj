@@ -2,7 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
  */
 
-package ohos_app_cangjie_library
+package formula
 
 public enum ColorFormat {
     | COLOR_FORMAT_RGB_565 | COLOR_FORMAT_BGRA_8888

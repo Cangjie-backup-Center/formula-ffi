@@ -1,4 +1,4 @@
-import { LatexMathColorFormat } from "library"
+import { LatexMathColorFormat } from "formulaarkts"
 
 export class LatexClass {
   latexMathTextString: string = ""
