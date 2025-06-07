@@ -13,3 +13,11 @@ test/log
 test/tmp
 test/report
 ffi/build
+**/cj_res
+**/*.cj.macrocall
+**/ability_mainability_entry.cj
+**/module_**_entry.cj
+.hvigor
+.idea
+oh_modules
+oh-package-lock.json5
