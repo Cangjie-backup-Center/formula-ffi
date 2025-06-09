@@ -16,7 +16,7 @@
 [dependencies]
 
 [ffi.c]
-  latex = {path = "./libs/arm64-v8a/"}
+  latex = {path = "./libs/${ABI}"}
 
 [package]
   cjc-version = "0.53.18"
