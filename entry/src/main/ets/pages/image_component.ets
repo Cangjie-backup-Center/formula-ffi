@@ -1,4 +1,5 @@
-import { LatexMathColorFormat, latexStringToImage } from 'formulaarkts'
+// import { LatexMathColorFormat, latexStringToImage } from 'formulaarkts'
+import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula'
 import { image } from '@kit.ImageKit'
 
 @Component

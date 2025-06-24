@@ -1,10 +1,10 @@
 import { ArrayList, util } from '@kit.ArkTS';
-import { LatexMathColorFormat } from 'formulaarkts';
 import { common } from '@kit.AbilityKit';
 import { resourceManager } from '@kit.LocalizationKit';
 import { ImageComponent } from './image_component';
 import { LatexClass } from './latex_class';
 import hilog from '@ohos.hilog';
+import { LatexMathColorFormat } from '@cangjie-tpc/formula';
 
 @Entry
 @Component

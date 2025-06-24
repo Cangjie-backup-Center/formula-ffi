@@ -6,7 +6,7 @@
         "name": "default",
         "signingConfig": "default",
         "targetSdkVersion": "5.0.5(17)",
-        "compatibleSdkVersion": "5.0.1(13)",
+        "compatibleSdkVersion": "5.0.0(12)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
@@ -39,8 +39,8 @@
       ]
     },
     {
-      "name": "formulaarkts",
-      "srcPath": "./formulaarkts"
+      "name": "formula",
+      "srcPath": "./formula"
     }
   ]
 }

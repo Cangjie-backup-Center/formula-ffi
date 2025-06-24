@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "formulaarkts",
+    "name": "formula",
     "type": "har",
     "deviceTypes": [
       "default"

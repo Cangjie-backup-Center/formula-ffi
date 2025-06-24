@@ -1,10 +1,10 @@
 {
-  "name": "formulaarkts",
+  "name": "@cangjie-tpc/formula",
   "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "description": "formula 主要目的是显示用 LaTeX 编写的数学公式。",
   "main": "Index.ets",
-  "author": "",
-  "license": "Apache-2.0",
+  "author": "cangjie-tpc",
+  "license": "MIT",
   "dependencies": {
     "libark_interop_loader.so": "file:./src/main/cangjie/loader",
     "cjhyapiregister": "file:./har/CJHyAPIRegister-v1.0.1.har"

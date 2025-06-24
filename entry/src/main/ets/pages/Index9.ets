@@ -1,5 +1,5 @@
 import { ArrayList, util } from '@kit.ArkTS';
-import { LatexMathColorFormat } from 'formulaarkts';
+import { LatexMathColorFormat } from '@cangjie-tpc/formula';
 import { common } from '@kit.AbilityKit';
 import { resourceManager } from '@kit.LocalizationKit';
 import { ImageComponent } from './image_component';
