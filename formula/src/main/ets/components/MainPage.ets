@@ -4,9 +4,10 @@
 import { requireCJLib } from "libark_interop_loader.so";
 
 export declare interface CustomLib {
-  latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextLineSpacing: number,
-    latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: number): Promise<ArrayBuffer>
+  latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextLineSpacing: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: number): Promise<ArrayBuffer>
 }
+
+let lib = requireCJLib("libformula.so") as CustomLib
 
 /**
  * 数学公式文本转换图片数组数据
@@ -19,18 +20,14 @@ export declare interface CustomLib {
  * @param latexMathColorFormat 图片格式
  * @returns 图片数组数据
  */
-export function latexStringToImage(latexMathTextString: string, latexMathTextSize: number,
-  latexMathTextLineSpacing: number, latexMathTextColor: number, latexMathBackGroupColor: number,
-  latexMathColorFormat: LatexMathColorFormat): Promise<ArrayBuffer> {
-  let lib = requireCJLib("libformula.so") as CustomLib
+export function latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextLineSpacing: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: LatexMathColorFormat): Promise<ArrayBuffer> {
   let colorFormat = 5
   if (latexMathColorFormat == LatexMathColorFormat.COLOR_FORMAT_RGB_565) {
     colorFormat = 2
   } else {
     colorFormat = 5
   }
-  return lib.latexStringToImage(latexMathTextString, latexMathTextSize, latexMathTextLineSpacing, latexMathTextColor,
-    latexMathBackGroupColor, colorFormat)
+  return lib.latexStringToImage(latexMathTextString, latexMathTextSize, latexMathTextLineSpacing, latexMathTextColor, latexMathBackGroupColor, colorFormat)
 }
 
 /**
