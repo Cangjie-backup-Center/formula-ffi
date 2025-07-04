@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 project(latex)
 
 
-# check if compiler has c++11 support
-
 include(CheckCXXCompilerFlag)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -w")
 
