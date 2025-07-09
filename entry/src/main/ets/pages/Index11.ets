@@ -4,18 +4,19 @@ import { image } from '@kit.ImageKit';
 @Entry
 @Component
 struct Index11 {
-  str: string = "(a \\pm b)^2 = a^2 \\pm 2ab + b^2"
+  str: string = "F(\\omega) = \\int_{-\\infty}^{\\infty} f(t) e^{-i\\omega t} \\, dt"
   @State pixelMap: image.PixelMap = undefined!;
   @State imageWidth: number = 0;
   @State imageHeight: number = 0;
 
   async aboutToAppear(): Promise<void> {
     // 通过接口解析数学公式获取数学公式图片数组数据
-    let buf: ArrayBuffer = await latexStringToImage(this.str, 100.0, 10.0, 0xFF0000FF, 0xFFFFFFFF,
-      LatexMathColorFormat.COLOR_FORMAT_BGRA_8888)
+    let buf: ArrayBuffer = await latexStringToImage(this.str, vp2px(16), 0xFF000000, 0xFFFFFFFF,
+      LatexMathColorFormat.COLOR_FORMAT_RGB_565)
     let imageSource = image.createImageSource(buf)
     // 图片pixelMap
-    this.pixelMap = imageSource.createPixelMapSync()
+    let pixelMap = imageSource.createPixelMapSync()
+    this.pixelMap = pixelMap
     let size: Size = this.pixelMap.getImageInfoSync().size
     // 图片宽度
     this.imageWidth = px2vp(size.width)

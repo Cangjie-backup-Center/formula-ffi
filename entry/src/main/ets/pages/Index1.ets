@@ -28,7 +28,7 @@ struct Index1 {
       let retStr = textDecoder.decodeToString(content, decodeToStringOptions);
       hilog.error(1,"1",`-----------index:${index}，retStr：${retStr}`)
       this.strList.add(new LatexClass(retStr, 48.0, 10.0, 0xFF000000, 0xFFFFFFFF,
-        LatexMathColorFormat.COLOR_FORMAT_BGRA_8888))
+        LatexMathColorFormat.COLOR_FORMAT_RGB_565))
     }
   }
 

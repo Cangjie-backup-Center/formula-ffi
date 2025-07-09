@@ -26,7 +26,7 @@ struct Index6 {
       let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions);
       let retStr = textDecoder.decodeToString(content, decodeToStringOptions);
       this.strList.add(new LatexClass(retStr, 48.0, 10.0, 0xFFFFFFFF, 0xFF000000,
-        LatexMathColorFormat.COLOR_FORMAT_BGRA_8888))
+        LatexMathColorFormat.COLOR_FORMAT_RGB_565))
     }
   }
 

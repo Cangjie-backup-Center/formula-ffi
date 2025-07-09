@@ -9,7 +9,7 @@ export struct ImageComponent {
   latexMathTextLineSpacing: number = 0
   latexMathTextColor: number = 0
   latexMathBackGroupColor: number = 0
-  latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+  latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
   index: number = 0
   @State pixelMap: image.PixelMap = undefined!;
   @State width1: number = 0;
@@ -17,7 +17,7 @@ export struct ImageComponent {
 
   async aboutToAppear(): Promise<void> {
     let a: ArrayBuffer =
-      await latexStringToImage(this.latexMathTextString, this.latexMathTextSize, this.latexMathTextLineSpacing,
+      await latexStringToImage(this.latexMathTextString, this.latexMathTextSize,
         this.latexMathTextColor, this.latexMathBackGroupColor,
         this.latexMathColorFormat)
     let b = image.createImageSource(a)
@@ -39,6 +39,7 @@ export struct ImageComponent {
           .width(this.width1)
           .height(this.height1)
           .margin({top:5,bottom:5})
+          // .scale({0.9})
         Divider()
           .vertical(false)
           .strokeWidth(1)

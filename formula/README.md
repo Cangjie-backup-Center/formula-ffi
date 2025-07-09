@@ -48,14 +48,13 @@ formula 主要目的是显示用 LaTeX 编写的数学公式。
 *
 * 参数 - latexMathTextString 数学公式文本内容
 * 参数 - latexMathTextSize 数学公式文字大小 - 单位px
-* 参数 - latexMathTextLineSpacing 数学公式文字间距 - 单位px
 * 参数 - latexMathTextColor 数学公式文字颜色
 * 参数 - latexMathBackGroupColor 数学公式背景颜色
 * 参数 - latexMathColorFormat 数学公式图片格式
 *
 * 返回值 - Promise<ArrayBuffer> 图片数组数据
 */
-latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextLineSpacing: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: LatexMathColorFormat): Promise<ArrayBuffer>
+latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: LatexMathColorFormat): Promise<ArrayBuffer>
 
 /**
  * 图片格式枚举
@@ -92,7 +91,7 @@ struct Index11 {
 
   async aboutToAppear(): Promise<void> {
     // 通过接口解析数学公式获取数学公式图片数组数据
-    let buf: ArrayBuffer = await latexStringToImage(this.str, 100.0, 10.0, 0xFF0000FF, 0xFFFFFFFF,
+    let buf: ArrayBuffer = await latexStringToImage(this.str, 100.0, 0xFF0000FF, 0xFFFFFFFF,
       LatexMathColorFormat.COLOR_FORMAT_BGRA_8888)
     let imageSource = image.createImageSource(buf)
     // 图片pixelMap
