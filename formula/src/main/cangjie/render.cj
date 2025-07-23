@@ -40,7 +40,7 @@ public class Render {
     public func toBitmap(g2: Graphic2D): Array<UInt8> {
         unsafe {
             var bitmapData =  TeXRender_toBitmap(nativePtr, g2.getG2(), g2.getColorFormat())
-            var array = Array<UInt8>(bitmapData.len, item: 0)
+            var array = Array<UInt8>(bitmapData.len, repeat: 0)
             var cph = acquireArrayRawData(array)
             memcpy_s(cph.pointer, bitmapData.len, bitmapData.data, bitmapData.len)
             releaseArrayRawData(cph)
@@ -55,7 +55,7 @@ public class Render {
         }
         unsafe {
             var bitmapData =  TeXRender_getMapData(nativePtr, g2.getG2(), g2.getColorFormat())
-            var array = Array<UInt8>(bitmapData.len, item: 0)
+            var array = Array<UInt8>(bitmapData.len, repeat: 0)
             var cph = acquireArrayRawData(array)
             memcpy_s(cph.pointer, bitmapData.len, bitmapData.data, bitmapData.len)
             releaseArrayRawData(cph)
