@@ -1,10 +1,11 @@
 {
   "name": "@cangjie-tpc/formula",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "formula 主要目的是显示用 LaTeX 编写的数学公式。",
   "main": "Index.ets",
   "author": "cangjie-tpc",
   "license": "MIT",
+  "repository": "https://gitcode.com/Cangjie-TPC/formula-ffi.git",
   "dependencies": {
     "libformula.so": "file:./src/main/cangjie/types/libformula",
     "libark_interop_loader.so": "file:./src/main/cangjie/loader",
