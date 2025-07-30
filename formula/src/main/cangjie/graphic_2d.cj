@@ -32,7 +32,7 @@ public class Graphic2D {
         var w = render.getWidth()
         var h = render.getHeight()
         var textSize = render.getTextSize()
-        this.w = w
+        this.w = w + UInt32(textSize / 9.0) + 1
         this.h = h + UInt32(textSize / 9.0) + 1
         this.cf = match (colorFormat) {
             case COLOR_FORMAT_RGB_565 => RGB_565
