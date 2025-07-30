@@ -18,7 +18,6 @@ func latexStringToImage(runtime: JSContext, callInfo: JSCallInfo): JSValue {
     let value3 = callInfo[3].toNumber()
     let value4 = callInfo[4].toNumber()
     let value5 = callInfo[5].toNumber()
-    Hilog.error(1,"2","----------------latexStringToImageArkts0")
     // 创建PromiseCapability对象
     let promise = runtime.promiseCapability()
     // 创建新线程
@@ -32,7 +31,6 @@ func latexStringToImage(runtime: JSContext, callInfo: JSCallInfo): JSValue {
             }
         }
     }
-    Hilog.error(1,"2","----------------latexStringToImageArkts1")
     // 返回Promise
     promise.toJSValue()
 }
