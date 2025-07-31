@@ -1,12 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
  */
-
 package formula
-
-import ohos.ark_interop.*
-import ohos.ark_interop_macro.*
-import ohos.ark_interop_helper.*
 
 public func latexStringToImage(latexMathTextString: String, latexMathTextSize: Float64,
     latexMathTextLineSpacing: Float64, latexMathTextColor: UInt32, latexMathBackGroupColor: UInt32,
