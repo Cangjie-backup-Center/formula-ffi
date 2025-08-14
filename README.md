@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.1.7-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.2.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -127,7 +127,7 @@ struct Index11 {
 ## 约束与限制
 
     在下述版本验证通过：    
-        IDE: DevEco Studio 5.1.1 Release(Build Version:5.1.1.821)
+        IDE: DevEco Studio 5.1.1 Release(Build Version:5.1.1.823)
 
 ## 开源协议
 
