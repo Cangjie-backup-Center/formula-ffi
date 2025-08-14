@@ -70,7 +70,7 @@ enum LatexMathColorFormat {
 ### ohpm安装使用
 
 ```cmd
-ohpm install @cangjie-tpc/formula
+ohpm install @cangjie-tpc/formula_hybrid
 ```
 
 ### 功能示例
@@ -78,7 +78,7 @@ ohpm install @cangjie-tpc/formula
 #### 解析数学公式
 
 ```ets
-import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula';
+import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula_hybrid';
 import { image } from '@kit.ImageKit';
 
 @Entry

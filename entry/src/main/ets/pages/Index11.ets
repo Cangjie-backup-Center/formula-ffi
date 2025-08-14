@@ -1,4 +1,4 @@
-import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula';
+import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula_hybrid';
 import { image } from '@kit.ImageKit';
 import hilog from '@ohos.hilog';
 
