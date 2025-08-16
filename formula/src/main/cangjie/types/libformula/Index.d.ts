@@ -1,1 +1,0 @@
-export declare function latexStringToImageArkts(latexMathTextString: string, latexMathTextSize: number, latexMathTextLineSpacing: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: number): Promise<ArrayBuffer>
