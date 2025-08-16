@@ -1,8 +1,8 @@
-## v1.2.0
+## v1.1.7
 
 * 修复`V`数学公式显示不全
 * 修复部分错误数学公式闪退
-* 模块名称 `@cangjie-tpc/formula` 修改 `@cangjie-tpc/formula_hybrid`
+* 兼容5.0和5.1deveco
 
 ## v1.1.6
 

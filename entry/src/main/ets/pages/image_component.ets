@@ -1,5 +1,5 @@
 // import { LatexMathColorFormat, latexStringToImage } from 'formulaarkts'
-import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula_hybrid'
+import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula'
 import { image } from '@kit.ImageKit'
 import hilog from '@ohos.hilog'
 

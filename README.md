@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.2.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.1.7-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -70,7 +70,7 @@ enum LatexMathColorFormat {
 ### ohpm安装使用
 
 ```cmd
-ohpm install @cangjie-tpc/formula_hybrid
+ohpm install @cangjie-tpc/formula
 ```
 
 ### 功能示例
@@ -78,7 +78,7 @@ ohpm install @cangjie-tpc/formula_hybrid
 #### 解析数学公式
 
 ```ets
-import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula_hybrid';
+import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula';
 import { image } from '@kit.ImageKit';
 
 @Entry

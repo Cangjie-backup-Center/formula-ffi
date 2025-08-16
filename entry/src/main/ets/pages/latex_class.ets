@@ -1,4 +1,4 @@
-import { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid';
+import { LatexMathColorFormat } from '@cangjie-tpc/formula';
 
 export class LatexClass {
   latexMathTextString: string = ""
