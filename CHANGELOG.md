@@ -1,3 +1,7 @@
+## v1.2.0
+
+* @cangjie-tpc/formula 修改成 @cangjie-tpc/formula_hybrid
+
 ## v1.1.7
 
 * 修复`V`数学公式显示不全
