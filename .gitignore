@@ -14,3 +14,4 @@ test/tmp
 test/report
 ffi/build
 /build-script-cache
+log.txt
