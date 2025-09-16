@@ -129,7 +129,7 @@ struct Index0 {
 
 #### 执行结果如下
 
-![img1](https://raw.gitcode.com/Cangjie-TPC/formula-ffi/blobs/db64bb6b0b1dded3a5e6d20fb6140d65e1279e4e/img.PNG)
+![img1](https://raw.gitcode.com/Cangjie-TPC/formula-ffi/raw/formula-ffi_hybrid_cangjie-plugin_5.1.1.823/doc/assets/img.png)
 
 ## 约束与限制
 
