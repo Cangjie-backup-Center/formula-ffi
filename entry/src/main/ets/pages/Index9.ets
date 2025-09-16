@@ -25,8 +25,8 @@ struct Index9 {
       }
       let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions);
       let retStr = textDecoder.decodeToString(content, decodeToStringOptions);
-      this.strList.add(new LatexClass(retStr, 48.0, 10.0, 0xFF191919, 0xFFFFFFFF,
-        LatexMathColorFormat.COLOR_FORMAT_RGB_565))
+      this.strList.add(new LatexClass(retStr, fp2px(30), 0xFF000000, 0x00FFFFFF,
+        LatexMathColorFormat.COLOR_FORMAT_BGRA_8888))
     }
   }
 
@@ -38,7 +38,6 @@ struct Index9 {
             {
               latexMathTextString: item.latexMathTextString,
               latexMathTextSize: item.latexMathTextSize,
-              latexMathTextLineSpacing: item.latexMathTextLineSpacing,
               latexMathTextColor: item.latexMathTextColor,
               latexMathBackGroupColor: item.latexMathBackGroupColor,
               latexMathColorFormat: item.latexMathColorFormat,
@@ -51,6 +50,7 @@ struct Index9 {
       .alignItems(HorizontalAlign.Start)
     }
     .scrollBar(BarState.Off)
+    .backgroundColor(Color.White)
   }
 }
 

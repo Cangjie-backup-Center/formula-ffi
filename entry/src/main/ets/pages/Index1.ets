@@ -1,15 +1,14 @@
-import { ArrayList, util } from '@kit.ArkTS';
-import { common } from '@kit.AbilityKit';
-import { resourceManager } from '@kit.LocalizationKit';
-import { ImageComponent } from './image_component';
-import { LatexClass } from './latex_class';
-import hilog from '@ohos.hilog';
-import { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid';
+import { ArrayList, util } from '@kit.ArkTS'
+import { common } from '@kit.AbilityKit'
+import { resourceManager } from '@kit.LocalizationKit'
+import { ImageComponent } from './image_component'
+import { LatexClass } from './latex_class'
+import { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid'
 
 @Entry
 @Component
 struct Index1 {
-  private context = getContext(this) as common.UIAbilityContext;
+  private context = getContext(this) as common.UIAbilityContext
   @State strList: ArrayList<LatexClass> = new ArrayList<LatexClass>()
 
   aboutToAppear(): void {
@@ -24,10 +23,9 @@ struct Index1 {
       let decodeToStringOptions: util.DecodeToStringOptions = {
         stream: false
       }
-      let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions);
-      let retStr = textDecoder.decodeToString(content, decodeToStringOptions);
-      hilog.error(1,"1",`-----------index:${index}，retStr：${retStr}`)
-      this.strList.add(new LatexClass(retStr, 48.0, 10.0, 0xFF000000, 0xFFFFFFFF,
+      let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions)
+      let retStr = textDecoder.decodeToString(content, decodeToStringOptions)
+      this.strList.add(new LatexClass(retStr, fp2px(12), 0xFF000000, 0xFFFFFFFF,
         LatexMathColorFormat.COLOR_FORMAT_RGB_565))
     }
   }
@@ -40,7 +38,6 @@ struct Index1 {
             {
               latexMathTextString: item.latexMathTextString,
               latexMathTextSize: item.latexMathTextSize,
-              latexMathTextLineSpacing: item.latexMathTextLineSpacing,
               latexMathTextColor: item.latexMathTextColor,
               latexMathBackGroupColor: item.latexMathBackGroupColor,
               latexMathColorFormat: item.latexMathColorFormat,
@@ -53,6 +50,7 @@ struct Index1 {
       .alignItems(HorizontalAlign.Start)
     }
     .scrollBar(BarState.Off)
+    .backgroundColor(Color.White)
   }
 }
 

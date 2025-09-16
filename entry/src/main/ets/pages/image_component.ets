@@ -7,7 +7,6 @@ import hilog from '@ohos.hilog'
 export struct ImageComponent {
   latexMathTextString: string = ""
   latexMathTextSize: number = 0
-  latexMathTextLineSpacing: number = 0
   latexMathTextColor: number = 0
   latexMathBackGroupColor: number = 0
   latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565

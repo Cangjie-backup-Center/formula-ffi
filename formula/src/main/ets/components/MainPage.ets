@@ -14,7 +14,6 @@ let lib = requireCJLib("libformula.so") as CustomLib
  *
  * @param latexMathTextString 数学公式文本
  * @param latexMathTextSize 文本大小
- * @param latexMathTextLineSpacing 文本间距
  * @param latexMathTextColor 文本颜色
  * @param latexMathBackGroupColor 背景色
  * @param latexMathColorFormat 图片格式

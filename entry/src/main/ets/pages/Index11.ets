@@ -1,43 +1,56 @@
-import { LatexMathColorFormat, latexStringToImage } from '@cangjie-tpc/formula_hybrid';
-import { image } from '@kit.ImageKit';
+import { ArrayList, util } from '@kit.ArkTS';
+import { LatexMathColorFormat } from '@cangjie-tpc/formula_hybrid';
+import { common } from '@kit.AbilityKit';
+import { resourceManager } from '@kit.LocalizationKit';
+import { ImageComponent } from './image_component';
+import { LatexClass } from './latex_class';
 
 @Entry
 @Component
 struct Index11 {
-  str: string = "(a \\pm b)^2 = a^2 \\pm 2ab + b^2"
-  @State pixelMap: image.PixelMap = undefined!;
-  @State imageWidth: number = 0;
-  @State imageHeight: number = 0;
+  private context = getContext(this) as common.UIAbilityContext;
+  @State strList: ArrayList<LatexClass> = new ArrayList<LatexClass>()
 
-  async aboutToAppear(): Promise<void> {
-    try {
-      // 通过接口解析数学公式获取数学公式图片数组数据
-      let buf: ArrayBuffer = await latexStringToImage(this.str, 100.0, 0xFF0000FF, 0xFFFFFFFF,
-        LatexMathColorFormat.COLOR_FORMAT_BGRA_8888)
-      let imageSource = image.createImageSource(buf)
-      // 图片pixelMap
-      this.pixelMap = imageSource.createPixelMapSync()
-      let size: Size = this.pixelMap.getImageInfoSync().size
-      // 图片宽度
-      this.imageWidth = px2vp(size.width)
-      // 图片高度
-      this.imageHeight = px2vp(size.height)
-    } catch (e) {
+  aboutToAppear(): void {
+    let manager: resourceManager.ResourceManager = this.context.resourceManager
+    let files: string[] = manager.getRawFileListSync('')
+    for (let index = 0; index < files.length; index++) {
+      let content: Uint8Array = manager.getRawFileContentSync(files[index])
+      let textDecoderOptions: util.TextDecoderOptions = {
+        fatal: false,
+        ignoreBOM: true
+      }
+      let decodeToStringOptions: util.DecodeToStringOptions = {
+        stream: false
+      }
+      let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions);
+      let retStr = textDecoder.decodeToString(content, decodeToStringOptions);
+      this.strList.add(new LatexClass(retStr, fp2px(30), 0xFF000000, 0xFFFFFFFF,
+        LatexMathColorFormat.COLOR_FORMAT_RGB_565))
     }
   }
 
   build() {
     Scroll() {
       Column() {
-        Image(this.pixelMap)
-          .objectFit(ImageFit.Contain)
-          .width(this.imageWidth)
-          .height(this.imageHeight)
-          .margin({ top: 5, bottom: 5 })
+        ForEach(this.strList.convertToArray(), (item: LatexClass,index:number) => {
+          ImageComponent(
+            {
+              latexMathTextString: item.latexMathTextString,
+              latexMathTextSize: item.latexMathTextSize,
+              latexMathTextColor: item.latexMathTextColor,
+              latexMathBackGroupColor: item.latexMathBackGroupColor,
+              latexMathColorFormat: item.latexMathColorFormat,
+              index:index
+            }
+          ).margin({ top: 10, bottom: 10 })
+        })
       }
       .width('100%')
       .alignItems(HorizontalAlign.Start)
     }
     .scrollBar(BarState.Off)
+    .backgroundColor(Color.Black)
   }
 }
+

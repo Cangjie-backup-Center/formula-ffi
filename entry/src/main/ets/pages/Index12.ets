@@ -7,7 +7,7 @@ import { LatexClass } from './latex_class';
 
 @Entry
 @Component
-struct Index10 {
+struct Index12 {
   private context = getContext(this) as common.UIAbilityContext;
   @State strList: ArrayList<LatexClass> = new ArrayList<LatexClass>()
 
@@ -25,7 +25,7 @@ struct Index10 {
       }
       let textDecoder = util.TextDecoder.create('utf-8', textDecoderOptions);
       let retStr = textDecoder.decodeToString(content, decodeToStringOptions);
-      this.strList.add(new LatexClass(retStr, 100.0, 10.0, 0xFFFF0000, 0x00000000,
+      this.strList.add(new LatexClass(retStr, fp2px(30), 0xFFFF0000, 0x00000000,
         LatexMathColorFormat.COLOR_FORMAT_BGRA_8888))
     }
   }
@@ -38,7 +38,6 @@ struct Index10 {
             {
               latexMathTextString: item.latexMathTextString,
               latexMathTextSize: item.latexMathTextSize,
-              latexMathTextLineSpacing: item.latexMathTextLineSpacing,
               latexMathTextColor: item.latexMathTextColor,
               latexMathBackGroupColor: item.latexMathBackGroupColor,
               latexMathColorFormat: item.latexMathColorFormat,
@@ -49,9 +48,9 @@ struct Index10 {
       }
       .width('100%')
       .alignItems(HorizontalAlign.Start)
-      .backgroundColor(0xFF0000FF)
     }
     .scrollBar(BarState.Off)
+    .backgroundColor(0xFF0000FF)
   }
 }
 
