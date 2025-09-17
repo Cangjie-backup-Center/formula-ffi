@@ -1,6 +1,7 @@
 ## v1.2.1
 
 * 修复设置透明背景色时背景色为黑色的问题
+* 增加resPath入参，默认"/data/storage/el1/bundle/entry/resources/resfile/res"
 
 ## v1.2.0
 

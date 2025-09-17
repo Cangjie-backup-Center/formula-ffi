@@ -3,14 +3,13 @@
  */
 package formula
 
-public func latexStringToImage(latexMathTextString: String, latexMathTextSize: Float64,
-    latexMathTextLineSpacing: Float64, latexMathTextColor: UInt32, latexMathBackGroupColor: UInt32,
-    latexMathColorFormat: Int64): Array<Byte> {
+public func latexStringToImage(latexMathTextString: String, latexMathTextSize: Float64,latexMathTextColor: UInt32, latexMathBackGroupColor: UInt32,
+    latexMathColorFormat: Int64, resPath: String): Array<Byte> {
     try {
-        var latex = LaTeX("/data/storage/el1/bundle/entry/resources/resfile/res")
+        var latex = LaTeX(resPath)
         let latexMathTextNewString = latexStrCallback(latexMathTextString)
         var r = latex.parse(latexMathTextNewString, getLatexmathWidth(latexMathTextNewString),
-            Float32(latexMathTextSize), Float32(latexMathTextLineSpacing), latexMathTextColor)
+            Float32(latexMathTextSize), Float32(10.0), latexMathTextColor)
         var g2 = Graphic2D(r, latexMathColorFormatEnum(latexMathColorFormat))
         r.draw(g2, latexMathBackGroupColor)
         return r.toBitmap(g2)

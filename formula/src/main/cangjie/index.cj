@@ -7,9 +7,9 @@ import ohos.ark_interop.JSModule
 import ohos.ark_interop.JSCallInfo
 import ohos.ark_interop.JSValue
 import ohos.ark_interop.JSContext
-import std.sync.ReentrantMutex
+import std.sync.Mutex
 
-let latexReentrantMutex: ReentrantMutex = ReentrantMutex()
+let latexReentrantMutex: Mutex = Mutex()
 
 func latexStringToImage(runtime: JSContext, callInfo: JSCallInfo): JSValue {
     let value0 = callInfo[0].toString(runtime)
@@ -17,13 +17,13 @@ func latexStringToImage(runtime: JSContext, callInfo: JSCallInfo): JSValue {
     let value2 = callInfo[2].toNumber()
     let value3 = callInfo[3].toNumber()
     let value4 = callInfo[4].toNumber()
-    let value5 = callInfo[5].toNumber()
+    let value5 = callInfo[5].toString()
     // 创建PromiseCapability对象
     let promise = runtime.promiseCapability()
     // 创建新线程
     spawn {
         synchronized(latexReentrantMutex) {
-            let result = latexStringToImage(value0, value1, value2, UInt32(value3), UInt32(value4), Int64(value5))
+            let result = latexStringToImage(value0, value1, UInt32(value2), UInt32(value3), Int64(value4), value5)
             // 切换到ArkTS线程
             runtime.postJSTask {
                 // 在ArkTS线程执行resolve

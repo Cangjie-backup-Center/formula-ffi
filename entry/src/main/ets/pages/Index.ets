@@ -237,7 +237,7 @@ struct Index {
         Row() {
           Text("")
             .width(10)
-          Button("12、主题背景蓝色。字体30fp。字体颜色红色。公式背景透明。图片格式BGRA_8888")
+          Button("12、主题背景变色。字体30fp。字体颜色红色。公式背景透明。图片格式BGRA_8888")
             .height(50)// 高度
             .layoutWeight(1)
             .fontColor(0xFFFFFFFF)

@@ -10,6 +10,7 @@ import { LatexClass } from './latex_class';
 struct Index12 {
   private context = getContext(this) as common.UIAbilityContext;
   @State strList: ArrayList<LatexClass> = new ArrayList<LatexClass>()
+  @State scrollBackgroundColor: number = 0xFF0000FF
 
   aboutToAppear(): void {
     let manager: resourceManager.ResourceManager = this.context.resourceManager
@@ -33,7 +34,15 @@ struct Index12 {
   build() {
     Scroll() {
       Column() {
-        ForEach(this.strList.convertToArray(), (item: LatexClass,index:number) => {
+        Button("点击切换颜色")
+          .onClick(e => {
+            if (this.scrollBackgroundColor == 0xFF0000FF) {
+              this.scrollBackgroundColor = 0xFF00FF00
+            } else {
+              this.scrollBackgroundColor = 0xFF0000FF
+            }
+          })
+        ForEach(this.strList.convertToArray(), (item: LatexClass, index: number) => {
           ImageComponent(
             {
               latexMathTextString: item.latexMathTextString,
@@ -41,7 +50,7 @@ struct Index12 {
               latexMathTextColor: item.latexMathTextColor,
               latexMathBackGroupColor: item.latexMathBackGroupColor,
               latexMathColorFormat: item.latexMathColorFormat,
-              index:index
+              index: index
             }
           ).margin({ top: 10, bottom: 10 })
         })
@@ -50,7 +59,6 @@ struct Index12 {
       .alignItems(HorizontalAlign.Start)
     }
     .scrollBar(BarState.Off)
-    .backgroundColor(0xFF0000FF)
+    .backgroundColor(this.scrollBackgroundColor)
   }
 }
-
