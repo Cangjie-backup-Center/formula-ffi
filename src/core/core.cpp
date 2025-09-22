@@ -282,7 +282,6 @@ void Glue::_free_() {
     for (size_t i = 0; i < _glueTypes.size(); i++) {
         Glue* g = _glueTypes[i];
         delete g;
-        _glueTypes[i] = nullptr;
     }
 }
 

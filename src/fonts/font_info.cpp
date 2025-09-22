@@ -18,6 +18,7 @@ vector<string> FontInfo::_names;
 void FontInfo::__free() {
     for (auto f : _infos) {
         delete f;
+        f = nullptr;
     }
 }
 

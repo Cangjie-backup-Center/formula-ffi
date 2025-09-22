@@ -259,7 +259,10 @@ void TeXFormula::addSymbolMappings(const string& file) throw(ex_res_parse) {
 }
 
 void TeXFormula::_free_() {
-    for (auto i : _externalFontMap) delete i.second;
+    for (auto i : _externalFontMap) {
+        delete i.second;
+        i.second = nullptr;
+    }
 }
 
 /*************************************** ArrayOfAtoms implementation ******************************/

@@ -118,17 +118,28 @@ void NewEnvironmentMacro::addRenewEnvironment(
 }
 
 void NewCommandMacro::_free_() {
-    delete _instance;
+    if(_instance != nullptr){
+        delete _instance;
+    }
+    _instance = nullptr;
+    _macrocode.clear();
+    _macroreplacement.clear();
 }
 
 void MacroInfo::addMacro(const wstring& name, MacroInfo* mac) {
     auto it = _commands.find(name);
-    if (it != _commands.end()) delete it->second;
+    if (it != _commands.end()) {
+        delete it->second;
+    }
     _commands[name] = mac;
 }
 
 void MacroInfo::_free_() {
-    for (auto i : _commands) delete i.second;
+    for (auto i : _commands) {
+        delete i.second;
+        i.second = nullptr;
+    }
+    _commands.clear();
 }
 
 sptr<Atom> PredefMacroInfo::invoke(

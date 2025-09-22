@@ -300,10 +300,16 @@ void DefaultTeXFont::_free_() {
     for (auto f : _textStyleMappings) {
         vector<CharFont*> x = f.second;
         for (auto i : x) {
-            if (i != nullptr) delete i;
+            if (i != nullptr) {
+                delete i;
+                i = nullptr;
+            }
         }
     }
-    for (auto f : _symbolMappings) delete f.second;
+    for (auto f : _symbolMappings) {
+        delete f.second;
+        f.second = nullptr;
+    }
     FontInfo::__free();
     // _registeredAlphabets :=> map<UnicodeBlock, AlphabetRegistration>
     // multi => one
@@ -312,6 +318,7 @@ void DefaultTeXFont::_free_() {
         if (i.second != nullptr && indexOf(cleaned, i.second) < 0) {
             delete i.second;
             cleaned.push_back(i.second);
+            i.second = nullptr;
         }
         i.second = nullptr;
     }

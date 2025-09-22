@@ -28,7 +28,7 @@ void LaTeX::init(const string& res_root_path) {
 }
 
 void LaTeX::release() {
-    Glue::_free_();
+    //Glue::_free_();
     DefaultTeXFont::_free_();
     TeXFormula::_free_();
     MacroInfo::_free_();
