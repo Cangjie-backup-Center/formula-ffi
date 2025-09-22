@@ -134,7 +134,11 @@ void TeXParser::addAtom(const sptr<Atom>& atom) {
 
 void TeXParser::addRow() throw(ex_parse) {
     if (!_arrayMode) throw ex_parse("Can not add row in none-array mode!");
-    ((ArrayOfAtoms*)_formula)->addRow();
+
+    if(_formula == nullptr) throw ex_parse("_formula is null!");
+    ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(_formula);
+    if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+    arr->addRow();
 }
 
 wstring TeXParser::getDollarGroup(wchar_t openclose) throw(ex_parse) {
@@ -853,7 +857,11 @@ void TeXParser::parse() throw(ex_parse) {
             sptr<Atom> atom = processEscape();
             _formula->add(atom);
             HlineAtom* h = dynamic_cast<HlineAtom*>(atom.get());
-            if (_arrayMode && h != nullptr) ((ArrayOfAtoms*)_formula)->addRow();
+            if (_arrayMode && h != nullptr) {
+                ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(_formula);
+                if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+                arr->addRow();
+			}
             if (_insertion) _insertion = false;
         } break;
         case L_GROUP: {
@@ -886,7 +894,10 @@ void TeXParser::parse() throw(ex_parse) {
         } break;
         case '&': {
             if (!_arrayMode) throw ex_parse("Character '&' is only available in array mode!");
-            ((ArrayOfAtoms*)_formula)->addCol();
+            if(_formula == nullptr) throw ex_parse("_formula is null!");
+            ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(_formula);
+            if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+            arr->addCol();
             _pos++;
         } break;
         case '~': {

@@ -63,7 +63,10 @@ inline macro(cellcolor) {
     if (!tp.isArrayMode()) throw ex_parse("Command \\cellcolor must used in array environment!");
     color c = ColorAtom::getColor(wide2utf8(args[1].c_str()));
     sptr<CellSpecifier> atom(new CellColorAtom(c));
-    ((ArrayOfAtoms*)tp._formula)->addCellSpecifier(atom);
+    if(tp._formula == nullptr) throw ex_parse("_formula is null!");
+    ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(tp._formula);
+    if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+    arr->addCellSpecifier(atom);
     return nullptr;
 }
 
@@ -98,7 +101,10 @@ inline macro(rowcolor) {
     if (!tp.isArrayMode()) throw ex_parse("Command \\rowcolor must used in array environment!");
     color c = ColorAtom::getColor(wide2utf8(args[1].c_str()));
     sptr<CellSpecifier> spe(new CellColorAtom(c));
-    ((ArrayOfAtoms*)tp._formula)->addRowSpecifier(spe);
+    if(tp._formula == nullptr) throw ex_parse("_formula is null!");
+    ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(tp._formula);
+    if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+    arr->addRowSpecifier(spe);
     return nullptr;
 }
 
@@ -540,7 +546,10 @@ inline macro(multicolumn) {
     string x;
     wide2utf8(args[2].c_str(), x);
     tp.addAtom(sptr<Atom>(new MulticolumnAtom(n, x, TeXFormula(tp, args[3])._root)));
-    ((ArrayOfAtoms*)tp._formula)->addCol(n);
+    if(tp._formula == nullptr) throw ex_parse("_formula is null!");
+    ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(tp._formula);
+    if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+    arr->addCol(n);
     return nullptr;
 }
 
@@ -552,7 +561,10 @@ inline macro(hdotsfor) {
     float f = 1.f;
     if (!args[2].empty()) valueof(args[2], f);
     tp.addAtom(sptr<Atom>(new HdotsforAtom(n, f)));
-    ((ArrayOfAtoms*)tp._formula)->addCol(n);
+    if(tp._formula == nullptr) throw ex_parse("_formula is null!");
+    ArrayOfAtoms* arr = dynamic_cast<ArrayOfAtoms*>(tp._formula);
+    if(arr == nullptr) throw ex_parse("dynamic_cast<ArrayOfAtoms*>(_formula) is null!");
+    arr->addCol(n);
     return nullptr;
 }
 
