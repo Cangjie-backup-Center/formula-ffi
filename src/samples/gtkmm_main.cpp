@@ -428,7 +428,6 @@ int main(int argc, char* argv[]) {
     }
 
     LaTeX::release();
-    Glue::_free_();
     return result;
 }
 

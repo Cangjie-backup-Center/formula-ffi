@@ -290,7 +290,9 @@ void ArrayOfAtoms::insertAtomIntoCol(int col, const sptr<Atom>& atom) {
     _col++;
     for (size_t j = 0; j < _row; j++) {
         auto it = _array[j].begin();
-        _array[j].insert(it + col, atom);
+        if(col < _array[j].size()){
+            _array[j].insert(it + col, atom);
+        }
     }
 }
 

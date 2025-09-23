@@ -631,7 +631,12 @@ sptr<Atom> TeXParser::getArgument() throw(ex_parse) {
         _formula = &tf;
         _pos++;
         _group++;
-        parse();
+        try{
+            parse();
+        }catch(ex_parse& e) {
+            _formula = tmp;
+            throw ex_parse("parse() failed:");
+        }
         _formula = tmp;
         if (_formula->_root == nullptr) {
             RowAtom* rm = new RowAtom();
