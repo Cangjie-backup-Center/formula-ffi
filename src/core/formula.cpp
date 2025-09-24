@@ -263,6 +263,7 @@ void TeXFormula::_free_() {
         delete i.second;
         i.second = nullptr;
     }
+    _externalFontMap.clear();
 }
 
 /*************************************** ArrayOfAtoms implementation ******************************/

@@ -327,7 +327,7 @@ map<wstring, MacroInfo*> MacroInfo::_commands = {
 
 map<wstring, wstring> NewCommandMacro::_macrocode;
 map<wstring, wstring> NewCommandMacro::_macroreplacement;
-Macro* NewCommandMacro::_instance = new NewCommandMacro();
+Macro* NewCommandMacro::_instance = nullptr;
 
 inline static void e(
     int nbargs,
@@ -345,6 +345,9 @@ inline static void c(
 }
 
 void NewCommandMacro::_init_() {
+    if (_instance == nullptr) {
+        _instance = new NewCommandMacro();
+    }
     // Predefined environments
     e(1, L"array", L"\\array@@env{#1}{", L"}");
     e(1, L"tabular", L"\\array@@env{#1}{", L"}");

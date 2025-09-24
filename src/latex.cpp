@@ -31,7 +31,7 @@ void LaTeX::release() {
     //Glue::_free_();
     DefaultTeXFont::_free_();
     TeXFormula::_free_();
-    MacroInfo::_free_();
+    //MacroInfo::_free_();
     NewCommandMacro::_free_();
     TextRenderingBox::_free_();
 

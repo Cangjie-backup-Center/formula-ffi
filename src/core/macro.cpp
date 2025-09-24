@@ -139,7 +139,6 @@ void MacroInfo::_free_() {
         delete i.second;
         i.second = nullptr;
     }
-    _commands.clear();
 }
 
 sptr<Atom> PredefMacroInfo::invoke(
