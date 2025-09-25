@@ -178,6 +178,9 @@ void DefaultTeXFontParser::parseFontDescriptions() throw(ex_res_parse) {
     parseStyleMappings(_parsedTextStyles);
     // set various versions
     for (auto i : FontInfo::__infos()) {
+        if(i == nullptr){
+            continue;
+        }
         auto it = _variousVersion.find(i->getId());
         if (it == _variousVersion.end()) continue;
         auto v = it->second;

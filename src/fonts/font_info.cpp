@@ -17,9 +17,12 @@ vector<string> FontInfo::_names;
 
 void FontInfo::__free() {
     for (auto f : _infos) {
-        delete f;
+        if(f != nullptr){
+            delete f;
+        }
         f = nullptr;
     }
+    _infos.clear();
 }
 
 void FontInfo::__register(const FontSet& set) {

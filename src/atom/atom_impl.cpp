@@ -373,7 +373,8 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
     float drt = env.getTeXFont()->getDefaultRuleThickness(env.getStyle());
 
     if (_ttype == SMALLMATRIX) {
-        env = *(e.copy());
+        auto tmpenv = e.copy();
+        env = *(tmpenv);
         env.setStyle(STYLE_SCRIPT);
     } /* else if (_ttype == MATRIX) {
         env = *(e.copy());
@@ -655,6 +656,7 @@ sptr<Box> FencedAtom::createBox(_out_ TeXEnvironment& env) {
     // can not break
     RowAtom* ra = dynamic_cast<RowAtom*>(_base.get());
     if (ra != nullptr) ra->setCanBreak(false);
+    if(_base == nullptr) throw ex_parse("empty atom");
     auto content = _base->createBox(env);
     float shortfall = DELIMITER_SHORTFALL * SpaceAtom::getFactor(UNIT_POINT, env);
     float axis = tf.getAxisHeight(env.getStyle());
@@ -983,6 +985,7 @@ sptr<Box> NthRoot::createBox(_out_ TeXEnvironment& env) {
 
     // cramped style for the formula under the root sign
     TeXEnvironment& cramped = *(env.crampStyle());
+    if(_base == nullptr) throw ex_parse("empty atom");
     auto bs = _base->createBox(cramped);
     sptr<HorizontalBox> b(new HorizontalBox(bs));
     b->add(sptr<Box>(SpaceAtom(UNIT_MU, 1, 0, 0).createBox(cramped)));
@@ -1069,6 +1072,7 @@ RotateAtom::RotateAtom(const sptr<Atom>& base, const wstring& angle, const wstri
 }
 
 sptr<Box> RotateAtom::createBox(_out_ TeXEnvironment& env) {
+    if(_base == nullptr) throw ex_parse("empty atom");
     if (_option != -1) return sptr<Box>(new RotateBox(_base->createBox(env), _angle, _option));
 
     float x = _x * SpaceAtom::getFactor(_xunit, env);
@@ -1206,6 +1210,7 @@ LongDivAtom::LongDivAtom(long divisor, long dividend)
 }
 
 sptr<Box> CancelAtom::createBox(_out_ TeXEnvironment& env) {
+    if(_base == nullptr) throw ex_parse("empty atom");
     auto box = _base->createBox(env);
     vector<float> lines;
     if (_cancelType == SLASH) {

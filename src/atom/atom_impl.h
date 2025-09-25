@@ -349,6 +349,7 @@ public:
     CedillAtom(const sptr<Atom>& base) : _base(base) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto b = _base->createBox(env);
         VerticalBox* vb = new VerticalBox();
         vb->add(b);
@@ -430,6 +431,7 @@ public:
     }
 
     virtual sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto bbase = _base->createBox(env);
         float drt = env.getTeXFont()->getDefaultRuleThickness(env.getStyle());
         float space = INTERSPACE * SpaceAtom::getFactor(UNIT_EM, env);
@@ -451,6 +453,7 @@ public:
     DoubleFramedAtom(const sptr<Atom>& base) : FBoxAtom(base) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto bbase = _base->createBox(env);
         float drt = env.getTeXFont()->getDefaultRuleThickness(env.getStyle());
         float space = INTERSPACE * SpaceAtom::getFactor(UNIT_EM, env);
@@ -903,6 +906,7 @@ public:
         : ScaleAtom(base, factor, factor), _factor(factor) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         TeXEnvironment& e = *(env.copy());
         float f = e.getScaleFactor();
         e.setScaleFactor(_factor);
@@ -925,6 +929,7 @@ public:
     OgonekAtom(const sptr<Atom>& base) : _base(base) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto b = _base->createBox(env);
         VerticalBox* vb = new VerticalBox();
         vb->add(b);
@@ -1004,6 +1009,7 @@ public:
     }
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto bbox = _base->createBox(env);
         if (_ru == -1)
             bbox->_shift = 0;
@@ -1040,6 +1046,7 @@ public:
     }
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         return sptr<Box>(new ReflectBox(_base->createBox(env)));
     }
 
@@ -1080,6 +1087,7 @@ public:
     }
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto bbox = _base->createBox(env);
         if (_wu == -1 && _hu == -1) return bbox;
         float sx = 1.f, sy = 1.f;
@@ -1188,6 +1196,7 @@ public:
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
         bool prev = env.getSmallCap();
         env.setSmallCap(true);
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto box = _base->createBox(env);
         env.setSmallCap(prev);
         return box;
@@ -1211,6 +1220,7 @@ public:
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
         bool prev = env.getTeXFont()->getSs();
         env.getTeXFont()->setSs(true);
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto box = _base->createBox(env);
         env.getTeXFont()->setSs(prev);
         return box;
@@ -1393,6 +1403,7 @@ public:
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
         bool prev = env.getTeXFont()->getTt();
         env.getTeXFont()->setTt(true);
+        if(_base == nullptr) throw ex_parse("empty atom");
         auto box = _base->createBox(env);
         env.getTeXFont()->setTt(prev);
         return box;

@@ -307,9 +307,12 @@ void DefaultTeXFont::_free_() {
         }
     }
     for (auto f : _symbolMappings) {
-        delete f.second;
+        if(f.second != nullptr){
+            delete f.second;
+        }
         f.second = nullptr;
     }
+    _symbolMappings.clear();
     FontInfo::__free();
     // _registeredAlphabets :=> map<UnicodeBlock, AlphabetRegistration>
     // multi => one
@@ -359,7 +362,12 @@ void DefaultTeXFont::log() {
     __log << "\n\n";
     // font information
     __log << "FONTINFOS:" << endl;
-    for (auto i : FontInfo::__infos()) __log << *i;
+    // for (auto i : FontInfo::__infos()) {
+    //     if(i == nullptr){
+    //         continue;
+    //     }
+    //     __log << *i;
+    // }
     __log << endl;
 }
 #endif

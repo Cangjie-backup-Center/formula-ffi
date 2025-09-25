@@ -16,6 +16,7 @@ using namespace tex;
  ***************************************************************************************************/
 
 sptr<Box> ScaleAtom::createBox(_out_ TeXEnvironment& env) {
+    if(_base == nullptr) throw ex_parse("empty atom");
     return sptr<Box>(new ScaleBox(_base->createBox(env), _sx, _sy));
 }
 
@@ -24,6 +25,7 @@ sptr<Box> MathAtom::createBox(_out_ TeXEnvironment& env) {
     e.getTeXFont()->setRoman(false);
     int style = e.getStyle();
     e.setStyle(_style);
+    if(_base == nullptr) throw ex_parse("empty atom");
     auto box = _base->createBox(e);
     e.setStyle(style);
     return box;
@@ -985,6 +987,9 @@ sptr<Box> ScriptsAtom::createBox(_out_ TeXEnvironment& env) {
     CharSymbol* cs = dynamic_cast<CharSymbol*>(_base.get());
     if (acc != nullptr) {
         // special case: accent
+        if(acc->_base == nullptr){
+            throw ex_parse("Accented atom without base");
+        }
         auto box = acc->_base->createBox(*(env.crampStyle()));
         shiftUp = box->_height - tf->getSupDrop(supStyle.getStyle());
         shiftDown = box->_depth + tf->getSubDrop(subStyle.getStyle());
@@ -1196,6 +1201,7 @@ sptr<Box> BigOperatorAtom::createSideSets(_out_ TeXEnvironment& env) {
 }
 
 sptr<Box> BigOperatorAtom::createBox(_out_ TeXEnvironment& env) {
+    if(_base == nullptr) throw ex_parse("empty atom");
     if (dynamic_cast<SideSetsAtom*>(_base.get())) return createSideSets(env);
 
     TeXFont* tf = env.getTeXFont().get();
