@@ -523,21 +523,21 @@ inline macro(backslashcr) {
 }
 
 inline macro(smallmatrixATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser parser(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser parser(tp.getIsPartial(), args[1], arr.get(), false);
     parser.parse();
     arr->checkDimensions();
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), SMALLMATRIX));
+        tp.getIsPartial(), arr, SMALLMATRIX));
 }
 
 inline macro(matrixATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser parser(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser parser(tp.getIsPartial(), args[1], arr.get(), false);
     parser.parse();
     arr->checkDimensions();
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), MATRIX));
+        tp.getIsPartial(), arr, MATRIX));
 }
 
 inline macro(multicolumn) {
@@ -569,35 +569,35 @@ inline macro(hdotsfor) {
 }
 
 inline macro(arrayATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser parser(tp.getIsPartial(), args[2], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser parser(tp.getIsPartial(), args[2], arr.get(), false);
     parser.parse();
     arr->checkDimensions();
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), args[1], true));
+        tp.getIsPartial(), arr, args[1], true));
 }
 
 inline macro(alignATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser parser(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser parser(tp.getIsPartial(), args[1], arr.get(), false);
     parser.parse();
     arr->checkDimensions();
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), ALIGN));
+        tp.getIsPartial(), arr, ALIGN));
 }
 
 inline macro(flalignATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser parser(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser parser(tp.getIsPartial(), args[1], arr.get(), false);
     parser.parse();
     arr->checkDimensions();
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), FLALIGN));
+        tp.getIsPartial(), arr, FLALIGN));
 }
 
 inline macro(alignatATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser par(tp.getIsPartial(), args[2], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser par(tp.getIsPartial(), args[2], arr.get(), false);
     par.parse();
     arr->checkDimensions();
     size_t n = 0;
@@ -605,21 +605,21 @@ inline macro(alignatATATenv) {
     if (arr->cols() != 2 * n) throw ex_parse("Bad number of equations in alignat environment!");
 
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), ALIGNAT));
+        tp.getIsPartial(), arr, ALIGNAT));
 }
 
 inline macro(alignedATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser p(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser p(tp.getIsPartial(), args[1], arr.get(), false);
     p.parse();
     arr->checkDimensions();
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), ALIGNED));
+        tp.getIsPartial(), arr, ALIGNED));
 }
 
 inline macro(alignedatATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser p(tp.getIsPartial(), args[2], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser p(tp.getIsPartial(), args[2], arr.get(), false);
     p.parse();
     arr->checkDimensions();
     size_t n = 0;
@@ -628,12 +628,12 @@ inline macro(alignedatATATenv) {
         throw ex_parse("Bad number of equations in alignedat environment!");
 
     return sptr<Atom>(new MatrixAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), ALIGNEDAT));
+        tp.getIsPartial(), arr, ALIGNEDAT));
 }
 
 inline macro(multlineATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser p(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser p(tp.getIsPartial(), args[1], arr.get(), false);
     p.parse();
     arr->checkDimensions();
     if (arr->cols() > 1)
@@ -642,31 +642,31 @@ inline macro(multlineATATenv) {
         return nullptr;
 
     return sptr<Atom>(new MultlineAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), MULTILINE));
+        tp.getIsPartial(), arr, MULTILINE));
 }
 
 inline macro(gatherATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser p(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser p(tp.getIsPartial(), args[1], arr.get(), false);
     p.parse();
     arr->checkDimensions();
     if (arr->cols() > 1) throw ex_parse("Requires exact one column in gather envrionment!");
     if (arr->cols() == 0) return nullptr;
 
     return sptr<Atom>(new MultlineAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), GATHER));
+        tp.getIsPartial(), arr, GATHER));
 }
 
 inline macro(gatheredATATenv) {
-    ArrayOfAtoms* arr = new ArrayOfAtoms();
-    TeXParser p(tp.getIsPartial(), args[1], arr, false);
+    sptr<ArrayOfAtoms> arr(new ArrayOfAtoms());
+    TeXParser p(tp.getIsPartial(), args[1], arr.get(), false);
     p.parse();
     arr->checkDimensions();
     if (arr->cols() > 1) throw ex_parse("Requires exact one column in gathered envrionment!");
     if (arr->cols() == 0) return nullptr;
 
     return sptr<Atom>(new MultlineAtom(
-        tp.getIsPartial(), sptr<ArrayOfAtoms>(arr), GATHERED));
+        tp.getIsPartial(), arr, GATHERED));
 }
 
 inline macro(shoveright) {

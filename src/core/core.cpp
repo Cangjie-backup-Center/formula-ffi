@@ -83,7 +83,7 @@ sptr<Box> BoxSplitter::split(const sptr<Box>& b, float width, float lineSpace) {
 sptr<Box> BoxSplitter::split(const sptr<HorizontalBox>& hb, float width, float lineSpace) {
     if (width == 0 || hb->_width <= width) return hb;
 
-    VerticalBox* vbox = new VerticalBox();
+    sptr<VerticalBox> vboxPtr = make_shared<VerticalBox>();
     sptr<HorizontalBox> first, second;
     stack<Position> positions;
     sptr<HorizontalBox> hbox = hb;
@@ -103,13 +103,13 @@ sptr<Box> BoxSplitter::split(const sptr<HorizontalBox>& hb, float width, float l
             first = hboxes.first;
             second = hboxes.second;
         }
-        vbox->add(first, lineSpace);
+        vboxPtr->add(first, lineSpace);
         hbox = second;
     }
 
     if (second != nullptr) {
-        vbox->add(second, lineSpace);
-        return sptr<Box>(vbox);
+        vboxPtr->add(second, lineSpace);
+        return sptr<Box>(vboxPtr);
     }
 
     return hbox;
