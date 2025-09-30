@@ -27,23 +27,26 @@ export struct ImageComponent {
       this.width1 = px2vp(size.width)
       this.height1 = px2vp(size.height)
     } catch (e) {
-      hilog.error(1, "1", `--------------${e}`)
+      hilog.error(1, "1", `--------------,this.latexMathTextString:${this.latexMathTextString},${e}`)
     }
   }
 
   build() {
     Scroll() {
       Column() {
-        Text(`${this.index + 1}`)
+        Text(`${this.index}`)
           .margin({ top: 5, bottom: 5 })
           .fontColor(Color.Red)
           .fontSize(20)
-        Image(this.pixelMap)
-          .objectFit(ImageFit.Contain)
-          .width(this.width1)
-          .height(this.height1)
-          .margin({ top: 5, bottom: 5 })
-        // .scale({0.9})
+        if(this.pixelMap != undefined){
+          Image(this.pixelMap)
+            .objectFit(ImageFit.Contain)
+            .width(this.width1)
+            .height(this.height1)
+            .margin({ top: 5, bottom: 5 })
+        } else {
+          Text(this.latexMathTextString)
+        }
         Divider()
           .vertical(false)
           .strokeWidth(1)
