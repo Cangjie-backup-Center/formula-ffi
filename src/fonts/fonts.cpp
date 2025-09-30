@@ -309,12 +309,8 @@ void DefaultTeXFont::_free_() {
         }
     }
     for (auto f : _symbolMappings) {
-        if(f.second != nullptr){
-            delete f.second;
-        }
         f.second = nullptr;
     }
-    _symbolMappings.clear();
     FontInfo::__free();
     // _registeredAlphabets :=> map<UnicodeBlock, AlphabetRegistration>
     // multi => one
