@@ -130,6 +130,7 @@ void MacroInfo::addMacro(const wstring& name, MacroInfo* mac) {
     auto it = _commands.find(name);
     if (it != _commands.end()) {
         delete it->second;
+        it->second = nullptr;
     }
     _commands[name] = mac;
 }

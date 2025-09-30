@@ -373,8 +373,7 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
     float drt = env.getTeXFont()->getDefaultRuleThickness(env.getStyle());
 
     if (_ttype == SMALLMATRIX) {
-        auto tmpenv = e.copy();
-        env = *(tmpenv);
+        env = *(e.copy());
         env.setStyle(STYLE_SCRIPT);
     } /* else if (_ttype == MATRIX) {
         env = *(e.copy());

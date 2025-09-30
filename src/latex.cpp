@@ -28,10 +28,8 @@ void LaTeX::init(const string& res_root_path) {
 }
 
 void LaTeX::release() {
-    //Glue::_free_();
     DefaultTeXFont::_free_();
     TeXFormula::_free_();
-    //MacroInfo::_free_();
     NewCommandMacro::_free_();
     TextRenderingBox::_free_();
 
@@ -43,6 +41,11 @@ void LaTeX::release() {
         delete _builder;
         _builder = nullptr;
     }
+}
+
+void LaTeX::releaseGlueAndMacroInfo() {
+    Glue::_free_();
+    MacroInfo::_free_();
 }
 
 const string& LaTeX::getResRootPath() {

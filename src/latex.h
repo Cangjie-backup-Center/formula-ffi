@@ -59,6 +59,11 @@ public:
      * Release the LaTeX context
      */
     static void release();
+
+    /**
+     * Release the LaTeX releaseGlueAndMacroInfo
+     */
+    static void releaseGlueAndMacroInfo();
 };
 
 }  // namespace tex

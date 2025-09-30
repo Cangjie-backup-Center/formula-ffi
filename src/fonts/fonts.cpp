@@ -297,6 +297,7 @@ void DefaultTeXFont::_init_() {
 
 void DefaultTeXFont::_free_() {
     delete[] _defaultTextStyleMappings;
+    _defaultTextStyleMappings = nullptr;
     for (auto f : _textStyleMappings) {
         vector<CharFont*> x = f.second;
         for (auto i : x) {
@@ -362,12 +363,7 @@ void DefaultTeXFont::log() {
     __log << "\n\n";
     // font information
     __log << "FONTINFOS:" << endl;
-    // for (auto i : FontInfo::__infos()) {
-    //     if(i == nullptr){
-    //         continue;
-    //     }
-    //     __log << *i;
-    // }
+    for (auto i : FontInfo::__infos()) __log << *i;
     __log << endl;
 }
 #endif
