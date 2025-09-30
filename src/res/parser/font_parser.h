@@ -147,7 +147,7 @@ public:
 
     void parseFontDescriptions() throw(ex_res_parse);
 
-    void parseSymbolMappings(_out_ map<string, CharFont*>& res) throw(ex_res_parse);
+    void parseSymbolMappings(_out_ map<string, sptr<CharFont>>& res) throw(ex_res_parse);
 
     string* parseDefaultTextStyleMappins() throw(ex_res_parse);
 

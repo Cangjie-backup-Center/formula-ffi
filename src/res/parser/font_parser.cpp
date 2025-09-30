@@ -251,7 +251,7 @@ void DefaultTeXFontParser::parseFontDescriptions(const string& file) throw(ex_re
 }
 
 void DefaultTeXFontParser::parseSymbolMappings(
-    _out_ map<string, CharFont*>& res) throw(ex_res_parse) {
+    _out_ map<string, sptr<CharFont>>& res) throw(ex_res_parse) {
     const XMLElement* mapping = _root->FirstChildElement("SymbolMappings");
     if (mapping == nullptr) throw ex_xml_parse(RESOURCE_NAME, "SymbolMappings");
 
@@ -292,7 +292,9 @@ void DefaultTeXFontParser::parseSymbolMappings(
             obtainAttr("boldId", symbol, boldFontId);
 
             auto it = res.find(name);
-            if (it != res.end()) delete it->second;
+            if (it != res.end()) {
+                it->second = nullptr;
+            }
 
             CharFont* f = nullptr;
             if (boldFontId.empty()) {
@@ -300,7 +302,7 @@ void DefaultTeXFontParser::parseSymbolMappings(
             } else {
                 f = new CharFont(ch, __id(fontId), __id(boldFontId));
             }
-            res[name] = f;
+            res[name] = sptr<CharFont>(f);
             symbol = symbol->NextSiblingElement("SymbolMapping");
         }
         mapping = mapping->NextSiblingElement("Mapping");

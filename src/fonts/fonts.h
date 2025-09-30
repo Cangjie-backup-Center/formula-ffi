@@ -255,7 +255,7 @@ private:
     // font related
     static string* _defaultTextStyleMappings;
     static map<string, vector<CharFont*>> _textStyleMappings;
-    static map<string, CharFont*> _symbolMappings;
+    static map<string, sptr<CharFont>> _symbolMappings;
     static map<string, float> _parameters;
     static map<string, float> _generalSettings;
     static bool _magnificationEnable;

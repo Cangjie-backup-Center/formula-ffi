@@ -13,7 +13,8 @@ const int TeXFont::NO_FONT = -1;
 
 string* DefaultTeXFont::_defaultTextStyleMappings;
 map<string, vector<CharFont*>> DefaultTeXFont::_textStyleMappings;
-map<string, CharFont*> DefaultTeXFont::_symbolMappings;
+
+map<string, sptr<CharFont>> DefaultTeXFont::_symbolMappings;
 map<string, float> DefaultTeXFont::_generalSettings;
 vector<UnicodeBlock> DefaultTeXFont::_loadedAlphabets;
 map<UnicodeBlock, AlphabetRegistration*> DefaultTeXFont::_registeredAlphabets;
@@ -53,7 +54,7 @@ void DefaultTeXFont::__register_symbols_set(const SymbolsSet& set) {
 void DefaultTeXFont::__push_symbols(const __symbol_component* symbols, const int len) {
     for (int i = 0; i < len; i++) {
         const __symbol_component& c = symbols[i];
-        _symbolMappings[c.name] = new CharFont(c.code, c.font);
+        _symbolMappings[c.name] = sptr<CharFont>(new CharFont(c.code, c.font));
     }
 }
 
