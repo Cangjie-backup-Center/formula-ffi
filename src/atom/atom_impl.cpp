@@ -373,7 +373,8 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
     float drt = env.getTeXFont()->getDefaultRuleThickness(env.getStyle());
 
     if (_ttype == SMALLMATRIX) {
-        env = *(e.copy());
+        auto env_ptr = e.copy();  // 持有智能指针，确保对象存活
+        env = *env_ptr;  // 此时拷贝对象由 env_ptr 管理，不会提前释放
         env.setStyle(STYLE_SCRIPT);
     } /* else if (_ttype == MATRIX) {
         env = *(e.copy());
