@@ -23,8 +23,6 @@
 #include <gtksourceviewmm/view.h>
 
 #include <pangomm/init.h>
-#include "core/core.h"
-#include "core/macro.h"
 
 using namespace tex;
 
@@ -429,8 +427,6 @@ int main(int argc, char* argv[]) {
     }
 
     LaTeX::release();
-    Glue::_free_();
-    MacroInfo::_free_();
     return result;
 }
 
