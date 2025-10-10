@@ -12,11 +12,17 @@
 #if defined(__linux__)
 #   ifdef __ANDROID__
 #       define __OS_Android__
+#   elif defined __OHOS__
+#       define __OS_ohos__
 #   else
 #       define __OS_Linux__
 #   endif
 #elif defined(_WIN32)
-#   define __OS_Windows__
+#   ifdef __OHOS__
+#       define __OS_ohos__
+#   else
+#       define __OS_Windows__
+#   endif
 #endif
 // Other platforms...
 
