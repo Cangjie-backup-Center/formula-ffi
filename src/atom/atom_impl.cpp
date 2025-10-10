@@ -1029,6 +1029,7 @@ sptr<Box> NthRoot::createBox(_out_ TeXEnvironment& env) {
 
 RotateAtom::RotateAtom(const sptr<Atom>& base, float angle, const wstring& option)
     : _angle(0), _option(-1), _xunit(0), _yunit(0), _x(0), _y(0) {
+    if(_base == nullptr) throw ex_parse("empty atom");
     _type = base->_type;
     _base = base;
     _angle = angle;
@@ -1063,6 +1064,7 @@ RotateAtom::RotateAtom(const sptr<Atom>& base, float angle, const wstring& optio
 
 RotateAtom::RotateAtom(const sptr<Atom>& base, const wstring& angle, const wstring& option)
     : _angle(0), _option(-1), _xunit(0), _yunit(0), _x(0), _y(0) {
+    if(_base == nullptr) throw ex_parse("empty atom");
     _type = base->_type;
     _base = base;
     valueof(angle, _angle);
