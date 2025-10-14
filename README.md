@@ -78,7 +78,7 @@ formula
    ```shell
    git clone --recursive https://gitcode.com/Cangjie-TPC/formula-ffi.git
    cd ffi/latex
-   git checkout v0.0.1
+   git checkout v0.0.5
    ```
 
 2. 编译
