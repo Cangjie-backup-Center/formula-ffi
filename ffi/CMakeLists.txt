@@ -10,13 +10,13 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -w")
 
 file(COPY latex/res DESTINATION .)
 
-file(WRITE "latex/src/config.h" "#ifndef CONFIG_H_INCLUDED\n#define CONFIG_H_INCLUDED\n\n// Flag for debug\n#if defined(_DEBUG) || defined(DEBUG) || defined(__DEBUG__) || !defined(NDEBUG)\n#   ifndef __DEBUG\n#       define __DEBUG\n#   endif\n#endif\n\n// Check platforms\n#if defined(__linux__)\n#   ifdef __ANDROID__\n#       define __OS_Android__\n#   elif defined __OHOS__\n#       define __OS_ohos__\n#   else\n#       define __OS_Linux__\n#   endif\n#elif defined(_WIN32)\n#   ifdef __OHOS__\n#       define __OS_ohos__\n#   else\n#       define __OS_Windows__\n#   endif\n#endif\n// Other platforms...\n\n// Flag for if compile samples\n#if defined(__OS_Linux__) || defined(__OS_Windows__) || defined(MEM_CHECK)\n#   define __USE_SAMPLES\n#endif\n\n// Disable log if not in debug mode\n#ifndef __DEBUG\n#   undef HAVE_LOG\n#endif\n\n#endif  // CONFIG_H_INCLUDED\n")
+# file(WRITE "latex/src/config.h" "#ifndef CONFIG_H_INCLUDED\n#define CONFIG_H_INCLUDED\n\n// Flag for debug\n#if defined(_DEBUG) || defined(DEBUG) || defined(__DEBUG__) || !defined(NDEBUG)\n#   ifndef __DEBUG\n#       define __DEBUG\n#   endif\n#endif\n\n// Check platforms\n#if defined(__linux__)\n#   ifdef __ANDROID__\n#       define __OS_Android__\n#   elif defined __OHOS__\n#       define __OS_ohos__\n#   else\n#       define __OS_Linux__\n#   endif\n#elif defined(_WIN32)\n#   ifdef __OHOS__\n#       define __OS_ohos__\n#   else\n#       define __OS_Windows__\n#   endif\n#endif\n// Other platforms...\n\n// Flag for if compile samples\n#if defined(__OS_Linux__) || defined(__OS_Windows__) || defined(MEM_CHECK)\n#   define __USE_SAMPLES\n#endif\n\n// Disable log if not in debug mode\n#ifndef __DEBUG\n#   undef HAVE_LOG\n#endif\n\n#endif  // CONFIG_H_INCLUDED\n")
 
 # modify formula.cpp
-set(COMMANDFILE "modify.sh")
-file(WRITE ${COMMANDFILE} "sed -n -i '1h;1!H;\${g;s/for (size_t j = 0; j < _row; j++).*auto it = _array\\[j\\].begin();/for (size_t j = 0; j < _row; j++) {\\n        size_t n_row_columns = _array[j].size();\\n        if (n_row_columns < col) {\\n        for (unsigned int i = 0; i < col - n_row_columns; i++)\\n            _array[j].push_back(nullptr);\\n        }\\n        auto it = _array[j].begin();/;p}' latex/src/core/formula.cpp")
-execute_process(COMMAND sh ${COMMANDFILE} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-file(REMOVE ${COMMANDFILE})
+# set(COMMANDFILE "modify.sh")
+# file(WRITE ${COMMANDFILE} "sed -n -i '1h;1!H;\${g;s/for (size_t j = 0; j < _row; j++).*auto it = _array\\[j\\].begin();/for (size_t j = 0; j < _row; j++) {\\n        size_t n_row_columns = _array[j].size();\\n        if (n_row_columns < col) {\\n        for (unsigned int i = 0; i < col - n_row_columns; i++)\\n            _array[j].push_back(nullptr);\\n        }\\n        auto it = _array[j].begin();/;p}' latex/src/core/formula.cpp")
+# execute_process(COMMAND sh ${COMMANDFILE} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+# file(REMOVE ${COMMANDFILE})
 
 # source files
 
