@@ -134,7 +134,7 @@ struct Index0 {
 ## 约束与限制
 
     在下述版本验证通过：    
-        IDE: DevEco Studio 5.1.1 Release(Build Version:5.1.1.823)
+        IDE: DevEco Studio 5.1.1 Release(Build Version:5.1.1.830)
 
 ## 开源协议
 

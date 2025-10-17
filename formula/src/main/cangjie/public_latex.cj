@@ -36,10 +36,7 @@ func latexMathColorFormatEnum(latexMathColorFormat: Int64): ColorFormat {
 }
 
 func latexStrCallback(strLatexMath: String): String {
-    var dataNew = strLatexMath
-        .replace("\\\\\\\\", "\\\\\\text{ }\\\\")
-        .replace("\\\\\\\\", "\\\\\\text{ }\\\\")
-    dataNew = dataNew.replace("{aligned*}", "{aligned}")
+    var dataNew = strLatexMath.replace("{aligned*}", "{aligned}")
     dataNew = dataNew.replace("{align*}", "{align}")
     dataNew = dataNew.replace("{flalign*}", "{flalign}")
     dataNew = dataNew.replace("{gather*}", "{gather}")
