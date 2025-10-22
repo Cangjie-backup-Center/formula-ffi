@@ -429,25 +429,33 @@ inline wstring& replaceall(_out_ wstring& src, const wstring& from, const wstrin
 /***************************************************************************************************
  *                                        exceptions                                               *
  ***************************************************************************************************/
-
 /**
- * Superclass of all the possible TeX exceptions that can be thrown
+ * Error occurred while parsing a string to a formula
  */
-class ex_tex : public exception {
+class ex_parse : public exception {
 private:
     const string _msg;
-
 public:
-    explicit ex_tex(const string& msg) : _msg(msg) {}
+    explicit ex_parse(const string& msg, const exception& cause) : _msg(msg + "\n caused by: " + cause.what()) {}
 
-    explicit ex_tex(const string& msg, const exception& cause)
-        : _msg(msg + "\n caused by: " + cause.what()) {}
-
+    explicit ex_parse(const string& msg) :  _msg(msg) {}
+	
     const char* what() const throw() override {
         return _msg.c_str();
     }
 };
+/**
+ * Superclass of all the possible TeX exceptions that can be thrown
+ */
+class ex_tex : public ex_parse {
 
+public:
+    explicit ex_tex(const string& msg) : ex_parse(msg) {}
+
+    explicit ex_tex(const string& msg, const exception& cause)
+        : ex_parse(msg ,cause) {}
+
+};
 /**
  * Signals that an error occurred while loading the necessary resources into
  * memory.
@@ -605,17 +613,6 @@ public:
     explicit ex_invalid_unit()
         : ex_tex("The unit was not valid! use the unit defined in 'TeXConstants'.") {}
 };
-
-/**
- * Error occurred while parsing a string to a formula
- */
-class ex_parse : public ex_tex {
-public:
-    explicit ex_parse(const string& msg, const exception& cause) : ex_tex(msg, cause) {}
-
-    explicit ex_parse(const string& msg) : ex_tex(msg) {}
-};
-
 /**
  * Symbol mapping not found
  */
