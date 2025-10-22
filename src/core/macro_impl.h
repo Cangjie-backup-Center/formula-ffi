@@ -1455,6 +1455,9 @@ inline macro(insertBreakMark) {
 
 inline sptr<Atom> _macro_typelimits(_out_ TeXParser& tp, _out_ vector<wstring>& args, int type) {
     auto atom = tp.popLastAtom();
+    if(atom == nullptr){
+        throw ex_parse("Cannot apply limits: no preceding atom found!");
+    }
     auto copy = atom->clone();
     copy->_typelimits = type;
     return copy;
