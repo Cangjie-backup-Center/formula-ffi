@@ -17,6 +17,7 @@ let lib = requireCJLib("libformula.so") as CustomLib
  * @param latexMathTextColor 文本颜色
  * @param latexMathBackGroupColor 背景色
  * @param latexMathColorFormat 图片格式
+ * @param resPath 字体资源路径
  * @returns 图片数组数据
  */
 export function latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: LatexMathColorFormat, resPath: string = "/data/storage/el1/bundle/entry/resources/resfile/res"): Promise<ArrayBuffer> {

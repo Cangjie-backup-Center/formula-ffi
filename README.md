@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.2.5-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.2.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.0.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -51,10 +51,11 @@ formula 主要目的是显示用 LaTeX 编写的数学公式。
 * 参数 - latexMathTextColor 数学公式文字颜色
 * 参数 - latexMathBackGroupColor 数学公式背景颜色
 * 参数 - latexMathColorFormat 数学公式图片格式
+* 参数 - resPath 字体资源路径。 默认"/data/storage/el1/bundle/entry/resources/resfile/res"
 *
 * 返回值 - Promise<ArrayBuffer> 图片数组数据
 */
-latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: LatexMathColorFormat): Promise<ArrayBuffer>
+latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: LatexMathColorFormat, resPath?: string): Promise<ArrayBuffer>
 
 /**
  * 图片格式枚举
@@ -138,7 +139,7 @@ struct Index0 {
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitcode.com/Cangjie-TPC/formula-ffi/blob/formula-ffi_hybrid_cangjie-plugin_5.0.13.200/LICENSE)，请自由的享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/Cangjie-TPC/formula-ffi/blob/formula-ffi_hybrid_cangjie-plugin_5.1.1.823/LICENSE)，请自由的享受和参与开源。
 
 ## 参与贡献
 
