@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "formula_test",
+    "name": "formula_hybrid_test",
     "type": "feature",
     "deviceTypes": [
       "default"

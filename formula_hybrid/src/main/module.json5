@@ -1,6 +1,6 @@
 {
   "module": {
-    "name": "formula",
+    "name": "formula_hybrid",
     "type": "har",
     "deviceTypes": [
       "default"
