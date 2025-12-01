@@ -77,8 +77,6 @@ formula
 
    ```shell
    git clone --recursive https://gitcode.com/Cangjie-TPC/formula-ffi.git
-   cd ffi/latex
-   git checkout v0.0.5
    ```
 
 2. 编译
@@ -94,6 +92,8 @@ formula
    2. 下载cmake：https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-windows-x86_64.zip
 
       将`cmake-3.26.3-windows-x86_64.zip`解压，将`cmake-3.26.3-windows-x86_64`目录下的所有文件夹拷贝到`msys2/usr/`目录
+
+      将 msys2\mingw64\bin目录下的 mingw32-make.exe 复制一份改成 make.exe
 
    3. 下载安装DevecoStuido
 
