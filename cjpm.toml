@@ -19,7 +19,7 @@
   latex = {path = "./libs/${ABI}/"}
 
 [package]
-  cjc-version = "1.0.0"
+  cjc-version = "1.0.1"
   compile-option = ""
   description = "nothing here"
   link-option = ""
