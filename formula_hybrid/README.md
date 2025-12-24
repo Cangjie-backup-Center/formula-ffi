@@ -137,6 +137,8 @@ struct Index0 {
     在下述版本验证通过：    
         IDE: DevEco Studio 5.1.1 Release(Build Version:5.1.1.851)
 
+1. `resPath`默认参数`"/data/storage/el1/bundle/entry/resources/resfile/res"`，如果修改`entry`命名，需要改成对应的`"/data/storage/el1/bundle/xxxx/resources/resfile/res"`。
+
 ## 开源协议
 
 本项目基于 [MIT License](https://gitcode.com/Cangjie-TPC/formula-ffi/blob/formula-ffi_hybrid_cangjie-plugin_5.1.1.823/LICENSE)，请自由的享受和参与开源。
