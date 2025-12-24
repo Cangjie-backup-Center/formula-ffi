@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.2.8-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.3.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.0.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.1.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -130,18 +130,18 @@ struct Index0 {
 
 #### 执行结果如下
 
-![img1](https://raw.gitcode.com/Cangjie-TPC/formula-ffi/raw/formula-ffi_hybrid_cangjie-plugin_5.1.1/doc/assets/img.png)
+![img1](https://raw.gitcode.com/Cangjie-TPC/formula-ffi/raw/formula-ffi_hybrid_cangjie-plugin_6.0.0/doc/assets/img.png)
 
 ## 约束与限制
 
     在下述版本验证通过：    
-        IDE: DevEco Studio 5.1.1 Release(Build Version:5.1.1.851)
+        IDE: DevEco Studio 6.0.0 Release
 
 1. `resPath`默认参数`"/data/storage/el1/bundle/entry/resources/resfile/res"`，如果修改`entry`命名，需要改成对应的`"/data/storage/el1/bundle/xxxx/resources/resfile/res"`。
 
 ## 开源协议
 
-本项目基于 [MIT License](https://gitcode.com/Cangjie-TPC/formula-ffi/blob/formula-ffi_hybrid_cangjie-plugin_5.1.1/LICENSE)，请自由的享受和参与开源。
+本项目基于 [MIT License](https://gitcode.com/Cangjie-TPC/formula-ffi/blob/formula-ffi_hybrid_cangjie-plugin_6.0.0/LICENSE)，请自由的享受和参与开源。
 
 ## 参与贡献
 
