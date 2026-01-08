@@ -1,13 +1,7 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2026. All rights reserved.
  */
-import { requireCJLib } from "libark_interop_loader.so";
-
-export declare interface CustomLib {
-  latexStringToImage(latexMathTextString: string, latexMathTextSize: number, latexMathTextColor: number, latexMathBackGroupColor: number, latexMathColorFormat: number, resPath: string): Promise<ArrayBuffer>
-}
-
-let lib = requireCJLib("libformula.so") as CustomLib
+import { latexStringToImageCJ} from "libformula.so";
 
 /**
  * 数学公式文本转换图片数组数据
@@ -27,7 +21,7 @@ export function latexStringToImage(latexMathTextString: string, latexMathTextSiz
   } else {
     colorFormat = 5
   }
-  return lib.latexStringToImage(latexMathTextString, latexMathTextSize, latexMathTextColor, latexMathBackGroupColor, colorFormat, resPath)
+  return latexStringToImageCJ(latexMathTextString, latexMathTextSize, latexMathTextColor, latexMathBackGroupColor, colorFormat, resPath)
 }
 
 /**

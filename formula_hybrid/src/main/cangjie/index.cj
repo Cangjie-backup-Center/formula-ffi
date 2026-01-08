@@ -11,8 +11,8 @@ import std.sync.Mutex
 
 let latexReentrantMutex: Mutex = Mutex()
 
-func latexStringToImage(runtime: JSContext, callInfo: JSCallInfo): JSValue {
-    let value0 = callInfo[0].toString(runtime)
+func latexStringToImageCJ(runtime: JSContext, callInfo: JSCallInfo): JSValue {
+    let value0 = callInfo[0].toString()
     let value1 = callInfo[1].toNumber()
     let value2 = callInfo[2].toNumber()
     let value3 = callInfo[3].toNumber()
@@ -36,5 +36,5 @@ func latexStringToImage(runtime: JSContext, callInfo: JSCallInfo): JSValue {
 }
 
 let EXPORT_MODULE = JSModule.registerModule {
-    runtime, exports => exports["latexStringToImage"] = runtime.function(latexStringToImage).toJSValue()
+    runtime, exports => exports["latexStringToImageCJ"] = runtime.function(latexStringToImageCJ).toJSValue()
 }
