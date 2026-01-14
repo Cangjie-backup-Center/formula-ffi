@@ -2,7 +2,6 @@
 #define BOX_H_INCLUDED
 
 #include "atom/atom.h"
-#include "platform/cairo/graphic_cairo.h"
 #include <stack>
 
 using namespace tex;
@@ -659,7 +658,7 @@ public:
  */
 class EllipseBox : public Box {
 private:
-    static constexpr float lineWidth    = 0.04f;  // 描边线宽
+    static constexpr float lineWidth = 0.04f;     // 描边线宽
     static constexpr float ellipseXRatio = 0.75f; // x 方向缩放比例
     static constexpr float ellipseYRatio = 0.28f; // y 方向缩放比例
 
@@ -671,36 +670,11 @@ public:
         _depth  = depth;
     }
 
-    // 绘制椭圆
-    void draw(Graphics2D& g2, float x, float y) override {
-        Graphics2D_cairo* g = dynamic_cast<Graphics2D_cairo*>(&g2);
-        if (!g) return;
-
-        auto cr = g->getCairoContext();
-        if (!cr) return;
-
-        float cx = x + _width / 2;                         // 椭圆中心 x
-        float cy = y - _height / 2 + _depth / 2;           // 椭圆中心 y
-
-        float rx = _width / 2;                             // x 方向半径
-        float ry = (_height + _depth) / 2 * ellipseYRatio; // y 方向半径
-
-        cr->set_line_width(lineWidth);
-        cr->save();
-        cr->move_to(cx + rx, cy);
-
-        int steps = 60; // 用 60 个点绘制椭圆
-        for (int i = 1; i <= steps; i++) {
-            float theta = i * 2.0f * M_PI / steps;
-            float px = cx + rx * cos(theta);
-            float py = cy + ry * sin(theta);
-            cr->line_to(px, py);
-        }
-
-        cr->close_path();
-        cr->stroke();
-        cr->restore();
-    }
+void draw(Graphics2D& g2, float x, float y) override {
+    float rx = _width / 2;
+    float ry = (_height + _depth) / 2 * ellipseYRatio;
+    g2.drawEllipse(x, y,_width,_height, rx, ry, lineWidth,_depth);
+}
 
     // 椭圆没有字体
     int getLastFontId() override {

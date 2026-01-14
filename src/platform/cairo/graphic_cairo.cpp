@@ -332,4 +332,26 @@ void Graphics2D_cairo::fillRoundRect(float x, float y, float w, float h, float r
     _context->fill();
 }
 
+void Graphics2D_cairo::drawEllipse(float x, float y,float w, float h, float rx, float ry, float lineWidth, float depth) {
+    float cx = x + w / 2;
+    float cy = y - h / 2 + depth / 2;
+    auto cr = getCairoContext();
+    if (!cr) return;
+    cr->set_line_width(lineWidth);
+    cr->save();
+    cr->move_to(cx + rx, cy);
+
+    int steps = 60;
+    for (int i = 1; i <= steps; i++) {
+        float theta = i * 2.0f * M_PI / steps;
+        float px = cx + rx * cos(theta);
+        float py = cy + ry * sin(theta);
+        cr->line_to(px, py);
+    }
+
+    cr->close_path();
+    cr->stroke();
+    cr->restore();
+}
+
 #endif

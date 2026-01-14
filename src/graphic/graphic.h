@@ -314,6 +314,8 @@ public:
      *      radius in y-direction
      */
     virtual void fillRoundRect(float x, float y, float w, float h, float rx, float ry) = 0;
+
+    virtual void drawEllipse(float x, float y,float w, float h, float rx, float ry, float lineWidth, float depth) = 0;
 };
 
 }  // namespace tex

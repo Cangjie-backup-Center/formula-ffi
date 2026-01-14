@@ -119,6 +119,8 @@ public:
     virtual void drawRoundRect(float x, float y, float w, float h, float rx, float ry) override;
 
     virtual void fillRoundRect(float x, float y, float w, float h, float rx, float ry) override;
+
+    void drawEllipse(float x, float y,float w, float h, float rx, float ry, float lineWidth, float depth);
 };
 
 }  // namespace tex
