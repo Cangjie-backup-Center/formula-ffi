@@ -96,6 +96,9 @@ public:
     SmashedAtom(const sptr<Atom>& a) : _at(a), _h(true), _d(true) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if (_at == nullptr) {
+            return sptr<Box>(new StrutBox(0, 0, 0, 0));
+        }
         sptr<Box> b = _at->createBox(env);
         if (_h) b->_height = 0;
         if (_d) b->_depth = 0;
@@ -653,7 +656,11 @@ public:
      * This method will only be called if isCharSymbol returns true.
      */
     inline sptr<CharFont> getCharFont(_in_ TeXFont& tf) const {
-        return ((CharSymbol*)_el.get())->getCharFont(tf);
+        CharSymbol* cs = dynamic_cast<CharSymbol*>(_el.get());
+        if (cs != nullptr) {
+            return cs->getCharFont(tf);
+        }
+        return nullptr;  // 安全回退
     }
 
     /**
@@ -669,9 +676,15 @@ public:
     }
 
     inline sptr<Box> createBox(_out_ TeXEnvironment& env) {
-        if (_textSymbol) ((CharSymbol*)_el.get())->markAsTextSymbol();
+        if (_textSymbol) {
+            CharSymbol* cs = dynamic_cast<CharSymbol*>(_el.get());
+            if (cs != nullptr) cs->markAsTextSymbol();
+        }
         auto b = _el->createBox(env);
-        if (_textSymbol) ((CharSymbol*)_el.get())->removeMark();
+        if (_textSymbol) {
+            CharSymbol* cs = dynamic_cast<CharSymbol*>(_el.get());
+            if (cs != nullptr) cs->removeMark();
+        }
         return b;
     }
 
@@ -967,6 +980,9 @@ public:
     }
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if (_atom == nullptr) {
+            return sptr<Box>(new StrutBox(0, 0, 0, 0));
+        }
         return _atom->createBox(env);
     }
 

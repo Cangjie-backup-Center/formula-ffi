@@ -406,7 +406,11 @@ public:
     }
 
     inline float getQuad(int style, int fontCode) override {
-        return getInfo(fontCode)->getQuad(getSizeFactor(style) * TeXFormula::PIXELS_PER_POINT);
+        FontInfo* info = getInfo(fontCode);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null in getQuad");
+        }
+        return info->getQuad(getSizeFactor(style) * TeXFormula::PIXELS_PER_POINT);
     }
 
     int getMuFontId() override;
@@ -415,6 +419,9 @@ public:
 
     inline float getSkew(_in_ const CharFont& cf, int style) override {
         FontInfo* info = getInfo(cf._fontId);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null in getSkew");
+        }
         wchar_t skew = info->getSkewChar();
         if (skew == -1) return 0;
         return getKern(cf, CharFont(skew, cf._fontId), style);
@@ -424,6 +431,9 @@ public:
 
     inline float getXHeight(int style, int fontCode) override {
         FontInfo* info = getInfo(fontCode);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null in getXHeight");
+        }
         return info->getXHeight(getSizeFactor(style) * TeXFormula::PIXELS_PER_POINT);
     }
 
@@ -433,6 +443,9 @@ public:
 
     inline bool hasNextLarger(_in_ const Char& c) override {
         FontInfo* info = getInfo(c.getFontCode());
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null in hasNextLarger");
+        }
         return info->hasNextLarger(c.getChar());
     }
 
@@ -458,11 +471,17 @@ public:
 
     inline bool hasSpace(int font) override {
         FontInfo* info = getInfo(font);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null in hasSpace");
+        }
         return info->hasSpace();
     }
 
     inline bool isExtensionChar(_in_ const Char& c) override {
         FontInfo* info = getInfo(c.getFontCode());
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null in isExtensionChar");
+        }
         return info->isExtensionChar(c.getChar());
     }
 

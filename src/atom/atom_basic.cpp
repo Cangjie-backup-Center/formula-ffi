@@ -16,16 +16,24 @@ using namespace tex;
  ***************************************************************************************************/
 
 sptr<Box> ScaleAtom::createBox(_out_ TeXEnvironment& env) {
-    if(_base == nullptr) throw ex_parse("empty atom");
+    if(_base == nullptr) {
+        throw ex_parse("Base atom is null in ScaleAtom::createBox");
+    }
     return sptr<Box>(new ScaleBox(_base->createBox(env), _sx, _sy));
 }
 
 sptr<Box> MathAtom::createBox(_out_ TeXEnvironment& env) {
-    TeXEnvironment& e = *(env.copy(env.getTeXFont()->copy()));
+    sptr<TeXFont> font = env.getTeXFont();
+    if (font == nullptr) {
+        throw ex_parse("TeXFont is null in MathAtom::createBox");
+    }
+    TeXEnvironment& e = *(env.copy(font->copy()));
     e.getTeXFont()->setRoman(false);
     int style = e.getStyle();
     e.setStyle(_style);
-    if(_base == nullptr) throw ex_parse("empty atom");
+    if(_base == nullptr) {
+        throw ex_parse("Base atom is null in MathAtom::createBox");
+    }
     auto box = _base->createBox(e);
     e.setStyle(style);
     return box;
@@ -52,24 +60,33 @@ sptr<Box> UnderScoreAtom::createBox(_out_ TeXEnvironment& env) {
 
 CumulativeScriptsAtom::CumulativeScriptsAtom(
     const sptr<Atom>& base, const sptr<Atom>& sub, const sptr<Atom>& sup) {
-    CumulativeScriptsAtom* ca = dynamic_cast<CumulativeScriptsAtom*>(base.get());
-    ScriptsAtom* sa = nullptr;
-    if (ca != nullptr) {
-        _base = ca->_base;
-        ca->_sup->add(sup);
-        ca->_sub->add(sub);
-        _sup = ca->_sup;
-        _sub = ca->_sub;
-    } else if (sa = dynamic_cast<ScriptsAtom*>(base.get())) {
-        _base = sa->_base;
-        _sup = sptr<RowAtom>(new RowAtom(sa->_sup));
-        _sub = sptr<RowAtom>(new RowAtom(sa->_sub));
-        _sup->add(sup);
-        _sub->add(sub);
-    } else {
+    if (base == nullptr) {
         _base = base;
         _sup = sptr<RowAtom>(new RowAtom(sup));
         _sub = sptr<RowAtom>(new RowAtom(sub));
+        return;
+    }
+
+    CumulativeScriptsAtom* ca = dynamic_cast<CumulativeScriptsAtom*>(base.get());
+    if (ca != nullptr) {
+        _base = ca->_base;
+        if (ca->_sup != nullptr) ca->_sup->add(sup);
+        if (ca->_sub != nullptr) ca->_sub->add(sub);
+        _sup = ca->_sup;
+        _sub = ca->_sub;
+    } else {
+        ScriptsAtom* sa_temp = dynamic_cast<ScriptsAtom*>(base.get());
+        if (sa_temp != nullptr) {
+            _base = sa_temp->_base;
+            _sup = sptr<RowAtom>(new RowAtom(sa_temp->_sup != nullptr ? sa_temp->_sup : sptr<RowAtom>(new RowAtom(sup))));
+            _sub = sptr<RowAtom>(new RowAtom(sa_temp->_sub != nullptr ? sa_temp->_sub : sptr<RowAtom>(new RowAtom(sub))));
+            if (sa_temp->_sup != nullptr) _sup->add(sup);
+            if (sa_temp->_sub != nullptr) _sub->add(sub);
+        } else {
+            _base = base;
+            _sup = sptr<RowAtom>(new RowAtom(sup));
+            _sub = sptr<RowAtom>(new RowAtom(sub));
+        }
     }
 }
 
@@ -94,7 +111,16 @@ sptr<Box> TextRenderingAtom::createBox(_out_ TeXEnvironment& env) {
         return sptr<Box>(new TextRenderingBox(
             _str, _type, DefaultTeXFont::getSizeFactor(env.getStyle())));
     }
-    DefaultTeXFont* tf = (DefaultTeXFont*)(env.getTeXFont().get());
+    sptr<TeXFont> texFont = env.getTeXFont();
+    if (texFont == nullptr) {
+        return sptr<Box>(new TextRenderingBox(
+            _str, _type, DefaultTeXFont::getSizeFactor(env.getStyle())));
+    }
+    DefaultTeXFont* tf = dynamic_cast<DefaultTeXFont*>(texFont.get());
+    if (tf == nullptr) {
+        return sptr<Box>(new TextRenderingBox(
+            _str, _type, DefaultTeXFont::getSizeFactor(env.getStyle())));
+    }
     int type = tf->_isIt ? ITALIC : PLAIN;
     type = type | (tf->_isBold ? BOLD : 0);
     bool kerning = tf->_isRoman;
@@ -459,13 +485,19 @@ sptr<Box> RowAtom::createBox(_out_ TeXEnvironment& env) {
     // convert atoms to boxes and add to the horizontal box
     int e = _elements.size() - 1;
     for (int i = -1; i < e;) {
-        auto at = _elements[++i];
+        ++i;
+        if (i >= _elements.size()) break; // boundary check
+        auto at = _elements[i];
+        if (at == nullptr) continue; // skip null atoms
         bool markAdded = false;
         BreakMarkAtom* ba = dynamic_cast<BreakMarkAtom*>(at.get());
         while (ba != nullptr) {
             if (!markAdded) markAdded = true;
             if (i < e) {
-                at = _elements[++i];
+                ++i;
+                if (i >= _elements.size()) break; // boundary check
+                at = _elements[i];
+                if (at == nullptr) break; // null check
                 ba = dynamic_cast<BreakMarkAtom*>(at.get());
             } else {
                 break;
@@ -481,9 +513,12 @@ sptr<Box> RowAtom::createBox(_out_ TeXEnvironment& env) {
         // check for ligature or kerning
         float kern = 0;
         while (i < e && atom->getRightType() == TYPE_ORDINARY && atom->isCharSymbol()) {
-            auto next = _elements[++i];
+            i++; // increment first
+            if (i >= _elements.size()) break; // boundary check
+            auto next = _elements[i];
+            if (next == nullptr) break; // null check
             CharSymbol* c = dynamic_cast<CharSymbol*>(next.get());
-            if (c != nullptr && _ligKernSet[next->getLeftType()]) {
+            if (c != nullptr && next->getLeftType() >= 0 && _ligKernSet[next->getLeftType()]) {
                 atom->markAsTextSymbol();
                 auto l = atom->getCharFont(tf);
                 auto r = c->getCharFont(tf);
@@ -521,7 +556,7 @@ sptr<Box> RowAtom::createBox(_out_ TeXEnvironment& env) {
             if (_breakEveywhere) {
                 hbox->addBreakPosition(hbox->_children.size());
             } else {
-                auto ca = dynamic_cast<CharAtom*>(at.get());
+                auto ca = (at != nullptr) ? dynamic_cast<CharAtom*>(at.get()) : nullptr;
                 if (markAdded || (ca != nullptr && isdigit(ca->getCharacter()))) {
                     hbox->addBreakPosition(hbox->_children.size());
                 }
@@ -620,7 +655,11 @@ sptr<Box> VRowAtom::createBox(_out_ TeXEnvironment& env) {
         }
     }
 
-    vb->_shift = -_raise->createBox(env)->_width;
+    if (_raise != nullptr) {
+        vb->_shift = -_raise->createBox(env)->_width;
+    } else {
+        vb->_shift = 0;
+    }
     if (_valign == ALIGN_TOP) {
         float t = vb->getSize() == 0 ? 0 : vb->_children.front()->_height;
         vb->_height = t;
@@ -784,6 +823,10 @@ void AccentedAtom::init(
 AccentedAtom::AccentedAtom(
     const sptr<Atom>& base, const string& name) throw(ex_invalid_symbol_type, ex_symbol_not_found) {
     _accent = SymbolAtom::get(name);
+    if (_accent == nullptr) {
+        throw ex_invalid_symbol_type(
+            "The symbol with the name '" + name + "' was not found!");
+    }
     if (_accent->_type == TYPE_ACCENT) {
         _base = base;
         AccentedAtom* a = dynamic_cast<AccentedAtom*>(base.get());
@@ -824,12 +867,18 @@ AccentedAtom::AccentedAtom(
 }
 
 sptr<Box> AccentedAtom::createBox(_out_ TeXEnvironment& env) {
-    TeXFont* tf = env.getTeXFont().get();
+    sptr<TeXFont> font_ptr = env.getTeXFont();
+    if (font_ptr == nullptr) {
+        throw ex_parse("TeXFont is null in AccentedAtom::createBox");
+    }
+    TeXFont* tf = font_ptr.get();
     int style = env.getStyle();
 
     // set base in cramped style
-    auto b = (_base == nullptr ? sptr<Box>(new StrutBox(0, 0, 0, 0))
-                               : _base->createBox(*(env.crampStyle())));
+    if (_base == nullptr) {
+        throw ex_parse("Base atom is null in AccentedAtom::createBox");
+    }
+    auto b = _base->createBox(*(env.crampStyle()));
 
     float u = b->_width;
     float s = 0;
@@ -837,7 +886,10 @@ sptr<Box> AccentedAtom::createBox(_out_ TeXEnvironment& env) {
     if (sym != nullptr) s = tf->getSkew(*(sym->getCharFont(*tf)), style);
 
     // retrieve best char form the accent symbol
-    SymbolAtom* acc = (SymbolAtom*)_accent.get();
+    SymbolAtom* acc = dynamic_cast<SymbolAtom*>(_accent.get());
+    if (acc == nullptr) {
+        throw ex_parse("Accent symbol is null in AccentedAtom::createBox");
+    }
     Char ch = tf->getChar(acc->getName(), style);
     while (tf->hasNextLarger(ch)) {
         Char larger = tf->getNextLarger(ch, style);
@@ -1351,6 +1403,9 @@ float OverUnderDelimiter::getMaxWidth(const Box* b, const Box* del, const Box* s
 
 sptr<Box> OverUnderDelimiter::createBox(_out_ TeXEnvironment& env) {
     auto b = (_base == nullptr ? sptr<Box>(new StrutBox(0, 0, 0, 0)) : _base->createBox(env));
+    if (_symbol == nullptr) {
+        throw ex_parse("Symbol is null in OverUnderDelimiter::createBox");
+    }
     sptr<Box> del = DelimiterFactory::create(_symbol->getName(), env, b->_width);
 
     sptr<Box> sb(nullptr);

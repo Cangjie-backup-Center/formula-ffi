@@ -287,6 +287,9 @@ void Glue::_free_() {
 
 float Glue::getFactor(const TeXEnvironment& env) const {
     auto tf = env.getTeXFont();
+    if (tf == nullptr) {
+        return 0.0f;  // 安全回退
+    }
     // use "quad" from a font marked as an "mu font"
     float quad = tf->getQuad(env.getStyle(), tf->getMuFontId());
     return quad / 18.f;
@@ -307,7 +310,14 @@ int Glue::getGlueIndex(int ltype, int rtype, const TeXEnvironment& env) {
 
 sptr<Box> Glue::get(int ltype, int rtype, const TeXEnvironment& env) {
     int i = getGlueIndex(ltype, rtype, env);
-    return _glueTypes[i]->createBox(env);
+    if (i < 0 || i >= _glueTypes.size()) {
+        throw ex_parse("Glue index out of bounds in Glue::get");
+    }
+    Glue* glue = _glueTypes[i];
+    if (glue == nullptr) {
+        throw ex_parse("Glue is null at index " + to_string(i) + " in Glue::get");
+    }
+    return glue->createBox(env);
 }
 
 Glue* Glue::getGlue(int skipType) {

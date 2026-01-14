@@ -57,6 +57,13 @@ void LaTeX::setDebug(bool debug) {
 }
 
 TeXRender* LaTeX::parse(const wstring& latex, int width, float textSize, float lineSpace, color fg) {
+    if (_formula == nullptr) {
+        throw ex_parse("LaTeX formula object is not initialized. Call LaTeX::init() first.");
+    }
+    if (_builder == nullptr) {
+        throw ex_parse("LaTeX builder object is not initialized. Call LaTeX::init() first.");
+    }
+
     bool lined = true;
     if (startswith(latex, L"$$") || startswith(latex, L"\\[")) {
         lined = false;
@@ -71,5 +78,8 @@ TeXRender* LaTeX::parse(const wstring& latex, int width, float textSize, float l
             .setLineSpace(UNIT_PIXEL, lineSpace)
             .setForeground(fg)
             .build(*_formula);
+    if (render == nullptr) {
+        throw ex_parse("Failed to build TeXRender from formula");
+    }
     return render;
 }

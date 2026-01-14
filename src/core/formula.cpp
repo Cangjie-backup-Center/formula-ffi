@@ -148,9 +148,13 @@ TeXFormula* TeXFormula::add(const sptr<Atom>& el) {
         return this;
     }
     RowAtom* rm = dynamic_cast<RowAtom*>(_root.get());
-    if (rm == nullptr) _root = sptr<Atom>(new RowAtom(_root));
-    rm = static_cast<RowAtom*>(_root.get());
-    rm->add(el);
+    if (rm == nullptr) {
+        _root = sptr<Atom>(new RowAtom(_root));
+        rm = dynamic_cast<RowAtom*>(_root.get());  // 再次尝试转换，这次应该成功
+        if (rm != nullptr) rm->add(el);  // 确保rm不为空才调用add
+    } else {
+        rm->add(el);
+    }
     TypedAtom* ta = dynamic_cast<TypedAtom*>(el.get());
     if (ta != nullptr) {
         int rt = ta->getRightType();
@@ -173,17 +177,22 @@ TeXFormula* TeXFormula::append(const wstring& s) throw(ex_parse) {
 }
 
 void TeXFormula::addImpl(const TeXFormula* f) {
-    if (f != nullptr) {
+    if (f == nullptr) {
+        throw ex_parse("TeXFormula is null in addImpl");
+    }
+    if (f->_root != nullptr) {
         RowAtom* rm = dynamic_cast<RowAtom*>(f->_root.get());
         if (rm != nullptr)
             add(sptr<Atom>(new RowAtom(f->_root)));
         else
             add(f->_root);
+    } else {
+        throw ex_parse("TeXFormula root is null in addImpl");
     }
 }
 
 sptr<Box> TeXFormula::createBox(_out_ TeXEnvironment& style) {
-    if (_root == nullptr) return sptr<Box>(new StrutBox(0, 0, 0, 0));
+    if (_root == nullptr) throw ex_invalid_state("TeXFormula root is null in createBox");
     return _root->createBox(style);
 }
 

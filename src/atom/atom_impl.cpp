@@ -231,7 +231,8 @@ void MatrixAtom::recalculateLine(
     float* height, float* depth, float drt, float vspace) {
     const size_t s = multiRows.size();
     for (size_t i = 0; i < s; i++) {
-        MultiRowAtom* m = (MultiRowAtom*)multiRows[i].get();
+        MultiRowAtom* m = dynamic_cast<MultiRowAtom*>(multiRows[i].get());
+        if (m == nullptr) continue;  // 安全回退
         const int r = m->_i;
         const int c = m->_j;
         int n = m->_n;
@@ -293,7 +294,19 @@ sptr<Box> MatrixAtom::generateMulticolumn(
     const sptr<Box>& b,
     const float* hsep, const float* colWidth, int i, int j) {
     float w = 0;
-    MulticolumnAtom* mca = (MulticolumnAtom*)(_matrix->_array[i][j].get());
+
+    // 修复：检查_matrix->_array[i][j]是否为空
+    sptr<Atom> atom_ptr = _matrix->_array[i][j];
+    if (atom_ptr == nullptr) {
+        throw ex_parse("Matrix element is null at position [" + to_string(i) + "][" + to_string(j) + "]");
+    }
+
+    // 修复：使用dynamic_cast并检查结果
+    MulticolumnAtom* mca = dynamic_cast<MulticolumnAtom*>(atom_ptr.get());
+    if (mca == nullptr) {
+        throw ex_parse("Dynamic cast to MulticolumnAtom failed at position [" + to_string(i) + "][" + to_string(j) + "]");
+    }
+
     int k, n = mca->getSkipped();
     for (k = j; k < j + n - 1; k++) {
         w += colWidth[k] + hsep[k + 1];
@@ -405,18 +418,22 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
                 lineDepth[i] = max(boxarr[i][j]->_depth, lineDepth[i]);
                 lineHeight[i] = max(boxarr[i][j]->_height, lineHeight[i]);
             } else {
-                MultiRowAtom* mra = (MultiRowAtom*)atom.get();
-                mra->setRowColumn(i, j);
-                listMultiRow.push_back(atom);
+                MultiRowAtom* mra = dynamic_cast<MultiRowAtom*>(atom.get());
+                if (mra != nullptr) {
+                    mra->setRowColumn(i, j);
+                    listMultiRow.push_back(atom);
+                }
             }
 
             if (boxarr[i][j]->_type != TYPE_MULTICOLUMN) {
                 // Find the widest column
                 colWidth[j] = max(boxarr[i][j]->_width, colWidth[j]);
             } else {
-                MulticolumnAtom* mca = (MulticolumnAtom*)atom.get();
-                mca->setRowColumn(i, j);
-                listMultiCol.push_back(atom);
+                MulticolumnAtom* mca = dynamic_cast<MulticolumnAtom*>(atom.get());
+                if (mca != nullptr) {
+                    mca->setRowColumn(i, j);
+                    listMultiCol.push_back(atom);
+                }
             }
         }
     }
@@ -427,7 +444,8 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
     float* Hsep = getColumnSep(env, matW);
 
     for (size_t i = 0; i < listMultiCol.size(); i++) {
-        MulticolumnAtom* multi = (MulticolumnAtom*)listMultiCol[i].get();
+        MulticolumnAtom* multi = dynamic_cast<MulticolumnAtom*>(listMultiCol[i].get());
+        if (multi == nullptr) continue;  // 安全回退
         int c = multi->getCol();
         int r = multi->getRow();
         int n = multi->getSkipped();
@@ -486,10 +504,15 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
                         boxarr[i][j], colWidth[j], lineHeight[i], lineDepth[i], _position[j]);
                 } else {
                     auto b = generateMulticolumn(env, boxarr[i][j], Hsep, colWidth, i, j);
-                    MulticolumnAtom* matom = (MulticolumnAtom*)_matrix->_array[i][j].get();
-                    j += matom->getSkipped() - 1;
+                    sptr<Atom> atom_ptr = _matrix->_array[i][j];
+                    if (atom_ptr != nullptr) {
+                        MulticolumnAtom* matom = dynamic_cast<MulticolumnAtom*>(atom_ptr.get());
+                        if (matom != nullptr) {
+                            j += matom->getSkipped() - 1;
+                            isLastVline = matom->hasRightVline();
+                        }
+                    }
                     wb = new WrapperBox(b, b->_width, lineHeight[i], lineDepth[i], ALIGN_LEFT);
-                    isLastVline = matom->hasRightVline();
                 }
                 float r = j == cols - 1 ? Hsep[j + 1] : Hsep[j + 1] / 2;
                 wb->setInsets(l, Vspace, r, Vspace);
@@ -500,10 +523,12 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
                 auto it = _vlines.find(j + 1);
                 if (isLastVline && it != _vlines.end()) {
                     auto vat = it->second;
-                    vat->_height = lineHeight[i] + lineDepth[i] + Vsep->_height;
-                    vat->_shift = lineDepth[i] + Vspace;
-                    auto vatBox = vat->createBox(env);
-                    hb->add(vatBox);
+                    if (vat != nullptr) {
+                        vat->_height = lineHeight[i] + lineDepth[i] + Vsep->_height;
+                        vat->_shift = lineDepth[i] + Vspace;
+                        auto vatBox = vat->createBox(env);
+                        hb->add(vatBox);
+                    }
                 }
             } break;
             case TYPE_INTERTEXT: {
@@ -513,15 +538,26 @@ sptr<Box> MatrixAtom::createBox(_out_ TeXEnvironment& e) {
                 j = cols;
             } break;
             case TYPE_HLINE: {
-                HlineAtom* at = (HlineAtom*)_matrix->_array[i][j].get();
-                at->setColor(LINE_COLOR);
-                at->setWidth(matW);
-                if (i >= 1 &&
-                    dynamic_cast<HlineAtom*>(_matrix->_array[i - 1][j].get()) != nullptr) {
-                    hb->add(sptr<Box>(new StrutBox(0, 2 * drt, 0, 0)));
+                sptr<Atom> atom_ptr = _matrix->_array[i][j];
+                HlineAtom* at = nullptr;
+                if (atom_ptr != nullptr) {
+                    at = dynamic_cast<HlineAtom*>(atom_ptr.get());
+                    if (at != nullptr) {
+                        at->setColor(LINE_COLOR);
+                        at->setWidth(matW);
+                    }
+                }
+                if (i >= 1) {
+                    sptr<Atom> prev_atom_ptr = _matrix->_array[i - 1][j];
+                    if (prev_atom_ptr != nullptr &&
+                        dynamic_cast<HlineAtom*>(prev_atom_ptr.get()) != nullptr) {
+                        hb->add(sptr<Box>(new StrutBox(0, 2 * drt, 0, 0)));
+                    }
                 }
 
-                hb->add(at->createBox(env));
+                if (at != nullptr) {
+                    hb->add(at->createBox(env));
+                }
                 j = cols;
             } break;
             }
@@ -935,8 +971,9 @@ sptr<Box> LaTeXAtom::createBox(_out_ TeXEnvironment& en) {
         TeXFormula::_externalFontMap[UnicodeBlock::BASIC_LATIN] = nullptr;
     }
     sptr<Atom> root = TeXFormula(L"\\mathrm{XETL}")._root;
-    sptr<Atom> atom = ((RomanAtom*)root.get())->_base;
-    RowAtom* rm = (RowAtom*)(atom.get());
+    RomanAtom* roman_atom = dynamic_cast<RomanAtom*>(root.get());
+    sptr<Atom> atom = (roman_atom != nullptr) ? roman_atom->_base : nullptr;
+    RowAtom* rm = dynamic_cast<RowAtom*>(atom.get());
     if (fontInfos != nullptr)
         TeXFormula::_externalFontMap[UnicodeBlock::BASIC_LATIN] = fontInfos;
 

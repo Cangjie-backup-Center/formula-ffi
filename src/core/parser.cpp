@@ -583,11 +583,20 @@ sptr<Atom> TeXParser::getScripts(wchar_t f) throw(ex_parse) {
          * the ScriptsAtom will handle it
          */
         return sptr<Atom>(new ScriptsAtom(nullptr, first, second));
-    } else if (rm = dynamic_cast<RowAtom*>(_formula->_root.get())) {
-        atom = rm->popLastAtom();
     } else {
-        atom = _formula->_root;
-        _formula->_root = nullptr;
+        sptr<Atom> root_atom = _formula->_root;
+        if (root_atom != nullptr) {
+            RowAtom* rm_temp = dynamic_cast<RowAtom*>(root_atom.get());
+            if (rm_temp != nullptr) {
+                atom = rm_temp->popLastAtom();
+            } else {
+                atom = _formula->_root;
+                _formula->_root = nullptr;
+            }
+        } else {
+            atom = _formula->_root;
+            _formula->_root = nullptr;
+        }
     }
 
     // Check if previous atom is CumulativeScriptsAtom
@@ -640,10 +649,16 @@ sptr<Atom> TeXParser::getArgument() throw(ex_parse) {
         _formula = tmp;
         if (_formula->_root == nullptr) {
             RowAtom* rm = new RowAtom();
-            rm->add(tf._root);
+            if (tf._root != nullptr) {
+                rm->add(tf._root);
+            }
             return sptr<Atom>(rm);
         }
-        return tf._root;
+        if (tf._root != nullptr) {
+            return tf._root;
+        } else {
+            return sptr<Atom>(new EmptyAtom());  // 安全回退
+        }
     }
 
     if (ch == ESCAPE) {

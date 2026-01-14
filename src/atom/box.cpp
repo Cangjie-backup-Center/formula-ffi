@@ -442,6 +442,8 @@ OverUnderBox::OverUnderBox(
 }
 
 void OverUnderBox::draw(Graphics2D& g2, float x, float y) {
+    if (_base == nullptr) throw ex_invalid_state("Base box is null in OverUnderBox::draw");
+    if (_del == nullptr) throw ex_invalid_state("Delimiter box is null in OverUnderBox::draw");
     drawDebug(g2, x, y);
     _base->draw(g2, x, y);
 

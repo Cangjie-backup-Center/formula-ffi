@@ -316,7 +316,15 @@ public:
         const string& tt,
         const string& it);
 
-    inline static const Font* getFont(int id) { return _infos[id]->getFont(); }
+    inline static const Font* getFont(int id) {
+        if (id < 0 || id >= _infos.size()) {
+            throw ex_invalid_param("Font ID out of bounds in FontInfo::getFont: " + to_string(id));
+        }
+        if (_infos[id] == nullptr) {
+            throw ex_invalid_state("FontInfo at index " + to_string(id) + " is null in FontInfo::getFont");
+        }
+        return _infos[id]->getFont();
+    }
 
     ~FontInfo();
 

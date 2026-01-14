@@ -299,6 +299,9 @@ public:
     BigDelimiterAtom(const sptr<SymbolAtom>& delim, int s) : _delim(delim), _size(s) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if (_delim == nullptr) {
+            return sptr<Box>(new StrutBox(0, 0, 0, 0));
+        }
         auto b = DelimiterFactory::create(*_delim, env, _size);
         HorizontalBox* hb = new HorizontalBox();
         float h = b->_height;
@@ -830,6 +833,9 @@ public:
     LapedAtom(const sptr<Atom>& a, wchar_t type) : _at(a), _type(type) {}
 
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
+        if (_at == nullptr) {
+            return sptr<Box>(new StrutBox(0, 0, 0, 0));
+        }
         auto b = _at->createBox(env);
         VerticalBox* vb = new VerticalBox();
         vb->add(b);
@@ -1244,6 +1250,11 @@ public:
         int style = env.getStyle();
         float axis = tf.getAxisHeight(style);
         float drt = tf.getDefaultRuleThickness(style);
+
+        if (_at == nullptr) {
+            return sptr<Box>(new StrutBox(0, 0, 0, 0));
+        }
+
         auto b = _at->createBox(env);
         HorizontalRule* rule = new HorizontalRule(drt, b->_width, -axis + drt, false);
         HorizontalBox* hb = new HorizontalBox();
@@ -1278,6 +1289,11 @@ public:
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
         int s = env.getStyle();
         env.setStyle(_style);
+        if (_at == nullptr) {
+            auto box = sptr<Box>(new StrutBox(0, 0, 0, 0));
+            env.setStyle(s);
+            return box;
+        }
         auto box = _at->createBox(env);
         env.setStyle(s);
         return box;
@@ -1317,6 +1333,12 @@ public:
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
         auto circle = SymbolAtom::get("bigcirc")->createBox(env);
         circle->_shift = -0.07f * SpaceAtom::getFactor(UNIT_EX, env);
+        if (_at == nullptr) {
+            HorizontalBox* hb = new HorizontalBox(circle, circle->_width, ALIGN_CENTER);
+            hb->add(sptr<Box>(new StrutBox(-hb->_width, 0, 0, 0)));
+            hb->add(circle);
+            return sptr<Box>(hb);
+        }
         auto box = _at->createBox(env);
         HorizontalBox* hb = new HorizontalBox(box, circle->_width, ALIGN_CENTER);
         hb->add(sptr<Box>(new StrutBox(-hb->_width, 0, 0, 0)));
@@ -1344,7 +1366,7 @@ public:
     sptr<Box> createBox(_out_ TeXEnvironment& env) override {
         string prev = env.getTextStyle();
         env.setTextStyle(_style);
-        auto box = _at->createBox(env);
+        auto box = (_at == nullptr) ? sptr<Box>(new StrutBox(0, 0, 0, 0)) : _at->createBox(env);
         env.setTextStyle(prev);
         return box;
     }

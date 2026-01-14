@@ -25,20 +25,24 @@ float TeXRender::getTextSize() const {
 }
 
 int TeXRender::getHeight() const {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::getHeight");
     return (int)(_box->_height * _textSize + 0.99f +
                  _box->_depth * _textSize + 0.99f +
                  _insets.top + _insets.bottom);
 }
 
 int TeXRender::getDepth() const {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::getDepth");
     return (int)(_box->_depth * _textSize + 0.99f + _insets.bottom);
 }
 
 int TeXRender::getWidth() const {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::getWidth");
     return (int)(_box->_width * _textSize + 0.99f + _insets.left + _insets.right);
 }
 
 float TeXRender::getBaseline() const {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::getBaseline");
     return ((_box->_height * _textSize + 0.99f + _insets.top) /
             ((_box->_height + _box->_depth) * _textSize + 0.99f + _insets.top + _insets.bottom));
 }
@@ -61,6 +65,7 @@ void TeXRender::setInsets(const Insets& insets, bool trueval) {
 }
 
 void TeXRender::setWidth(int width, int align) {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::setWidth");
     float diff = width - getWidth();
     // FIXME
     // only care if new width larger than old
@@ -70,6 +75,7 @@ void TeXRender::setWidth(int width, int align) {
 }
 
 void TeXRender::setHeight(int height, int align) {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::setHeight");
     float diff = height - getHeight();
     // FIXME
     // only care if new height larger than old
@@ -79,6 +85,8 @@ void TeXRender::setHeight(int height, int align) {
 }
 
 void TeXRender::draw(_out_ Graphics2D& g2, int x, int y) {
+    if (_box == nullptr) throw ex_invalid_state("Box is null in TeXRender::draw");
+
     color old = g2.getColor();
     g2.scale(_textSize, _textSize);
     if (!istrans(_fg)) {

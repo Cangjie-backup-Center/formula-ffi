@@ -156,30 +156,48 @@ Char DefaultTeXFont::getChar(const CharFont& c, int style) {
     float fsize = getSizeFactor(style);
     int id = _isBold ? cf._boldFontId : cf._fontId;
     auto info = getInfo(id);
+    if (info == nullptr) {
+        throw ex_invalid_state("FontInfo is null in getCharFont");
+    }
 
     if (_isBold && cf._fontId == cf._boldFontId) {
         id = info->getBoldId();
         info = getInfo(id);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null after getBoldId in getCharFont");
+        }
         cf = CharFont(cf._c, id, style);
     }
     if (_isRoman) {
         id = info->getRomanId();
         info = getInfo(id);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null after getRomanId in getCharFont");
+        }
         cf = CharFont(cf._c, id, style);
     }
     if (_isSs) {
         id = info->getSsId();
         info = getInfo(id);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null after getSsId in getCharFont");
+        }
         cf = CharFont(cf._c, id, style);
     }
     if (_isTt) {
         id = info->getTtId();
         info = getInfo(id);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null after getTtId in getCharFont");
+        }
         cf = CharFont(cf._c, id, style);
     }
     if (_isIt) {
         id = info->getItId();
         info = getInfo(id);
+        if (info == nullptr) {
+            throw ex_invalid_state("FontInfo is null after getItId in getCharFont");
+        }
         cf = CharFont(cf._c, id, style);
     }
 
@@ -253,14 +271,26 @@ inline int DefaultTeXFont::getMuFontId() {
 
 Char DefaultTeXFont::getNextLarger(_in_ const Char& c, int style) {
     auto info = getInfo(c.getFontCode());
+    if (info == nullptr) {
+        throw ex_invalid_state("FontInfo is null in getNextLarger");
+    }
     const CharFont* ch = info->getNextLarger(c.getChar());
+    if (ch == nullptr) {
+        throw ex_invalid_state("Next larger CharFont is null in getNextLarger");
+    }
     auto newInfo = getInfo(ch->_fontId);
+    if (newInfo == nullptr) {
+        throw ex_invalid_state("New FontInfo is null in getNextLarger");
+    }
     return Char(ch->_c, newInfo->getFont(), ch->_fontId, getMetrics(*ch, getSizeFactor(style)));
 }
 
 inline float DefaultTeXFont::getSpace(int style) {
     int spaceFontId = _generalSettings[DefaultTeXFontParser::SPACEFONTID_ATTR];
     auto info = getInfo(spaceFontId);
+    if (info == nullptr) {
+        throw ex_invalid_state("FontInfo is null in getSpace");
+    }
     return info->getSpace(getSizeFactor(style) * TeXFormula::PIXELS_PER_POINT);
 }
 
