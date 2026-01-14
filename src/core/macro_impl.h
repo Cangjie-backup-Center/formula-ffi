@@ -1377,6 +1377,39 @@ inline macro(oint) {
     return sptr<Atom>(integral);
 }
 
+inline macro(oiint) {
+    // 创建第一个积分符号 ∫
+    sptr<Atom> i1(new SymbolAtom(*(SymbolAtom::get("int"))));
+    i1->_typelimits = SCRIPT_NOLIMITS;
+
+    // 创建第二个积分符号 ∫
+    sptr<Atom> i2(new SymbolAtom(*(SymbolAtom::get("int"))));
+    i2->_typelimits = SCRIPT_NOLIMITS;
+
+    // 使用 RowAtom 将两个 ∫ 水平排列
+    RowAtom* ra = new RowAtom(i1);
+
+    // 在两个积分符号之间插入负间距，使它们更紧凑
+    ra->add(sptr<Atom>(new SpaceAtom(UNIT_MU, -8.f, 0, 0)));
+
+    // 添加第二个积分符号
+    ra->add(i2);
+    ra->_lookAtLastAtom = true;
+
+    // 将两个 ∫ 的组合封装为一个语义上的“双积分”原子
+    return sptr<Atom>(
+        new OiintAtom(
+            sptr<Atom>(
+                new TypedAtom(
+                    TYPE_BIG_OPERATOR,
+                    TYPE_BIG_OPERATOR,
+                    sptr<Atom>(ra)
+                )
+            )
+        )
+    );
+}
+
 inline macro(iint) {
     SymbolAtom* integral = new SymbolAtom(*(SymbolAtom::get("int")));
     integral->_typelimits = SCRIPT_NOLIMITS;

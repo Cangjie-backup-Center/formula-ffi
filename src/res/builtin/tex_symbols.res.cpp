@@ -556,6 +556,7 @@ map<string, sptr<SymbolAtom>> SymbolAtom::_symbols = {
     sym(op, coprod),
     sym(op, int),
     sym(op, oint),
+    sym(op, oiint),
     sym(op, sum),
     sym(op, prod),
     sym(op, smallint),

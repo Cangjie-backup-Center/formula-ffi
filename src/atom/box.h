@@ -2,7 +2,7 @@
 #define BOX_H_INCLUDED
 
 #include "atom/atom.h"
-
+#include "platform/cairo/graphic_cairo.h"
 #include <stack>
 
 using namespace tex;
@@ -621,6 +621,124 @@ public:
     int getLastFontId() override;
 
     vector<sptr<Box>> getChildren() const override;
+};
+
+/**
+ * OverlayBox: 将两个 Box 叠加绘制，底层是 _base，上层是 _overlay
+ */
+class OverlayBox : public Box {
+private:
+    sptr<Box> _base;      // 底层 Box
+    sptr<Box> _overlay;   // 叠加 Box
+
+public:
+    // 接收底层和叠加 Box，计算最大尺寸
+    OverlayBox(const sptr<Box>& base, const sptr<Box>& overlay)
+        : _base(base), _overlay(overlay) {
+        _width  = max(_base->_width, _overlay->_width);
+        _height = max(_base->_height, _overlay->_height);
+        _depth  = max(_base->_depth, _overlay->_depth);
+    }
+
+    // 绘制方法：先绘制底层 Box，再绘制居中叠加 Box
+    void draw(Graphics2D& g2, float x, float y) override {
+        float bx = (_width - _base->_width) / 2;      // 底层 Box 居中偏移
+        _base->draw(g2, x + bx, y);
+
+        float ox = (_width - _overlay->_width) / 2;   // 叠加 Box 居中偏移
+        _overlay->draw(g2, x + ox, y);
+    }
+
+    int getLastFontId() override {
+        return _base->getLastFontId();
+    }
+};
+
+/**
+ * EllipseBox: 绘制椭圆形 Box，用于叠加
+ */
+class EllipseBox : public Box {
+private:
+    static constexpr float lineWidth    = 0.04f;  // 描边线宽
+    static constexpr float ellipseXRatio = 0.75f; // x 方向缩放比例
+    static constexpr float ellipseYRatio = 0.28f; // y 方向缩放比例
+
+public:
+    // 初始化椭圆的宽、高、深度
+    EllipseBox(float width, float height, float depth) {
+        _width  = width  * ellipseXRatio;
+        _height = height;
+        _depth  = depth;
+    }
+
+    // 绘制椭圆
+    void draw(Graphics2D& g2, float x, float y) override {
+        Graphics2D_cairo* g = dynamic_cast<Graphics2D_cairo*>(&g2);
+        if (!g) return;
+
+        auto cr = g->getCairoContext();
+        if (!cr) return;
+
+        float cx = x + _width / 2;                         // 椭圆中心 x
+        float cy = y - _height / 2 + _depth / 2;           // 椭圆中心 y
+
+        float rx = _width / 2;                             // x 方向半径
+        float ry = (_height + _depth) / 2 * ellipseYRatio; // y 方向半径
+
+        cr->set_line_width(lineWidth);
+        cr->save();
+        cr->move_to(cx + rx, cy);
+
+        int steps = 60; // 用 60 个点绘制椭圆
+        for (int i = 1; i <= steps; i++) {
+            float theta = i * 2.0f * M_PI / steps;
+            float px = cx + rx * cos(theta);
+            float py = cy + ry * sin(theta);
+            cr->line_to(px, py);
+        }
+
+        cr->close_path();
+        cr->stroke();
+        cr->restore();
+    }
+
+    // 椭圆没有字体
+    int getLastFontId() override {
+        return -1;
+    }
+};
+
+/**
+ * OiintAtom: 表示语义上的“双积分”符号，内部由2个 ∫ 和一个椭圆叠加构成
+ */
+class OiintAtom : public Atom {
+private:
+    sptr<Atom> _base; // 原子内容，用于生成底层 Box
+
+public:
+    // 接收一个 Atom 作为底层
+    OiintAtom(const sptr<Atom>& base)
+        : _base(base) {
+        _type       = TYPE_BIG_OPERATOR;   // 类型为大运算符
+        _typelimits = SCRIPT_NOLIMITS;     // 上下标不受限制
+    }
+
+    // 生成 Box，用于渲染
+    inline sptr<Box> createBox(TeXEnvironment& env) {
+        sptr<Box> baseBox = _base->createBox(env);  // 底层 Box
+        sptr<EllipseBox> ellipse(
+            new EllipseBox(
+                baseBox->_width,
+                baseBox->_height,
+                baseBox->_depth
+            )
+        );
+
+        // 返回底层 Box 与椭圆叠加的 OverlayBox
+        return sptr<Box>(new OverlayBox(baseBox, ellipse));
+    }
+
+    __decl_clone(OiintAtom)
 };
 
 }  // namespace tex

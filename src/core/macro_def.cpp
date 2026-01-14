@@ -299,6 +299,7 @@ map<wstring, MacroInfo*> MacroInfo::_commands = {
     mac(0, macro_idotsint, "idotsint"),
     mac(0, macro_int, "int"),
     mac(0, macro_oint, "oint"),
+    mac(0, macro_oiint, "oiint"),
     mac(0, macro_lmoustache, "lmoustache"),
     mac(0, macro_rmoustache, "rmoustache"),
     mac(0, macro_insertBreakMark, "-"),
