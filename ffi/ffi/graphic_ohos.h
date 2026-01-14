@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
 
 #include "config.h"
@@ -144,6 +144,8 @@ public:
     virtual void drawRoundRect(float x, float y, float w, float h, float rx, float ry) override;
 
     virtual void fillRoundRect(float x, float y, float w, float h, float rx, float ry) override;
+
+    virtual void drawEllipse(float x, float y, float w, float h, float rx, float ry, float lineWidth, float depth) override;
 };
 
 }  // namespace tex

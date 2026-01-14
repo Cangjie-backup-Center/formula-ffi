@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
 
 #include "config.h"
@@ -375,6 +375,40 @@ void Graphics2D_ohos::fillRoundRect(float x, float y, float w, float h, float rx
     OH_Drawing_CanvasAttachBrush(_canvas, _brush);
     renderRoundRect(x, y, w, h, rx, ry);
     OH_Drawing_CanvasDetachBrush(_canvas);
+    setStrokeWidth(th);
+}
+
+void Graphics2D_ohos::drawEllipse(
+    float x, float y,
+    float w, float h,
+    float rx, float ry,
+    float lineWidth,
+    float depth
+) {
+    // 计算椭圆中心
+    float cx = x + w / 2;
+    float cy = y - h / 2 + depth / 2;
+
+    // 计算包围椭圆的矩形
+    float left   = cx - rx;
+    float right  = cx + rx;
+    float top    = cy - ry;
+    float bottom = cy + ry;
+
+    // 保存原先的线宽
+    float th = _stroke.lineWidth;
+
+    // 设置新的线宽
+    setStrokeWidth(lineWidth);
+
+    // 绘制椭圆
+    OH_Drawing_CanvasAttachPen(_canvas, _pen);
+    OH_Drawing_Rect* rect = OH_Drawing_RectCreate(left, top, right, bottom);
+    OH_Drawing_CanvasDrawOval(_canvas, rect);
+    OH_Drawing_RectDestroy(rect);
+    OH_Drawing_CanvasDetachPen(_canvas);
+
+    // 恢复原先的线宽
     setStrokeWidth(th);
 }
 
