@@ -52,7 +52,7 @@ formula
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](./doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/formula-ffi/blob/formula-ffi_cangjie-plugin_5.1.1/doc/feature_api.md)
 
 ## 使用说明
 
@@ -135,10 +135,6 @@ class EntryView {
     }
 }
 ```
-
-执行结果如下：
-
-![test](./doc/assets/test.jpg)
 
 ## 约束与限制
 
