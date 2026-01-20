@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
-package formula
+package formula.formula
 
 @C
 struct UInt8Data {

@@ -3,6 +3,8 @@
  */
 package formula
 
+import formula.formula.*
+
 public func latexStringToImage(latexMathTextString: String, latexMathTextSize: Float64,latexMathTextColor: UInt32, latexMathBackGroupColor: UInt32, latexMathColorFormat: Int64, resPath: String): Array<Byte> {
     try {
         var latex = LaTeX(resPath)
@@ -12,9 +14,11 @@ public func latexStringToImage(latexMathTextString: String, latexMathTextSize: F
         r.draw(g2, latexMathBackGroupColor)
         let arr = r.toBitmap(g2)
         latex.release()
+        r.finalize()
         unsafe {
-            LibC.free(g2.g2)
-            LibC.free(r.nativePtr)
+            if (g2.getG2().isNotNull()) {
+                LibC.free(g2.getG2())
+            }
         }
         return arr
     } catch (_: Exception) {
