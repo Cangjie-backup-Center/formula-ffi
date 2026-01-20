@@ -3,8 +3,6 @@
  */
 package formula
 
-import formula.formula.*
-
 public func latexStringToImage(latexMathTextString: String, latexMathTextSize: Float64,latexMathTextColor: UInt32, latexMathBackGroupColor: UInt32, latexMathColorFormat: Int64, resPath: String): Array<Byte> {
     try {
         var latex = LaTeX(resPath)

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
-package formula.formula
+package formula
 
 foreign {
     func memcpy_s(dest: CPointer<UInt8>, destsz: Int64, src: CPointer<UInt8>, count: Int64): CPointer<UInt8>

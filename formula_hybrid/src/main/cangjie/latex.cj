@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
-package formula.formula
+package formula
 
 public class LaTeX {
     public init(rootDir: String) {

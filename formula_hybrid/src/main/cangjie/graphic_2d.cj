@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
-package formula.formula
+package formula
 
 let RGB_565: Int32 = 2
 let BGRA_8888: Int32 = 5
