@@ -149,8 +149,28 @@ float FontInfo::getkern(wchar_t left, wchar_t right, float factor) {
 }
 
 const float* FontInfo::getMetrics(wchar_t c) {
-    if (_unicodeCount == 0) return _metrics[c];
-    return _metrics[_unicode[c]];
+    static float defaultMetrics[] = {0.0f, 0.0f, 0.0f, 0.0f};
+    if (!_metrics) return defaultMetrics;
+
+    // 场景1：无unicode映射，用已有的_charCount（init函数中记录的num）做校验
+    if (_unicodeCount == 0) {
+        if (c < 0 || static_cast<size_t>(c) >= static_cast<size_t>(_charCount)) {
+            return defaultMetrics;
+        }
+        return _metrics[c];
+    }
+
+    // 场景2：有unicode映射，安全访问map + 用_charCount校验
+    if (_unicode.empty()) return defaultMetrics;
+    auto iter = _unicode.find(c);
+    if (iter == _unicode.end()) return defaultMetrics;
+
+    int mappedIdx = iter->second;
+    if (mappedIdx < 0 || static_cast<size_t>(mappedIdx) >= static_cast<size_t>(_charCount)) {
+        return defaultMetrics;
+    }
+
+    return _metrics[mappedIdx];
 }
 
 const CharFont* FontInfo::getNextLarger(wchar_t c) {
