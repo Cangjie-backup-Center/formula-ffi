@@ -4,6 +4,8 @@
 
 package formula
 
+import formula.mhchem.Mhchem
+
 public class LaTeX {
     public init(rootDir: String) {
         unsafe {
@@ -19,7 +21,11 @@ public class LaTeX {
 
     public func parse(ltx: String, width: Int32, textSize: Float32, lineSpace: Float32, foreground: UInt32): Render {
         unsafe {
-            var cstr =  LibC.mallocCString(ltx)
+            var processedLtx = ltx
+            if (ltx.contains("\\ce{")) {
+                processedLtx = Mhchem().process(ltx)
+            }
+            var cstr = LibC.mallocCString(processedLtx)
             var ptr = LaTeX_parse(cstr, width, textSize, lineSpace, foreground)
             if (ptr.isNull()) {
                 LibC.free(cstr)
